@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Camera">
+      <UniqueIdentifier>{4ebeed68-a3fb-4bcb-b405-fea2a1194e54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Collision">
+      <UniqueIdentifier>{9dd4374e-1f08-4bb6-b40a-5e3edfdd6843}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Characters">
+      <UniqueIdentifier>{a9d3b6b1-0ace-44f1-8748-85ceb4673ff8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene">
+      <UniqueIdentifier>{9b09591b-fd39-433c-ae67-e1bbdf643418}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene\Init">
+      <UniqueIdentifier>{d94a68c6-2ae3-41c9-b6f1-ab0b78f90d5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene\Update">
+      <UniqueIdentifier>{613af179-dc29-49e2-80a2-7d45c4a820af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene\Render">
+      <UniqueIdentifier>{ab6aad15-2a63-409a-843e-e2f74b01e80d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI">
+      <UniqueIdentifier>{771e85d3-1472-4dd4-8bd0-c3156f145e5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Collision\2Dcollision">
+      <UniqueIdentifier>{aeb58a23-983a-4aa1-985a-b5e38c85b014}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Collision\3Dcollision">
+      <UniqueIdentifier>{37d0438e-7fb8-429d-af09-6315c19abd3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Environment">
+      <UniqueIdentifier>{5cbf9ae5-d420-4335-a6c8-960e69f1e9d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Camera">
+      <UniqueIdentifier>{5d8c7340-b0fb-4a09-a4d4-0e72d9c88812}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Camera\FPCamera">
+      <UniqueIdentifier>{9a7a5f6e-e324-4968-ae45-02fede95c6d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Camera\TPCamera">
+      <UniqueIdentifier>{d6043e63-08e9-484f-b118-49ecf4c230b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Camera\FPCamera">
+      <UniqueIdentifier>{2d58889c-4c71-4f70-95ea-7a332ff7160d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Camera\TPCamera">
+      <UniqueIdentifier>{9849df11-616a-41bf-b62e-c057fc1d88e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Collision">
+      <UniqueIdentifier>{c84f519a-6998-4543-a39d-32d5e0df4e40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Collision\2Dcollision">
+      <UniqueIdentifier>{3025a1d8-fa3e-46eb-b9c1-2770c953712f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Collision\3Dcollision">
+      <UniqueIdentifier>{46033c82-f006-4cd3-9b1f-80e4d6c9d79d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Characters">
+      <UniqueIdentifier>{fb1d2398-3a83-479f-8d8f-9c915ecd0821}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Environment">
+      <UniqueIdentifier>{31324877-6195-4763-9a44-ce8f6f063224}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene">
+      <UniqueIdentifier>{3a9c9cd6-a4c1-4326-93f6-3e3cfe732ef5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene\Init">
+      <UniqueIdentifier>{7e34c5e0-34c9-4795-85e3-165a98487360}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene\Update">
+      <UniqueIdentifier>{36cba596-00fa-4162-bfac-b7f39b1edce3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene\Render">
+      <UniqueIdentifier>{0f07809c-d4d5-4de2-9593-6c5726107889}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{5bfe2f3b-8276-446d-8851-ca62b92dbb42}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MeshBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneLight2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene5.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LoadTGA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneSkybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LoadOBJ.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Application.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Geometry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\shader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MeshBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Utility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneLight2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene5.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LoadTGA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneSkybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LoadOBJ.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
