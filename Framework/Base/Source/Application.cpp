@@ -25,8 +25,6 @@
 GLFWwindow* m_window;
 const unsigned char FPS = 120; // FPS of this game
 const unsigned int frameTime = 1000 / FPS; // time for each frame
-const int windowWidth = 1366;
-const int windowHeight = 768;
 
 //Define an error callback
 static void error_callback(int error, const char* description)
@@ -50,6 +48,47 @@ void resize_callback(GLFWwindow* window, int w, int h)
 bool Application::IsKeyPressed(unsigned short key)
 {
     return ((GetAsyncKeyState(key) & 0x8001) != 0);
+}
+
+double Application::mouse_current_x = 0.0;
+double Application::mouse_current_y = 0.0;
+double Application::mouse_diff_x = 0.0;
+double Application::mouse_diff_y = 0.0;
+double Application::mouse_last_x = 0.0;
+double Application::mouse_last_y = 0.0;
+double Application::camera_pitch = 0.0;
+double Application::camera_yaw = 0.0;
+
+bool Application::getMouseUpdate(void)
+{
+	glfwGetCursorPos(m_window, &mouse_current_x, &mouse_current_y);
+
+	// Calculate the difference in positions
+	mouse_diff_x = mouse_current_x - mouse_last_x;
+	mouse_diff_y = mouse_current_y - mouse_last_y;
+
+	//Calculate yaw and pitch
+	camera_yaw = (float)mouse_diff_x * 0.0174555555;	// * 3.142f/180.f
+	camera_pitch = (float)mouse_diff_y * 0.0174555555;	// * 3.142f/180.f
+
+	// Do a wraparound if the mouse cursor has gone out of the dead zone
+	if((mouse_current_x < m_window_deadzone) || (mouse_current_x > m_window_width - m_window_deadzone))
+	{
+		mouse_current_x = m_window_width >> 1;
+		glfwSetCursorPos(m_window, mouse_current_x, mouse_current_y);
+	}
+
+	if((mouse_current_y < m_window_deadzone) || (mouse_current_y > m_window_height - m_window_deadzone))
+	{
+		mouse_current_y = m_window_width >> 1;
+		glfwSetCursorPos(m_window, mouse_current_x, mouse_current_y);
+	}
+
+	// Store the current position as the last position
+	mouse_last_x = mouse_current_x;
+	mouse_last_y = mouse_current_y;
+
+	return false;
 }
 
 Application::Application()
@@ -79,7 +118,7 @@ void Application::Init()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL 
 
 	//Create a window and create its OpenGL context
-	m_window = glfwCreateWindow(windowWidth, windowHeight, "Test Window", glfwGetPrimaryMonitor(), NULL);
+	m_window = glfwCreateWindow(m_window_width, m_window_height, "DM2231_Framework", glfwGetPrimaryMonitor(), NULL);
 
 	//If the window couldn't be created
 	if (!m_window)
@@ -107,7 +146,7 @@ void Application::Init()
 		//return -1;
 	}
 
-	//glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 }
 
 void Application::Run()
@@ -119,6 +158,7 @@ void Application::Run()
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
 	while (!glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
 	{
+		GetMouseUpdate();
 		scene->Update(m_timer.getElapsedTime());
 		scene->Render();
 		//Swap buffers
