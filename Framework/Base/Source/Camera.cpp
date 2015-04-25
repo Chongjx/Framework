@@ -7,8 +7,6 @@ Camera funtions that calculate and return the latest position of the camera.
 */
 /******************************************************************************/
 #include "Camera.h"
-#include "Application.h"
-#include "Mtx44.h"
 
 /******************************************************************************/
 /*!
@@ -55,6 +53,7 @@ void Camera::Init(const Vector3& pos, const Vector3& target, const Vector3& up, 
 	magnificationFactor = focalLength.y / focalLength.x;
 	zoomDepth = 1;
 	zoomEnabled = true;
+	sensitivity = 1.0f;
 }
 
 /******************************************************************************/
@@ -110,6 +109,7 @@ void Camera::Update(double dt)
 /******************************************************************************/
 void Camera::Zoom(void)
 {
+
 }
 
 /******************************************************************************/
@@ -188,6 +188,19 @@ void Camera::setMagnificationFactor(float magnificationFactor)
 void Camera::setZoomEnabled(bool zoomEnabled)
 {
 	this->zoomEnabled = zoomEnabled;
+}
+
+/******************************************************************************/
+/*!
+\brief	Camera Setter functions
+
+\param	sensitivity
+	Enable zoom bool
+*/
+/******************************************************************************/
+void Camera::setSensitivity(float sensitivity)
+{
+	this->sensitivity = sensitivity;
 }
 
 /******************************************************************************/
@@ -279,4 +292,17 @@ int Camera::getZoomDepth(void)
 bool Camera::getZoomEnabled(void) const
 {
 	return zoomEnabled;
+}
+
+/******************************************************************************/
+/*!
+\brief	Camera Getter functions
+
+\return	float
+	sensitivity float
+*/
+/******************************************************************************/
+float Camera::getSensitivity(void) const
+{
+	return sensitivity;
 }

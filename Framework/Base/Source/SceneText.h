@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "Mtx44.h"
 #include "Camera3.h"
+#include "FPcamera.h"
 #include "Mesh.h"
 #include "MatrixStack.h"
 #include "Light.h"
@@ -95,7 +96,7 @@ private:
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
 
-	Camera3 camera;
+	FPcamera camera;
 
 	float rotateAngle;
 

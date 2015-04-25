@@ -10,21 +10,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-#include "Scene1.h"
-#include "Scene2.h"
-#include "Scene3.h"
-#include "Scene4.h"
-#include "Scene5.h"
-#include "SceneLight.h"
-#include "SceneLight2.h"
-#include "SceneTexture.h"
-#include "SceneSkybox.h"
 #include "SceneText.h"
 
 GLFWwindow* m_window;
 const unsigned char FPS = 120; // FPS of this game
 const unsigned int frameTime = 1000 / FPS; // time for each frame
+
+double Application::mouse_current_x = 0.0;
+double Application::mouse_current_y = 0.0;
+double Application::mouse_diff_x = 0.0;
+double Application::mouse_diff_y = 0.0;
+double Application::mouse_last_x = 0.0;
+double Application::mouse_last_y = 0.0;
+double Application::camera_pitch = 0.0;
+double Application::camera_yaw = 0.0;
 
 //Define an error callback
 static void error_callback(int error, const char* description)
@@ -49,15 +48,6 @@ bool Application::IsKeyPressed(unsigned short key)
 {
     return ((GetAsyncKeyState(key) & 0x8001) != 0);
 }
-
-double Application::mouse_current_x = 0.0;
-double Application::mouse_current_y = 0.0;
-double Application::mouse_diff_x = 0.0;
-double Application::mouse_diff_y = 0.0;
-double Application::mouse_last_x = 0.0;
-double Application::mouse_last_y = 0.0;
-double Application::camera_pitch = 0.0;
-double Application::camera_yaw = 0.0;
 
 bool Application::getMouseUpdate(void)
 {
@@ -158,7 +148,7 @@ void Application::Run()
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
 	while (!glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
 	{
-		GetMouseUpdate();
+		getMouseUpdate();
 		scene->Update(m_timer.getElapsedTime());
 		scene->Render();
 		//Swap buffers
