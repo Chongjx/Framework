@@ -1,4 +1,4 @@
-﻿Build started 25/4/2015 9:14:02 PM.
+﻿Build started 26/4/2015 4:03:20 PM.
      1>Project "C:\Users\Jun Xiang\Documents\GameDev\Framework\Common\Common.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\Common.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -14,4 +14,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.04
+Time Elapsed 00:00:00.07

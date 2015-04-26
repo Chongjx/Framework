@@ -1,13 +1,47 @@
+/******************************************************************************/
+/*!
+\file	SceneText.h
+\author Chong Jun Xiang
+\brief
+Class to build ...
+*/
+/******************************************************************************/
 #ifndef SCENE_TEXT_H
 #define SCENE_TEXT_H
 
 #include "Scene.h"
-#include "Mtx44.h"
-#include "Camera3.h"
+#include "Application.h"
 #include "FPcamera.h"
-#include "Mesh.h"
-#include "MatrixStack.h"
+
+#include "MeshBuilder.h"
+
 #include "Light.h"
+
+#include "GL\glew.h"
+#include "GLFW\glfw3.h"
+
+#include "Utility.h"
+#include "shader.hpp"
+#include "LoadTGA.h"
+
+#include <string>
+#include <stdio.h>
+#include <iostream>
+#include <iomanip>
+#include <sstream>
+#include <fstream>
+#include <irrKlang.h>
+
+using std::string;
+using std::cout;
+using std::endl;
+using std::setprecision;
+using std::fixed;
+using std::to_string;
+using namespace irrklang;
+#pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
+
+static const float SKYBOXSIZE = 1000.f;
 
 class SceneText : public Scene
 {
@@ -81,15 +115,37 @@ public:
 	SceneText();
 	~SceneText();
 
-	virtual void Init();
-	virtual void Update(double dt);
-	virtual void Render();
-	virtual void Exit();
+	virtual void Init(void);
+    virtual void Update(double dt);
+    virtual void RenderScene(void);
+	virtual void RenderMiniMap(void);
+    virtual void Exit(void);
 
+	void InitOpenGL(void);
+	void InitVariables(void);
+	void InitLights(void);
+	void InitCamera(void);
+	void InitSound(void);
+	void InitCharacters(void);
+	void InitUI(void);
+	void ReInit(void);
+
+	void UpdateOpenGL(void);
+	void UpdateLights(double dt);
+	void UpdateCamera(double dt);
+	void UpdateSound(double dt);
+	void UpdateCharacters(double dt);
+	void UpdateUI(double dt);
+
+	void RenderLights(void);
+	void RenderEnvironment(void);
+	void RenderCharacters(void);
+	void RenderUI(void);
+
+	void Render3DMesh(Mesh *mesh, bool enableLight);
+	void Render2DMesh(Mesh* mesh, bool enableLight, float size = 1.0f, float x = 0.0f, float y = 0.0f);
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
-	void RenderMesh(Mesh *mesh, bool enableLight);
-	void RenderSkybox();
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[NUM_GEOMETRY];

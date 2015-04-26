@@ -25,15 +25,6 @@
     <Filter Include="Header Files\Scene">
       <UniqueIdentifier>{9b09591b-fd39-433c-ae67-e1bbdf643418}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Scene\Init">
-      <UniqueIdentifier>{d94a68c6-2ae3-41c9-b6f1-ab0b78f90d5c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Scene\Update">
-      <UniqueIdentifier>{613af179-dc29-49e2-80a2-7d45c4a820af}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Scene\Render">
-      <UniqueIdentifier>{ab6aad15-2a63-409a-843e-e2f74b01e80d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\UI">
       <UniqueIdentifier>{771e85d3-1472-4dd4-8bd0-c3156f145e5f}</UniqueIdentifier>
     </Filter>
@@ -105,21 +96,24 @@
     <ClCompile Include="Source\LoadOBJ.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SceneText.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Camera.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Source\FPcamera.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneText.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Render_All.cpp">
+      <Filter>Source Files\Scene\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Render_Functions.cpp">
+      <Filter>Source Files\Scene\Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Geometry.h">
@@ -152,14 +146,17 @@
     <ClInclude Include="Source\LoadOBJ.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SceneText.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Camera.h">
       <Filter>Header Files\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\FPcamera.h">
       <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneText.h">
+      <Filter>Header Files\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
