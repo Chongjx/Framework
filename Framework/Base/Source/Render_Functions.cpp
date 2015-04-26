@@ -1,5 +1,162 @@
+/******************************************************************************/
+/*!
+\file	Render_Functions.cpp
+\author Jun Xiang
+\brief
+Render all the scene stuff here
+*/
+/******************************************************************************/
 #include "SceneText.h"
 
+/******************************************************************************/
+/*!
+\brief
+Render Lights
+*/
+/******************************************************************************/
+void SceneText::RenderLights(void)
+{
+	for (int i = 0; i < NUM_LIGHTS; i++)
+	{
+		if(lights[i].type == Light::LIGHT_DIRECTIONAL)
+		{
+			Vector3 lightDir(lights[i].position.x, lights[i].position.y, lights[i].position.z);
+			Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
+			glUniform3fv(m_parameters[i * 11 + 12], 1, &lightDirection_cameraspace.x);
+		}
+		else if(lights[i].type == Light::LIGHT_SPOT)
+		{
+			Position lightPosition_cameraspace = viewStack.Top() * lights[i].position;
+			glUniform3fv(m_parameters[i * 11 + 12], 1, &lightPosition_cameraspace.x);
+			Vector3 spotDirection_cameraspace = viewStack.Top() * lights[i].spotDirection;
+			glUniform3fv(m_parameters[i * 11 + 8], 1, &spotDirection_cameraspace.x);
+		}
+		else
+		{
+			Position lightPosition_cameraspace = viewStack.Top() * lights[i].position;
+			glUniform3fv(m_parameters[i * 11 + 12], 1, &lightPosition_cameraspace.x);
+		}
+	}
+}
+
+/******************************************************************************/
+/*!
+\brief
+Render Skybox and environment objects here
+*/
+/******************************************************************************/
+void SceneText::RenderEnvironment(void)
+{
+	// skybox
+	// left
+	modelStack.PushMatrix();
+	modelStack.Rotate(90, 0, 1, 0);
+	modelStack.Translate(0, 0, -SKYBOXSIZE / 2 + 2.f);
+	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
+	Render3DMesh(meshList[GEO_LEFT], false);
+	modelStack.PopMatrix();
+	
+	// right
+	modelStack.PushMatrix();
+	modelStack.Rotate(-90, 0, 1, 0);
+	modelStack.Translate(0, 0, -SKYBOXSIZE / 2 + 2.f);
+	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
+	Render3DMesh(meshList[GEO_RIGHT], false);
+	modelStack.PopMatrix();
+	
+	// front
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0, -SKYBOXSIZE / 2 + 2.f);
+	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
+	Render3DMesh(meshList[GEO_FRONT], false);
+	modelStack.PopMatrix();
+	
+	// back
+	modelStack.PushMatrix();
+	modelStack.Rotate(180, 0, 1, 0);
+	modelStack.Translate(0, 0, -SKYBOXSIZE / 2 + 2.f);
+	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
+	Render3DMesh(meshList[GEO_BACK], false);
+	modelStack.PopMatrix();
+	
+	// top
+	modelStack.PushMatrix();
+	modelStack.Rotate(90, 1, 0, 0);
+	modelStack.Translate(0, 0, -SKYBOXSIZE / 2 + 2.f);
+	modelStack.Rotate(90, 0, 0, 1);
+	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
+	Render3DMesh(meshList[GEO_TOP], false);
+	modelStack.PopMatrix();
+	
+	// bottom
+	modelStack.PushMatrix();
+	modelStack.Rotate(-90, 1, 0, 0);
+	modelStack.Translate(0, 0, -SKYBOXSIZE / 2 + 2.f);
+	modelStack.Rotate(-90, 0, 0, 1);
+	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
+	Render3DMesh(meshList[GEO_BOTTOM], false);
+	modelStack.PopMatrix();
+
+	// axis
+	Render3DMesh(meshList[GEO_AXES], false);
+
+	// chair 1
+	modelStack.PushMatrix();
+	modelStack.Translate(-20, 0, -20);
+	Render3DMesh(meshList[GEO_OBJECT], false);
+	modelStack.PopMatrix();
+	
+	// chair 2
+	modelStack.PushMatrix();
+	modelStack.Translate(20, 0, -20);
+	Render3DMesh(meshList[GEO_OBJECT], true);
+	modelStack.PopMatrix();
+
+	// text
+	modelStack.PushMatrix();
+	modelStack.Scale(10, 10, 10);
+	RenderText(meshList[GEO_TEXT], "Hello World", Color(0, 1, 0));
+	modelStack.PopMatrix();
+}
+
+/******************************************************************************/
+/*!
+\brief
+Render Characters and NPCs here
+*/
+/******************************************************************************/
+void SceneText::RenderCharacters(void)
+{
+}
+
+/******************************************************************************/
+/*!
+\brief
+Render UI and HUD here
+*/
+/******************************************************************************/
+void SceneText::RenderUI(void)
+{
+	//On screen text
+	std::ostringstream ss;
+	ss.precision(5);
+	ss << "FPS: " << fps;
+	RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(0, 1, 0), 3, 0, 6);
+	
+	std::ostringstream ss1;
+	ss1.precision(4);
+	ss1 << "Light(" << lights[0].position.x << ", " << lights[0].position.y << ", " << lights[0].position.z << ")";
+	RenderTextOnScreen(meshList[GEO_TEXT], ss1.str(), Color(0, 1, 0), 3, 0, 3);
+
+	RenderTextOnScreen(meshList[GEO_TEXT], "Hello Screen", Color(0, 1, 0), 3, 0, 0);
+}
+
+/******************************************************************************/
+/*!
+\brief
+Render 3D mesh function
+*/
+/******************************************************************************/
 void SceneText::Render3DMesh(Mesh *mesh, bool enableLight)
 {
 	Mtx44 MVP, modelView, modelView_inverse_transpose;
@@ -47,6 +204,12 @@ void SceneText::Render3DMesh(Mesh *mesh, bool enableLight)
 	}
 }
 
+/******************************************************************************/
+/*!
+\brief
+Render 2D mesh on screen function
+*/
+/******************************************************************************/
 void SceneText::Render2DMesh(Mesh* mesh, bool enableLight, float size, float x, float y)
 {
 	Mtx44 ortho;
@@ -89,6 +252,12 @@ void SceneText::Render2DMesh(Mesh* mesh, bool enableLight, float size, float x, 
 	projectionStack.PopMatrix();
 }
 
+/******************************************************************************/
+/*!
+\brief
+Render Text in world space function
+*/
+/******************************************************************************/
 void SceneText::RenderText(Mesh* mesh, std::string text, Color color)
 {
 	if(!mesh || mesh->textureID <= 0)
@@ -118,6 +287,12 @@ void SceneText::RenderText(Mesh* mesh, std::string text, Color color)
 	glEnable(GL_DEPTH_TEST);
 }
 
+/******************************************************************************/
+/*!
+\brief
+Render Text on screen function
+*/
+/******************************************************************************/
 void SceneText::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y)
 {
 	if(!mesh || mesh->textureID <= 0)
@@ -158,51 +333,4 @@ void SceneText::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, fl
 	viewStack.PopMatrix();
 	modelStack.PopMatrix();
 	glEnable(GL_DEPTH_TEST);
-}
-
-void SceneText::RenderEnvironment()
-{
-	//left
-	modelStack.PushMatrix();
-	modelStack.Rotate(90, 0, 1, 0);
-	modelStack.Translate(0, 0, -SKYBOXSIZE / 2 + 2.f);
-	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
-	Render3DMesh(meshList[GEO_LEFT], false);
-	modelStack.PopMatrix();
-	
-	modelStack.PushMatrix();
-	modelStack.Rotate(-90, 0, 1, 0);
-	modelStack.Translate(0, 0, -SKYBOXSIZE / 2 + 2.f);
-	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
-	Render3DMesh(meshList[GEO_RIGHT], false);
-	modelStack.PopMatrix();
-	
-	modelStack.PushMatrix();
-	modelStack.Translate(0, 0, -SKYBOXSIZE / 2 + 2.f);
-	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
-	Render3DMesh(meshList[GEO_FRONT], false);
-	modelStack.PopMatrix();
-	
-	modelStack.PushMatrix();
-	modelStack.Rotate(180, 0, 1, 0);
-	modelStack.Translate(0, 0, -SKYBOXSIZE / 2 + 2.f);
-	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
-	Render3DMesh(meshList[GEO_BACK], false);
-	modelStack.PopMatrix();
-	
-	modelStack.PushMatrix();
-	modelStack.Rotate(90, 1, 0, 0);
-	modelStack.Translate(0, 0, -SKYBOXSIZE / 2 + 2.f);
-	modelStack.Rotate(90, 0, 0, 1);
-	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
-	Render3DMesh(meshList[GEO_TOP], false);
-	modelStack.PopMatrix();
-	
-	modelStack.PushMatrix();
-	modelStack.Rotate(-90, 1, 0, 0);
-	modelStack.Translate(0, 0, -SKYBOXSIZE / 2 + 2.f);
-	modelStack.Rotate(-90, 0, 0, 1);
-	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
-	Render3DMesh(meshList[GEO_BOTTOM], false);
-	modelStack.PopMatrix();
 }

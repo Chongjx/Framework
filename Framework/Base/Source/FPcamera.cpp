@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*!
 \file	FPcamera.cpp
-\author Chong Jun Xiang
+\author Jun Xiang
 \brief
 Camera funtions that calculate and return the latest position of the camera.
 */
@@ -38,11 +38,9 @@ FPcamera::~FPcamera()
 	target vector3
 \param	up
 	up vector3
-\param focalLength
-	focal length vector2
 */
 /******************************************************************************/
-void FPcamera::Init(const Vector3& pos, const Vector3& target, const Vector3& up, const Vector2& focalLength)
+void FPcamera::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 {
 	this->position = defaultPosition = pos;
 	this->target = defaultTarget = target;
@@ -51,12 +49,6 @@ void FPcamera::Init(const Vector3& pos, const Vector3& target, const Vector3& up
 	right.y = 0;
     right.Normalize();
 	this->up = defaultUp = right.Cross(view).Normalized();
-
-	this->focalLength = defaultFocalLength = focalLength;
-	magnificationFactor = this->focalLength.y/ this->focalLength.x;
-	this->zoomDepth = defaultZoomDepth = 1;
-	this->zoomEnabled = defaultZoomEnabled = true;
-
 	this->sensitivity = defaultSensitivity = 1.0f;
 }
 
@@ -78,7 +70,7 @@ void FPcamera::Update(double dt, float floorLevel)
 		Vector3 tempTarget = target;
 		
 		Vector3 view = (target - position).Normalized();
-		Vector3 right = view.Cross(up);
+		right = view.Cross(up);
 		right.y = 0;
 		right.Normalize();
 		position -= right * CAMERA_SPEED * (float)dt;
@@ -94,7 +86,7 @@ void FPcamera::Update(double dt, float floorLevel)
 		Vector3 tempTarget = target;
 
 		Vector3 view = (target - position).Normalized();
-		Vector3 right = view.Cross(up);
+		right = view.Cross(up);
 		right.y = 0;
 		right.Normalize();
 		position += right * CAMERA_SPEED * (float)dt;
@@ -140,7 +132,7 @@ void FPcamera::Update(double dt, float floorLevel)
 		rotation.SetToRotation(yaw, 0, 1, 0);
 		view = rotation * view;
 		target = position + view;
-		Vector3 right = view.Cross(up);
+		right = view.Cross(up);
 		right.y = 0;
 		right.Normalize();
 		up = right.Cross(view).Normalized();
@@ -149,7 +141,7 @@ void FPcamera::Update(double dt, float floorLevel)
 	{
 		float pitch = (float)(-CAMERA_SPEED * Application::camera_pitch * (float)dt * sensitivity);
 		Vector3 view = (target - position).Normalized();
-		Vector3 right = view.Cross(up);
+		right = view.Cross(up);
 		right.y = 0;
 		right.Normalize();
 		up = right.Cross(view).Normalized();
@@ -175,25 +167,12 @@ void FPcamera::Reset(void)
 	this->position = defaultPosition;
 	this->target = defaultTarget;
 	this->up = defaultUp;
-	this->focalLength = defaultFocalLength;
-	this->zoomDepth = defaultZoomDepth;
-	this->zoomEnabled = defaultZoomEnabled;
 	this->sensitivity = defaultSensitivity;
 
 	Vector3 view = (target - position).Normalized();
     right = view.Cross(up).Normalized();
 	right.y = 0;
     right.Normalize();
-	magnificationFactor = this->focalLength.y/ this->focalLength.x;
-}
-
-/******************************************************************************/
-/*!
-\brief	camera zoom function
-*/
-/******************************************************************************/
-void FPcamera::Zoom(void)
-{
 }
 
 /******************************************************************************/
@@ -233,45 +212,6 @@ void FPcamera::setTarget(Vector3 target)
 void FPcamera::setUp(Vector3 up)
 {
 	this->up = up;
-}
-
-/******************************************************************************/
-/*!
-\brief	FPcamera Setter functions
-
-\param	focalLength
-	focalLength vector2
-*/
-/******************************************************************************/
-void FPcamera::setFocalLength(Vector2 focalLength)
-{
-	this->focalLength = focalLength;
-}
-
-/******************************************************************************/
-/*!
-\brief	FPcamera Setter functions
-
-\param	target
-	magnificationFactor float
-*/
-/******************************************************************************/
-void FPcamera::setMagnificationFactor(float magnificationFactor)
-{
-	this->magnificationFactor = magnificationFactor;
-}
-
-/******************************************************************************/
-/*!
-\brief	FPcamera Setter functions
-
-\param	zoomEnabled
-	Enable zoom bool
-*/
-/******************************************************************************/
-void FPcamera::setZoomEnabled(bool zoomEnabled)
-{
-	this->zoomEnabled = zoomEnabled;
 }
 
 /******************************************************************************/
@@ -323,59 +263,20 @@ Vector3 FPcamera::getTarget(void) const
 /******************************************************************************/
 Vector3 FPcamera::getUp(void) const
 {
-	return up;
+	return up;	
 }
 
 /******************************************************************************/
 /*!
 \brief	FPcamera Getter functions
 
-\return	Vector2
-	focalLength vector2
+\return	Vector3
+	right vector3
 */
 /******************************************************************************/
-Vector2 FPcamera::getFocalLength(void) const
+Vector3 FPcamera::getRight(void) const
 {
-	return focalLength;
-}
-
-/******************************************************************************/
-/*!
-\brief	FPcamera Getter functions
-
-\return	float
-	magnificationFactor float
-*/
-/******************************************************************************/
-float FPcamera::getMagnificationFactor(void)
-{
-	return focalLength.y / focalLength.x;
-}
-
-/******************************************************************************/
-/*!
-\brief	FPcamera Getter functions
-
-\return	int
-	zoomDepth int
-*/
-/******************************************************************************/
-int FPcamera::getZoomDepth(void)
-{
-	return zoomDepth;
-}
-
-/******************************************************************************/
-/*!
-\brief	FPcamera Getter functions
-
-\return	bool
-	zoomEnabled bool
-*/
-/******************************************************************************/
-bool FPcamera::getZoomEnabled(void) const
-{
-	return zoomEnabled;
+	return right;
 }
 
 /******************************************************************************/

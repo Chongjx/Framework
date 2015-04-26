@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*!
 \file	Camera.cpp
-\author Chong Jun Xiang
+\author Jun Xiang
 \brief
 Camera funtions that calculate and return the latest position of the camera.
 */
@@ -39,20 +39,13 @@ Camera::~Camera()
 	target vector3
 \param	up
 	up vector3
-\param focalLength
-	focal length vector2
 */
 /******************************************************************************/
-void Camera::Init(const Vector3& pos, const Vector3& target, const Vector3& up, const Vector2& focalLength)
+void Camera::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 {
 	this->position = pos;
 	this->target = target;
 	this->up = up;
-	this->focalLength = focalLength;
-	
-	magnificationFactor = focalLength.y / focalLength.x;
-	zoomDepth = 1;
-	zoomEnabled = true;
 	sensitivity = 1.0f;
 }
 
@@ -67,10 +60,7 @@ void Camera::Reset()
 	target.Set(0, 0, 0);
 	up.Set(0, 1, 0);
 
-	focalLength.Set(30, 300);
-	magnificationFactor = 10.0f;
-	zoomDepth = 1;
-	zoomEnabled = true;
+	sensitivity = 1.0f;
 }
 
 /******************************************************************************/
@@ -100,16 +90,6 @@ void Camera::Update(double dt)
 	{
 		position.y -= (float)(CAMERA_SPEED * 0.2 * dt);
 	}
-}
-
-/******************************************************************************/
-/*!
-\brief	Camera Zoom function
-*/
-/******************************************************************************/
-void Camera::Zoom(void)
-{
-
 }
 
 /******************************************************************************/
@@ -149,45 +129,6 @@ void Camera::setTarget(Vector3 target)
 void Camera::setUp(Vector3 up)
 {
 	this->up = up;
-}
-
-/******************************************************************************/
-/*!
-\brief	Camera Setter functions
-
-\param	focalLength
-	focalLength vector2
-*/
-/******************************************************************************/
-void Camera::setFocalLength(Vector2 focalLength)
-{
-	this->focalLength = focalLength;
-}
-
-/******************************************************************************/
-/*!
-\brief	Camera Setter functions
-
-\param	target
-	magnificationFactor float
-*/
-/******************************************************************************/
-void Camera::setMagnificationFactor(float magnificationFactor)
-{
-	this->magnificationFactor = magnificationFactor;
-}
-
-/******************************************************************************/
-/*!
-\brief	Camera Setter functions
-
-\param	zoomEnabled
-	Enable zoom bool
-*/
-/******************************************************************************/
-void Camera::setZoomEnabled(bool zoomEnabled)
-{
-	this->zoomEnabled = zoomEnabled;
 }
 
 /******************************************************************************/
@@ -240,58 +181,6 @@ Vector3 Camera::getTarget(void) const
 Vector3 Camera::getUp(void) const
 {
 	return up;
-}
-
-/******************************************************************************/
-/*!
-\brief	Camera Getter functions
-
-\return	Vector2
-	focalLength vector2
-*/
-/******************************************************************************/
-Vector2 Camera::getFocalLength(void) const
-{
-	return focalLength;
-}
-
-/******************************************************************************/
-/*!
-\brief	Camera Getter functions
-
-\return	float
-	magnificationFactor float
-*/
-/******************************************************************************/
-float Camera::getMagnificationFactor(void)
-{
-	return focalLength.y / focalLength.x;
-}
-
-/******************************************************************************/
-/*!
-\brief	Camera Getter functions
-
-\return	int
-	zoomDepth int
-*/
-/******************************************************************************/
-int Camera::getZoomDepth(void)
-{
-	return zoomDepth;
-}
-
-/******************************************************************************/
-/*!
-\brief	Camera Getter functions
-
-\return	bool
-	zoomEnabled bool
-*/
-/******************************************************************************/
-bool Camera::getZoomEnabled(void) const
-{
-	return zoomEnabled;
 }
 
 /******************************************************************************/

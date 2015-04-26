@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*!
 \file	Scene.h
-\author Chong Jun Xiang
+\author Jun Xiang
 \brief
 Base scene class
 */
