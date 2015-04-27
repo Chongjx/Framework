@@ -21,8 +21,12 @@
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\MeshBuilder.cpp" />
     <ClCompile Include="Source\Render_Functions.cpp" />
-    <ClCompile Include="Source\SceneText.cpp" />
+    <ClCompile Include="Source\SceneBase.cpp" />
     <ClCompile Include="Source\shader.cpp" />
+    <ClCompile Include="Source\threeDcollision.cpp" />
+    <ClCompile Include="Source\threeDhitbox.cpp" />
+    <ClCompile Include="Source\twoDcollision.cpp" />
+    <ClCompile Include="Source\twoDhitbox.cpp" />
     <ClCompile Include="Source\Update_Functions.cpp" />
     <ClCompile Include="Source\Utility.cpp" />
   </ItemGroup>
@@ -38,8 +42,12 @@
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\MeshBuilder.h" />
     <ClInclude Include="Source\Scene.h" />
-    <ClInclude Include="Source\SceneText.h" />
+    <ClInclude Include="Source\SceneBase.h" />
     <ClInclude Include="Source\shader.hpp" />
+    <ClInclude Include="Source\threeDcollision.h" />
+    <ClInclude Include="Source\threeDhitbox.h" />
+    <ClInclude Include="Source\twoDcollision.h" />
+    <ClInclude Include="Source\twoDhitbox.h" />
     <ClInclude Include="Source\Utility.h" />
     <ClInclude Include="Source\Vertex.h" />
   </ItemGroup>

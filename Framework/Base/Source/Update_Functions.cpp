@@ -6,7 +6,7 @@
 Update all the scene stuff here
 */
 /******************************************************************************/
-#include "SceneText.h"
+#include "SceneBase.h"
 
 /******************************************************************************/
 /*!
@@ -17,7 +17,7 @@ Update OpenGL variables
 time passed since last update
 */
 /******************************************************************************/
-void SceneText::UpdateOpenGL(void)
+void SceneBase::UpdateOpenGL(void)
 {
 	if(Application::IsKeyPressed('1'))
 		glEnable(GL_CULL_FACE);
@@ -41,7 +41,7 @@ Update Lights position and properties
 time passed since last update
 */
 /******************************************************************************/
-void SceneText::UpdateLights(double dt)
+void SceneBase::UpdateLights(double dt)
 {
 	if(Application::IsKeyPressed('5'))
 	{
@@ -90,7 +90,7 @@ Update Camera position and target
 time passed since last update
 */
 /******************************************************************************/
-void SceneText::UpdateCamera(double dt)
+void SceneBase::UpdateCamera(double dt)
 {
 	camera.Update(dt, 0);
 }
@@ -104,7 +104,7 @@ Update Character
 time passed since last update
 */
 /******************************************************************************/
-void SceneText::UpdateCharacters(double dt)
+void SceneBase::UpdateCharacters(double dt)
 {
 }
 
@@ -117,7 +117,7 @@ Update Variables
 time passed since last update
 */
 /******************************************************************************/
-void SceneText::UpdateVariables(double dt)
+void SceneBase::UpdateVariables(double dt)
 {
 	fps = (float)(1.f / dt);
 }
@@ -131,7 +131,7 @@ Update User Interface according to the scene
 time passed since last update
 */
 /******************************************************************************/
-void SceneText::UpdateUI(double dt)
+void SceneBase::UpdateUI(double dt)
 {
 }
 
@@ -144,6 +144,6 @@ Update Sounds
 time passed since last update
 */
 /******************************************************************************/
-void SceneText::UpdateSound(double dt)
+void SceneBase::UpdateSound(double dt)
 {
 }

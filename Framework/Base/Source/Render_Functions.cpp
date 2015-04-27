@@ -6,7 +6,7 @@
 Render all the scene stuff here
 */
 /******************************************************************************/
-#include "SceneText.h"
+#include "SceneBase.h"
 
 /******************************************************************************/
 /*!
@@ -14,7 +14,7 @@ Render all the scene stuff here
 Render Lights
 */
 /******************************************************************************/
-void SceneText::RenderLights(void)
+void SceneBase::RenderLights(void)
 {
 	for (int i = 0; i < NUM_LIGHTS; i++)
 	{
@@ -45,7 +45,7 @@ void SceneText::RenderLights(void)
 Render Skybox and environment objects here
 */
 /******************************************************************************/
-void SceneText::RenderEnvironment(void)
+void SceneBase::RenderEnvironment(void)
 {
 	// skybox
 	// left
@@ -125,7 +125,7 @@ void SceneText::RenderEnvironment(void)
 Render Characters and NPCs here
 */
 /******************************************************************************/
-void SceneText::RenderCharacters(void)
+void SceneBase::RenderCharacters(void)
 {
 }
 
@@ -135,7 +135,7 @@ void SceneText::RenderCharacters(void)
 Render UI and HUD here
 */
 /******************************************************************************/
-void SceneText::RenderUI(void)
+void SceneBase::RenderUI(void)
 {
 	//On screen text
 	std::ostringstream ss;
@@ -157,7 +157,7 @@ void SceneText::RenderUI(void)
 Render 3D mesh function
 */
 /******************************************************************************/
-void SceneText::Render3DMesh(Mesh *mesh, bool enableLight)
+void SceneBase::Render3DMesh(Mesh *mesh, bool enableLight)
 {
 	Mtx44 MVP, modelView, modelView_inverse_transpose;
 	
@@ -210,7 +210,7 @@ void SceneText::Render3DMesh(Mesh *mesh, bool enableLight)
 Render 2D mesh on screen function
 */
 /******************************************************************************/
-void SceneText::Render2DMesh(Mesh* mesh, bool enableLight, float size, float x, float y)
+void SceneBase::Render2DMesh(Mesh* mesh, bool enableLight, float size, float x, float y)
 {
 	Mtx44 ortho;
 	ortho.SetToOrtho(-80, 80, -60, 60 , -10, 10);
@@ -258,7 +258,7 @@ void SceneText::Render2DMesh(Mesh* mesh, bool enableLight, float size, float x, 
 Render Text in world space function
 */
 /******************************************************************************/
-void SceneText::RenderText(Mesh* mesh, std::string text, Color color)
+void SceneBase::RenderText(Mesh* mesh, std::string text, Color color)
 {
 	if(!mesh || mesh->textureID <= 0)
 		return;
@@ -293,7 +293,7 @@ void SceneText::RenderText(Mesh* mesh, std::string text, Color color)
 Render Text on screen function
 */
 /******************************************************************************/
-void SceneText::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y)
+void SceneBase::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y)
 {
 	if(!mesh || mesh->textureID <= 0)
 		return;

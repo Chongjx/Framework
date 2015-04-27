@@ -6,7 +6,7 @@
 Initialize all the scene stuff here
 */
 /******************************************************************************/
-#include "SceneText.h"
+#include "SceneBase.h"
 
 /******************************************************************************/
 /*!
@@ -14,7 +14,7 @@ Initialize all the scene stuff here
 Init OpenGl variables
 */
 /******************************************************************************/
-void SceneText::InitOpenGL(void)
+void SceneBase::InitOpenGL(void)
 {
 	// Init VBO here
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
@@ -46,7 +46,7 @@ void SceneText::InitOpenGL(void)
 Init Lights variables
 */
 /******************************************************************************/
-void SceneText::InitLights(void)
+void SceneBase::InitLights(void)
 {
 	//Load vertex and fragment shaders
 	m_programID = LoadShaders( "Shader//Texture.vertexshader", "Shader//MultiLight.fragmentshader" );
@@ -139,7 +139,7 @@ void SceneText::InitLights(void)
 Init Meshes
 */
 /******************************************************************************/
-void SceneText::InitMesh(void)
+void SceneBase::InitMesh(void)
 {
 	for(int i = 0; i < MAX_OBJ; ++i)
 	{
@@ -195,7 +195,7 @@ void SceneText::InitMesh(void)
 Init Camera
 */
 /******************************************************************************/
-void SceneText::InitCamera(void)
+void SceneBase::InitCamera(void)
 {
 	camera.Init(Vector3(0, 0, 10), Vector3(0, 0, 0), Vector3(0, 1, 0));
 }
@@ -206,7 +206,7 @@ void SceneText::InitCamera(void)
 Init sounds
 */
 /******************************************************************************/
-void SceneText::InitSound(void)
+void SceneBase::InitSound(void)
 {
 	// start the sound engine with default parameters
 	engine = createIrrKlangDevice();
@@ -239,7 +239,7 @@ void SceneText::InitSound(void)
 Init Characters
 */
 /******************************************************************************/
-void SceneText::InitCharacters(void)
+void SceneBase::InitCharacters(void)
 {
 }
 
@@ -249,7 +249,7 @@ void SceneText::InitCharacters(void)
 Init variables
 */
 /******************************************************************************/
-void SceneText::InitVariables(void)
+void SceneBase::InitVariables(void)
 {
 	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 1000 units
 	Mtx44 perspective;
@@ -266,7 +266,7 @@ void SceneText::InitVariables(void)
 Init User Interface
 */
 /******************************************************************************/
-void SceneText::InitUI(void)
+void SceneBase::InitUI(void)
 {
 }
 
@@ -276,7 +276,7 @@ void SceneText::InitUI(void)
 Re Init all variables
 */
 /******************************************************************************/
-void SceneText::ReInit(void)
+void SceneBase::ReInit(void)
 {
 	InitOpenGL();
 	InitLights();

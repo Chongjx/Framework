@@ -87,9 +87,6 @@
     <ClCompile Include="Source\FPcamera.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SceneText.cpp">
-      <Filter>Source Files\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Render_Functions.cpp">
       <Filter>Source Files\Scene\Render</Filter>
     </ClCompile>
@@ -120,6 +117,21 @@
     <ClCompile Include="Source\shader.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
+    <ClCompile Include="Source\twoDhitbox.cpp">
+      <Filter>Source Files\Collision\2Dcollision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\threeDcollision.cpp">
+      <Filter>Source Files\Collision\3Dcollision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\threeDhitbox.cpp">
+      <Filter>Source Files\Collision\3Dcollision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\twoDcollision.cpp">
+      <Filter>Source Files\Collision\2Dcollision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneBase.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -132,9 +144,6 @@
       <Filter>Header Files\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene.h">
-      <Filter>Header Files\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SceneText.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\Geometry.h">
@@ -166,6 +175,21 @@
     </ClInclude>
     <ClInclude Include="Source\Utility.h">
       <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\threeDcollision.h">
+      <Filter>Header Files\Collision\3Dcollision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\threeDhitbox.h">
+      <Filter>Header Files\Collision\3Dcollision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\twoDcollision.h">
+      <Filter>Header Files\Collision\2Dcollision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\twoDhitbox.h">
+      <Filter>Header Files\Collision\2Dcollision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneBase.h">
+      <Filter>Header Files\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
