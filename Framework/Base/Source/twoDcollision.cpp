@@ -2,14 +2,12 @@
 
 void check2DCollision(twoDhitbox &user, vector<twoDhitbox> &target, bool &collide, string &boxName)
 {
-	bool side1, side2, side3, side4 = true;
-
 	for (int i = 0; i < target.size(); ++i)
 	{
-		if (user.getOrigin().x < target[i].getOrigin().x + target[i].getHalfLength() &&
-			user.getOrigin().x + user.getHalfLength() > target[i].getOrigin().x &&
-			user.getOrigin().y < target[i].getOrigin().y + target[i].getHalfWidth() &&
-			user.getOrigin().y + user.getHalfWidth() > target[i].getOrigin().y)
+		if (user.getMiniPoint().x <= target[i].getMaxiPoint().x &&
+			user.getMaxiPoint().x >= target[i].getMiniPoint().x &&
+			user.getMiniPoint().y <= target[i].getMaxiPoint().y &&
+			user.getMaxiPoint().y >= target[i].getMiniPoint().y)
 
 		{
 			collide = true;
@@ -21,10 +19,10 @@ void check2DCollision(twoDhitbox &user, vector<twoDhitbox> &target, bool &collid
 
 void check2DCollision(twoDhitbox &user, twoDhitbox &target, bool &collide, string &boxName)
 {
-	if (user.getOrigin().x < target.getOrigin().x + target.getLength() &&
-		user.getOrigin().x + user.getLength() > target.getOrigin().x &&
-		user.getOrigin().y < target.getOrigin().y + target.getWidth() &&
-		user.getWidth() + user.getOrigin().y > target.getOrigin().y)
+	if (user.getMiniPoint().x <= target.getMaxiPoint().x &&
+		user.getMaxiPoint().x >= target.getMiniPoint().x &&
+		user.getMiniPoint().y <= target.getMaxiPoint().y &&
+		user.getMaxiPoint().y >= target.getMiniPoint().y)
 
 	{
 		collide = true;
@@ -36,10 +34,10 @@ void check2DCollision(Vector2 &user, vector<twoDhitbox> &target, bool &collide, 
 {
 	for (int i = 0; i < target.size(); ++i)
 	{
-		if (user.x < target[i].getOrigin().x + target[i].getLength() &&
-			user.x > target[i].getOrigin().x &&
-			user.y < target[i].getOrigin().y + target[i].getWidth() &&
-			user.y > target[i].getOrigin().y)
+		if (user.x <= target[i].getMaxiPoint().x &&
+			user.x >= target[i].getMiniPoint().x &&
+			user.y <= target[i].getMaxiPoint().y &&
+			user.y >= target[i].getMiniPoint().y)
 
 		{
 			collide = true;
@@ -50,10 +48,10 @@ void check2DCollision(Vector2 &user, vector<twoDhitbox> &target, bool &collide, 
 
 void check2DCollision(Vector2 &user, twoDhitbox &target, bool &collide, string &boxName)
 {
-	if (user.x < target.getOrigin().x + target.getLength() &&
-		user.x > target.getOrigin().x &&
-		user.y < target.getOrigin().y + target.getWidth() &&
-		user.y > target.getOrigin().y)
+	if (user.x <= target.getMaxiPoint().x &&
+		user.x >= target.getMiniPoint().x &&
+		user.y <= target.getMaxiPoint().y &&
+		user.y >= target.getMiniPoint().y)
 
 	{
 		collide = true;

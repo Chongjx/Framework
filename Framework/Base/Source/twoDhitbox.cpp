@@ -45,8 +45,8 @@ void twoDhitbox::create2Dhitbox(Vector2 origin, float length, float width, const
 	this->width = width;
 	this->name = name;
 
-	halfLength = length/2;
-	halfWidth = width/2;
+	halfLength = length * 0.5f;
+	halfWidth = width * 0.5f;
 
 	maxiPoint.Set(origin.x + halfLength, origin.y + halfWidth);
 	miniPoint.Set(origin.x - halfLength, origin.y - halfWidth);
@@ -61,8 +61,8 @@ void twoDhitbox::create2Dhitbox(Vector2 maxiPoint, Vector2 miniPoint, const stri
 	length = maxiPoint.x - miniPoint.x;
 	width = maxiPoint.y - miniPoint.y;
 
-	halfLength = length/2;
-	halfWidth = width/2;
+	halfLength = length * 0.5f;
+	halfWidth = width * 0.5f;
 
 	origin.Set(maxiPoint.x - halfLength, maxiPoint.y - halfWidth);
 }
