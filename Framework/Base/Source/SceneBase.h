@@ -98,13 +98,10 @@ class SceneBase : public Scene
 		GEO_CUBE,
 		GEO_RING,
 		GEO_CONE,
+		GEO_SKYPLANE,
+		GEO_GRASS_DARKGREEN,
+		GEO_GRASS_LIGHTGREEN,
 		GEO_TEXT,
-		GEO_LEFT,
-		GEO_RIGHT,
-		GEO_TOP,
-		GEO_BOTTOM,
-		GEO_FRONT,
-		GEO_BACK,
 		GEO_OBJECT,
 		MAX_OBJ,
 	};
@@ -160,6 +157,8 @@ public:
 	void UpdateSound(double dt);
 
 	void RenderLights(void);
+	void RenderSkyPlane(void);
+	void RenderFloor(void);
 	void RenderEnvironment(void);
 	void RenderCharacters(void);
 	void RenderUI(void);

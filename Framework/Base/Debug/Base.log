@@ -1,19 +1,12 @@
-﻿Build started 28/4/2015 9:26:55 AM.
+﻿Build started 28/4/2015 9:33:57 PM.
      1>Project "C:\Users\Jun Xiang\Documents\GameDev\Framework\Base\Base.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\Base.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Users\Jun Xiang\Documents\GameDev\Framework\\glew\include" /I"C:\Users\Jun Xiang\Documents\GameDev\Framework\\glfw\include" /I"C:\Users\Jun Xiang\Documents\GameDev\Framework\\Common\Source" /I"C:\Users\Jun Xiang\Documents\GameDev\Framework\\irrKlang-1.5.0\include" /ZI /nologo /W3 /WX- /Od /Oy- /D _VARIADIC_MAX=10 /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Source\Application.cpp Source\Camera.cpp Source\FPcamera.cpp Source\Init_Functions.cpp Source\Render_Functions.cpp Source\SceneBase.cpp Source\Update_Functions.cpp Source\main.cpp
-         Application.cpp
-         Generating Code...
-         Skipping... (no relevant changes detected)
-         main.cpp
-         Update_Functions.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Users\Jun Xiang\Documents\GameDev\Framework\\glew\include" /I"C:\Users\Jun Xiang\Documents\GameDev\Framework\\glfw\include" /I"C:\Users\Jun Xiang\Documents\GameDev\Framework\\Common\Source" /I"C:\Users\Jun Xiang\Documents\GameDev\Framework\\irrKlang-1.5.0\include" /ZI /nologo /W3 /WX- /Od /Oy- /D _VARIADIC_MAX=10 /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Source\Render_Functions.cpp Source\SceneBase.cpp
          SceneBase.cpp
          Render_Functions.cpp
-         Init_Functions.cpp
-         FPcamera.cpp
-         Camera.cpp
+         Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jun Xiang\Documents\GameDev\Framework\Debug\Base.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\Jun Xiang\Documents\GameDev\Framework\\glew\lib" /LIBPATH:"C:\Users\Jun Xiang\Documents\GameDev\Framework\\glfw\lib-msvc100" /LIBPATH:"C:\Users\Jun Xiang\Documents\GameDev\Framework\\irrKlang-1.5.0\lib\Win32-visualStudio" /LIBPATH:"C:\Users\Jun Xiang\Documents\GameDev\Framework\Debug" Common.lib winmm.lib opengl32.lib glu32.lib glew32.lib glfw3.lib irrKlang.lib irrKlang.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Base.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Jun Xiang\Documents\GameDev\Framework\Debug\Base.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jun Xiang\Documents\GameDev\Framework\Debug\Base.lib" /MACHINE:X86 Debug\Application.obj
          Debug\Camera.obj
@@ -45,4 +38,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.15
+Time Elapsed 00:00:02.32

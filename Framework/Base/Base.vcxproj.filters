@@ -34,9 +34,6 @@
     <Filter Include="Header Files\Collision\3Dcollision">
       <UniqueIdentifier>{37d0438e-7fb8-429d-af09-6315c19abd3e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Environment">
-      <UniqueIdentifier>{5cbf9ae5-d420-4335-a6c8-960e69f1e9d4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Camera">
       <UniqueIdentifier>{5d8c7340-b0fb-4a09-a4d4-0e72d9c88812}</UniqueIdentifier>
     </Filter>
@@ -51,9 +48,6 @@
     </Filter>
     <Filter Include="Source Files\Characters">
       <UniqueIdentifier>{fb1d2398-3a83-479f-8d8f-9c915ecd0821}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Environment">
-      <UniqueIdentifier>{31324877-6195-4763-9a44-ce8f6f063224}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Scene">
       <UniqueIdentifier>{3a9c9cd6-a4c1-4326-93f6-3e3cfe732ef5}</UniqueIdentifier>

@@ -449,3 +449,68 @@ Mesh* MeshBuilder::GenerateText(const std::string &meshName, unsigned numRow, un
 
 	return mesh;
 }
+
+Mesh* MeshBuilder::GenerateSkyPlane(const std::string & meshName, Color color, int slices, float PlanetRadius, float AtmosphereRadius, float hTile, float vTile)
+{
+	if (slices < 1 || slices > 256)
+		return NULL;
+
+	Vertex v;
+	std::vector<Vertex> vertex_buffer_data;
+	std::vector<GLuint> index_buffer_data;
+
+	float planeSize = 2.0f * (float)sqrtf((AtmosphereRadius * AtmosphereRadius) - (PlanetRadius * PlanetRadius));
+	float delta = planeSize / (float)slices;
+	float texDelta = 2.0f / (float)slices;
+
+	for (int z = 0; z <= slices; ++ z)
+	{
+		for (int x = 0; x <= slices; ++x)
+		{
+			float xDist = (-0.5f * planeSize) + ((float)x * delta);
+			float zDist = (-0.5f * planeSize) + ((float)z * delta);
+
+			float xHeight = (xDist * xDist) / AtmosphereRadius;
+			float zHeight = (zDist * zDist) / AtmosphereRadius;
+			float height = xHeight + zHeight;
+
+			v.pos.x = xDist;
+			v.pos.y = 0.0f - height;
+			v.pos.z = zDist;
+
+			v.texCoord.u = hTile * ((float)x * texDelta * 0.5f);
+			v.texCoord.v = vTile * (1.0f - (float)z * texDelta * 0.5f);
+
+			v.color = color;
+
+			vertex_buffer_data.push_back(v);
+		}
+	}
+
+	for (int i = 0; i < slices; ++i)
+	{
+		for (int j = 0; j < slices; ++j)
+		{
+			int startvert = (i * (slices + 1) + j);
+			index_buffer_data.push_back(startvert);
+			index_buffer_data.push_back(startvert + 1);
+			index_buffer_data.push_back(startvert + slices + 1);
+
+			index_buffer_data.push_back(startvert + 1);
+			index_buffer_data.push_back(startvert + slices + 2);
+			index_buffer_data.push_back(startvert + slices + 1);
+		}
+	}
+
+	Mesh *mesh = new Mesh(meshName);
+	
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, vertex_buffer_data.size() * sizeof(Vertex), &vertex_buffer_data[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->indexBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_buffer_data.size() * sizeof(GLuint), &index_buffer_data[0], GL_STATIC_DRAW);
+
+	mesh->indexSize = index_buffer_data.size();
+	mesh->mode = Mesh::DRAW_TRIANGLES;
+
+	return mesh;
+}

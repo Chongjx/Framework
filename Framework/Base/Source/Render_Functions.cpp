@@ -37,68 +37,73 @@ void SceneBase::RenderLights(void)
 			glUniform3fv(m_parameters[i * 11 + 12], 1, &lightPosition_cameraspace.x);
 		}
 	}
+
+	for (int i = 0; i < NUM_LIGHTS; ++i)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(lights[i].position.x, lights[i].position.y, lights[i].position.z);
+		Render3DMesh(meshList[GEO_LIGHTBALL], false);
+		modelStack.PopMatrix();
+	}
 }
 
 /******************************************************************************/
 /*!
 \brief
-Render Skybox and environment objects here
+Render Sky plane here
+*/
+/******************************************************************************/
+void SceneBase::RenderSkyPlane(void)
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(500, 1800, -500);
+	Render3DMesh(meshList[GEO_SKYPLANE], false);
+	modelStack.PopMatrix();
+}
+
+/******************************************************************************/
+/*!
+\brief
+Render Floor here
+*/
+/******************************************************************************/
+void SceneBase::RenderFloor(void)
+{
+	modelStack.PushMatrix();
+	modelStack.Rotate(-90, 1, 0, 0);
+	modelStack.Translate(0, 0, -10);
+	modelStack.Rotate(-90, 0, 0, 1);
+	modelStack.Scale(100.0f, 100.0f, 100.0f);
+
+	for (int x=0; x<10; x++)
+	{
+		for (int z=0; z<10; z++)
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(x-5.0f, z-5.0f, 0.0f);
+			if ( ((x*9+z) % 2) == 0)
+				Render3DMesh(meshList[GEO_GRASS_DARKGREEN], false);
+			else
+				Render3DMesh(meshList[GEO_GRASS_LIGHTGREEN], false);
+			modelStack.PopMatrix();
+		}
+	}
+	modelStack.PopMatrix();
+}
+
+/******************************************************************************/
+/*!
+\brief
+Render Environment objects here
 */
 /******************************************************************************/
 void SceneBase::RenderEnvironment(void)
 {
-	// skybox
-	// left
-	modelStack.PushMatrix();
-	modelStack.Rotate(90, 0, 1, 0);
-	modelStack.Translate(0, 0, -SKYBOXSIZE / 2 + 2.f);
-	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
-	Render3DMesh(meshList[GEO_LEFT], false);
-	modelStack.PopMatrix();
-	
-	// right
-	modelStack.PushMatrix();
-	modelStack.Rotate(-90, 0, 1, 0);
-	modelStack.Translate(0, 0, -SKYBOXSIZE / 2 + 2.f);
-	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
-	Render3DMesh(meshList[GEO_RIGHT], false);
-	modelStack.PopMatrix();
-	
-	// front
-	modelStack.PushMatrix();
-	modelStack.Translate(0, 0, -SKYBOXSIZE / 2 + 2.f);
-	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
-	Render3DMesh(meshList[GEO_FRONT], false);
-	modelStack.PopMatrix();
-	
-	// back
-	modelStack.PushMatrix();
-	modelStack.Rotate(180, 0, 1, 0);
-	modelStack.Translate(0, 0, -SKYBOXSIZE / 2 + 2.f);
-	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
-	Render3DMesh(meshList[GEO_BACK], false);
-	modelStack.PopMatrix();
-	
-	// top
-	modelStack.PushMatrix();
-	modelStack.Rotate(90, 1, 0, 0);
-	modelStack.Translate(0, 0, -SKYBOXSIZE / 2 + 2.f);
-	modelStack.Rotate(90, 0, 0, 1);
-	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
-	Render3DMesh(meshList[GEO_TOP], false);
-	modelStack.PopMatrix();
-	
-	// bottom
-	modelStack.PushMatrix();
-	modelStack.Rotate(-90, 1, 0, 0);
-	modelStack.Translate(0, 0, -SKYBOXSIZE / 2 + 2.f);
-	modelStack.Rotate(-90, 0, 0, 1);
-	modelStack.Scale(SKYBOXSIZE, SKYBOXSIZE, SKYBOXSIZE);
-	Render3DMesh(meshList[GEO_BOTTOM], false);
-	modelStack.PopMatrix();
-
 	// axis
 	Render3DMesh(meshList[GEO_AXES], false);
+
+	RenderSkyPlane();
+	RenderFloor();
 
 	// chair 1
 	modelStack.PushMatrix();
