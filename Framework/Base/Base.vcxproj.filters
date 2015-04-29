@@ -120,9 +120,6 @@
     <ClCompile Include="Source\threeDhitbox.cpp">
       <Filter>Source Files\Collision\3Dcollision</Filter>
     </ClCompile>
-    <ClCompile Include="Source\twoDcollision.cpp">
-      <Filter>Source Files\Collision\2Dcollision</Filter>
-    </ClCompile>
     <ClCompile Include="Source\SceneBase.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
@@ -175,9 +172,6 @@
     </ClInclude>
     <ClInclude Include="Source\threeDhitbox.h">
       <Filter>Header Files\Collision\3Dcollision</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\twoDcollision.h">
-      <Filter>Header Files\Collision\2Dcollision</Filter>
     </ClInclude>
     <ClInclude Include="Source\twoDhitbox.h">
       <Filter>Header Files\Collision\2Dcollision</Filter>

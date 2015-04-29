@@ -11,6 +11,28 @@ Render all the scene stuff here
 /******************************************************************************/
 /*!
 \brief
+Setting the camera
+*/
+/******************************************************************************/
+void SceneBase::SetCamera(void)
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	Mtx44 perspective;
+	perspective.SetToPerspective(45.0f, 4.0f / 3.0f, 0.1f, 10000.0f);
+	projectionStack.LoadMatrix(perspective);
+	
+	// Camera matrix
+	viewStack.LoadIdentity();
+	viewStack.LookAt(camera.getPosition().x, camera.getPosition().y, camera.getPosition().z,
+					camera.getTarget().x, camera.getTarget().y, camera.getTarget().z,
+					camera.getUp().x, camera.getUp().y, camera.getUp().z);
+	// Model matrix : an identity matrix (model will be at the origin)
+	modelStack.LoadIdentity();
+}
+
+/******************************************************************************/
+/*!
+\brief
 Render Lights
 */
 /******************************************************************************/
@@ -73,7 +95,7 @@ void SceneBase::RenderFloor(void)
 	modelStack.Rotate(-90, 1, 0, 0);
 	modelStack.Translate(0, 0, -10);
 	modelStack.Rotate(-90, 0, 0, 1);
-	modelStack.Scale(100.0f, 100.0f, 100.0f);
+	modelStack.Scale(1000.0f, 1000.0f, 1000.0f);
 
 	for (int x=0; x<10; x++)
 	{

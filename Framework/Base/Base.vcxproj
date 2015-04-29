@@ -25,7 +25,6 @@
     <ClCompile Include="Source\shader.cpp" />
     <ClCompile Include="Source\threeDcollision.cpp" />
     <ClCompile Include="Source\threeDhitbox.cpp" />
-    <ClCompile Include="Source\twoDcollision.cpp" />
     <ClCompile Include="Source\twoDhitbox.cpp" />
     <ClCompile Include="Source\Update_Functions.cpp" />
     <ClCompile Include="Source\Utility.cpp" />
@@ -46,7 +45,6 @@
     <ClInclude Include="Source\shader.hpp" />
     <ClInclude Include="Source\threeDcollision.h" />
     <ClInclude Include="Source\threeDhitbox.h" />
-    <ClInclude Include="Source\twoDcollision.h" />
     <ClInclude Include="Source\twoDhitbox.h" />
     <ClInclude Include="Source\Utility.h" />
     <ClInclude Include="Source\Vertex.h" />

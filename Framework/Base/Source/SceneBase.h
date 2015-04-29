@@ -156,6 +156,7 @@ public:
 	void UpdateUI(double dt);
 	void UpdateSound(double dt);
 
+	void SetCamera(void);
 	void RenderLights(void);
 	void RenderSkyPlane(void);
 	void RenderFloor(void);
