@@ -26,35 +26,28 @@ using std::vector;
 class twoDhitbox
 {
 private:
-    Vector2 origin;
-	Vector2 bottomLeft, topLeft, topRight, bottomRight;
-    Vector2 maxiPoint;
-	Vector2 miniPoint;
+	Vector2 m_v2MidPoint;
+	Vector2 m_v2BottomRight, m_v2TopRight, m_v2TopLeft, m_v2BottomLeft;
 
-	float length;
-	float width;
+	float m_fLength;
+	float m_fHeight;
 
-	float halfLength;
-	float halfWidth;
+	float m_fHalfLength;
+	float m_fHalfHeight;
 
-    string name;
+    string m_sName;
 public:
 	twoDhitbox(void);
 	~twoDhitbox(void);
 
-	void create2Dhitbox(Vector2 origin, float length, float width, const string name);
-	void create2Dhitbox(Vector2 maxiPoint, Vector2 miniPoint, const string name);
-	void create2Dhitbox(Vector2 bottomLeft, Vector2 topLeft, Vector2 topRight, Vector2 bottomRight, const string name);
-
-	Vector2 getOrigin(void) const;
-	Vector2 getMaxiPoint(void) const;
-	Vector2 getMiniPoint(void) const;
+	void create2Dhitbox(Vector2 midPoint, float length, float width, const string name);
+	void create2Dhitbox(Vector2 bottomRight, Vector2 topRight, Vector2 topLeft, Vector2 bottomLeft, const string name);
 
 	float getLength(void) const;
-	float getWidth(void) const;
+	float getHeight(void) const;
 
 	float getHalfLength(void) const;
-	float getHalfWidth(void) const;
+	float getHalfHeight(void) const;
 	
 	string getName(void) const;
 

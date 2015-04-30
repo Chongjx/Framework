@@ -1,0 +1,40 @@
+﻿Build started 30/4/2015 3:06:44 PM.
+     1>Project "C:\Users\Jun Xiang\Documents\GameDev\DM2231_Lab2_MVC\DM2231_Lab2\DM2231_Lab2.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\DM2231_Lab2.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt DM2231_Controller.cpp DM2231_Model.cpp DM2231_View.cpp main.cpp Mouse.cpp
+         Mouse.cpp
+         main.cpp
+         DM2231_View.cpp
+         DM2231_Model.cpp
+         DM2231_Controller.cpp
+         Generating Code...
+       ManifestResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\DM2231_Lab2.exe.embed.manifest.res" Debug\DM2231_Lab2_manifest.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jun Xiang\Documents\GameDev\DM2231_Lab2_MVC\Debug\DM2231_Lab2.exe" /INCREMENTAL /NOLOGO opengl32.lib glu32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\DM2231_Lab2.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Jun Xiang\Documents\GameDev\DM2231_Lab2_MVC\Debug\DM2231_Lab2.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jun Xiang\Documents\GameDev\DM2231_Lab2_MVC\Debug\DM2231_Lab2.lib" /MACHINE:X86 Debug\DM2231_Lab2.exe.embed.manifest.res
+         Debug\DM2231_Controller.obj
+         Debug\DM2231_Model.obj
+         Debug\DM2231_View.obj
+         Debug\main.obj
+         Debug\Mouse.obj
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\DM2231_Lab2.exe.embed.manifest" /manifest Debug\DM2231_Lab2.exe.intermediate.manifest
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\DM2231_Lab2.exe.embed.manifest.res" Debug\DM2231_Lab2_manifest.rc 
+       LinkEmbedManifest:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jun Xiang\Documents\GameDev\DM2231_Lab2_MVC\Debug\DM2231_Lab2.exe" /INCREMENTAL /NOLOGO opengl32.lib glu32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\DM2231_Lab2.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Jun Xiang\Documents\GameDev\DM2231_Lab2_MVC\Debug\DM2231_Lab2.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jun Xiang\Documents\GameDev\DM2231_Lab2_MVC\Debug\DM2231_Lab2.lib" /MACHINE:X86 Debug\DM2231_Lab2.exe.embed.manifest.res
+         Debug\DM2231_Controller.obj
+         Debug\DM2231_Model.obj
+         Debug\DM2231_View.obj
+         Debug\main.obj
+         Debug\Mouse.obj
+         DM2231_Lab2.vcxproj -> C:\Users\Jun Xiang\Documents\GameDev\DM2231_Lab2_MVC\Debug\DM2231_Lab2.exe
+       FinalizeBuildStatus:
+         Deleting file "Debug\DM2231_Lab2.unsuccessfulbuild".
+         Touching "Debug\DM2231_Lab2.lastbuildstate".
+     1>Done Building Project "C:\Users\Jun Xiang\Documents\GameDev\DM2231_Lab2_MVC\DM2231_Lab2\DM2231_Lab2.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.68

@@ -16,15 +16,18 @@ twoDhitbox default constructor
 /******************************************************************************/
 twoDhitbox::twoDhitbox(void)
 {
-	origin.Set(0, 0);
-	maxiPoint.Set(0.5f, 0.5f);
-	maxiPoint.Set(-0.5f, -0.5f);
+	m_v2MidPoint.Set(0, 0);
 
-	length = width = 1.0f;
+	m_v2BottomRight.Set(0.5f, -0.5f);
+	m_v2TopRight.Set(0.5f, 0.5f);
+	m_v2TopLeft.Set(-0.5f, 0.5f);
+	m_v2BottomLeft.Set(-0.5f, -0.5f);
+	
+	m_fLength = m_fHeight = 1.0f;
 
-	halfLength = halfWidth = 0.5f;
+	m_fHalfLength = m_fHalfHeight = 0.5f;
 
-	name = "DEFAULT_2D_HITBOX";
+	m_sName = "DEFAULT_2D_HITBOX";
 }
 
 /******************************************************************************/
