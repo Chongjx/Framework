@@ -14,5 +14,6 @@ struct Vector2
 	float Length( void ) const; //Get magnitude
 	float Dot( const Vector2& rhs ) const; //Dot product
 	Vector2 Normalized( void ); //Return a copy of this vector, normalized
+	friend Vector2 operator*( float scalar, const Vector2& rhs ); //what is this for?
 };
 #endif

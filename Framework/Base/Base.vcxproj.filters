@@ -114,9 +114,6 @@
     <ClCompile Include="Source\twoDhitbox.cpp">
       <Filter>Source Files\Collision\2Dcollision</Filter>
     </ClCompile>
-    <ClCompile Include="Source\threeDcollision.cpp">
-      <Filter>Source Files\Collision\3Dcollision</Filter>
-    </ClCompile>
     <ClCompile Include="Source\threeDhitbox.cpp">
       <Filter>Source Files\Collision\3Dcollision</Filter>
     </ClCompile>
@@ -166,9 +163,6 @@
     </ClInclude>
     <ClInclude Include="Source\Utility.h">
       <Filter>Header Files\Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\threeDcollision.h">
-      <Filter>Header Files\Collision\3Dcollision</Filter>
     </ClInclude>
     <ClInclude Include="Source\threeDhitbox.h">
       <Filter>Header Files\Collision\3Dcollision</Filter>

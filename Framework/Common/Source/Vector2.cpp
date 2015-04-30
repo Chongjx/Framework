@@ -150,3 +150,21 @@ Vector2 Vector2::Normalized( void )
 	float d = Length();
 	return Vector2(x/d, y/d);
 }
+
+/******************************************************************************/
+/*!
+\brief
+Scalar product of scalar with vector
+
+\param scalar
+	scalar value
+\param vector
+	vector
+\return 
+	Resulting vector
+*/
+/******************************************************************************/
+Vector2 operator*( float scalar, const Vector2& rhs )
+{
+	return rhs * scalar;
+}

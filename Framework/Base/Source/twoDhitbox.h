@@ -13,9 +13,11 @@ Create a 2D hitbox
 #include <vector>
 
 #include "Vector2.h"
+#include "MyMath.h"
 
 using std::string;
 using std::vector;
+using namespace Math;
 
 /******************************************************************************/
 /*!
@@ -27,7 +29,6 @@ class twoDhitbox
 {
 private:
 	Vector2 m_v2MidPoint;
-	Vector2 m_v2BottomRight, m_v2TopRight, m_v2TopLeft, m_v2BottomLeft;
 
 	float m_fLength;
 	float m_fHeight;
@@ -35,14 +36,18 @@ private:
 	float m_fHalfLength;
 	float m_fHalfHeight;
 
+	Vector2 m_v2UnitVecX;
+	Vector2 m_v2UnitVecY;
+
     string m_sName;
 public:
 	twoDhitbox(void);
 	~twoDhitbox(void);
 
-	void create2Dhitbox(Vector2 midPoint, float length, float width, const string name);
+	void create2Dhitbox(Vector2 midPoint, float length, float height, const string name);
 	void create2Dhitbox(Vector2 bottomRight, Vector2 topRight, Vector2 topLeft, Vector2 bottomLeft, const string name);
 
+	Vector2 getMidPoint(void) const;
 	float getLength(void) const;
 	float getHeight(void) const;
 
