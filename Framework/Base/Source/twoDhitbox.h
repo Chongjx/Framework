@@ -22,7 +22,7 @@ using namespace Math;
 /******************************************************************************/
 /*!
 		Class twoDhitbox:
-\brief	To store hitbox position, origin, maximum and minimum points, length and width.
+\brief	To store hitbox midpoint, length, height and unit vectors
 */
 /******************************************************************************/
 class twoDhitbox
@@ -58,8 +58,6 @@ public:
 
 	friend void check2DCollision(twoDhitbox &user, vector<twoDhitbox> &target, bool &collide, string &boxName);
 	friend void check2DCollision(twoDhitbox &user, twoDhitbox &target, bool &collide, string &boxName);
-	friend void check2DCollision(Vector2 &user, vector<twoDhitbox> &target, bool &collide, string &boxName);
-	friend void check2DCollision(Vector2 &user, twoDhitbox &target, bool &collide, string &boxName);
 };
 
 #endif

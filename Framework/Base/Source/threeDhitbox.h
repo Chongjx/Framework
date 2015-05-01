@@ -1,3 +1,11 @@
+/******************************************************************************/
+/*!
+\file	threeDhitbox.h
+\author Jun Xiang
+\brief
+Create a 3D hitbox
+*/
+/******************************************************************************/
 #ifndef THREE_D_HITBOX_H
 #define THREE_D_HITBOX_H
 
@@ -11,39 +19,45 @@ using std::string;
 using std::vector;
 using namespace Math;
 
+/******************************************************************************/
+/*!
+		Class threeDhitbox:
+\brief	To store hitbox midpoint, length, height, depth and unit vectors
+*/
+/******************************************************************************/
 class threeDhitbox
 {
 private:
     Vector3 m_v3MidPoint;
-	Vector3 m_v3BottomRight, m_v3TopRight, m_v3TopLeft, m_v3BottomLeft;
 
 	float m_fLength;
 	float m_fHeight;
+	float m_fDepth;
 
 	float m_fHalfLength;
 	float m_fHalfHeight;
+	float m_fHalfDepth;
 
-	Vector3 m_v2UnitVecX;
-	Vector3 m_v2UnitVecY;
+	Vector3 m_v3UnitVecX;
+	Vector3 m_v3UnitVecY;
+	Vector3 m_v3UnitVecZ;
 
     string m_sName;
 public:
 	threeDhitbox(void);
-	threeDhitbox(Vector3 origin, float length, float height, float width, const string name);
-	threeDhitbox(Vector3 maxiPoint, Vector3 miniPoint, const string name);
 	~threeDhitbox(void);
 
-	Vector3 getOrigin(void) const;
-	Vector3 getMaxiPoint(void) const;
-	Vector3 getMiniPoint(void) const;
+	void create3Dhitbox(Vector3 midPoint, float length, float height, float depth, const string name);
+	void create3Dhitbox(Vector3 frontBottomRight, Vector3 frontTopRight, Vector3 frontTopLeft, Vector3 frontBottomLeft, Vector3 backBottomRight, Vector3 backTopRight, Vector3 backTopLeft, Vector3 backBottomLeft, const string name);
 
+	Vector3 getMidPoint(void) const;
 	float getLength(void) const;
 	float getHeight(void) const;
-	float getWidth(void) const;
+	float getDepth(void) const;
 
 	float getHalfLength(void) const;
 	float getHalfHeight(void) const;
-	float getHalfWidth(void) const;
+	float getHalfDepth(void) const;
 	
 	string getName(void) const;
 

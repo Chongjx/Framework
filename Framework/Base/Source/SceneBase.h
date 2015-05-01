@@ -12,10 +12,10 @@ Class to build ...
 #include "Scene.h"
 #include "Application.h"
 #include "FPcamera.h"
-
 #include "MeshBuilder.h"
-
 #include "Light.h"
+#include "twoDhitbox.h"
+#include "threeDhitbox.h"
 
 #include "GL\glew.h"
 #include "GLFW\glfw3.h"
