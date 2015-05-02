@@ -141,7 +141,7 @@ Init Meshes
 /******************************************************************************/
 void SceneBase::InitMesh(void)
 {
-	for(int i = 0; i < MAX_OBJ; ++i)
+	for(int i = 0; i < GEO_MAX; ++i)
 	{
 		meshList[i] = NULL;
 	}

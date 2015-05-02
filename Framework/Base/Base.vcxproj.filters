@@ -70,6 +70,18 @@
     <Filter Include="Source Files\Misc">
       <UniqueIdentifier>{91c5cae9-2736-449d-8f5e-cfdc2c5c9d88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Objects">
+      <UniqueIdentifier>{4fa6fd38-735c-4550-8913-d4a26ab79fb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{5ca24f54-e9f5-4c32-a084-2c0a6e4a7efd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Weapon">
+      <UniqueIdentifier>{7fb60f80-0409-4b50-be13-208378d8c2e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects\Weapon">
+      <UniqueIdentifier>{7acf79f6-5c97-4e28-9e97-4438ed38129a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -119,6 +131,21 @@
     </ClCompile>
     <ClCompile Include="Source\SceneBase.cpp">
       <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Character.cpp">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Inventory.cpp">
+      <Filter>Source Files\Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Weapon.cpp">
+      <Filter>Source Files\Objects\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Bullet.cpp">
+      <Filter>Source Files\Objects\Weapon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +199,21 @@
     </ClInclude>
     <ClInclude Include="Source\SceneBase.h">
       <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Character.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Inventory.h">
+      <Filter>Header Files\Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Weapon.h">
+      <Filter>Header Files\Objects\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Bullet.h">
+      <Filter>Header Files\Objects\Weapon</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

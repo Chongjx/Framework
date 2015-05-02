@@ -89,7 +89,7 @@ class SceneBase : public Scene
         U_TEXT_COLOR,
         U_TOTAL,
 	};
-	enum OBJ_TYPE
+	enum GEOMETRY_TYPE
 	{
 		GEO_AXES,
 		GEO_LIGHTBALL,
@@ -103,7 +103,7 @@ class SceneBase : public Scene
 		GEO_GRASS_LIGHTGREEN,
 		GEO_TEXT,
 		GEO_OBJECT,
-		MAX_OBJ,
+		GEO_MAX,
 	};
 
 	enum SOUND
@@ -170,7 +170,7 @@ public:
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 private:
 	unsigned m_vertexArrayID;
-	Mesh* meshList[MAX_OBJ];
+	Mesh* meshList[GEO_MAX];
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
 

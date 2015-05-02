@@ -76,7 +76,7 @@ void SceneBase::RenderMiniMap()
 void SceneBase::Exit()
 {
 	// Cleanup VBO
-	for(int i = 0; i < MAX_OBJ; ++i)
+	for(int i = 0; i < GEO_MAX; ++i)
 	{
 		if(meshList[i])
 			delete meshList[i];
