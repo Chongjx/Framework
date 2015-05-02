@@ -159,6 +159,39 @@ void SceneBase::RenderCharacters(void)
 /******************************************************************************/
 /*!
 \brief
+Render Bullet here
+*/
+/******************************************************************************/
+void SceneBase::RenderWeapons(void)
+{
+	for(int i = 0; i < pistol.m_Ammo.size(); ++i)
+	{
+		if (pistol.m_Ammo[i]->getRender() == true)
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(pistol.m_Ammo[i]->getPosition().x, pistol.m_Ammo[i]->getPosition().y, pistol.m_Ammo[i]->getPosition().z);
+			Render3DMesh(pistol.getMesh(), pistol.getReflectLight());
+			modelStack.PopMatrix();
+		}
+	}
+
+	modelStack.PushMatrix();
+	modelStack.Translate(hb1.getMidPoint().x, hb1.getMidPoint().y, hb1.getMidPoint().z);
+	modelStack.Scale(hb1.getLength(), hb1.getHeight(), hb1.getDepth());
+	Render3DMesh(meshList[GEO_CUBE], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(hb2.getMidPoint().x, hb2.getMidPoint().y, hb2.getMidPoint().z);
+	modelStack.Scale(hb2.getLength(), hb2.getHeight(), hb2.getDepth());
+	Render3DMesh(meshList[GEO_CUBE], true);
+	modelStack.PopMatrix();
+
+}
+
+/******************************************************************************/
+/*!
+\brief
 Render UI and HUD here
 */
 /******************************************************************************/

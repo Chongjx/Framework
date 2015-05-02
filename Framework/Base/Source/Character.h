@@ -5,7 +5,7 @@
 #include "threeDhitbox.h"
 #include "FPcamera.h"
 
-class Character : GameObject
+class Character : public GameObject
 {
 public:
 	Character(void);

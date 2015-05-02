@@ -47,6 +47,15 @@ public:
 	void create2Dhitbox(Vector2 midPoint, float length, float height, const string name);
 	void create2Dhitbox(Vector2 bottomRight, Vector2 topRight, Vector2 topLeft, Vector2 bottomLeft, const string name);
 
+	void setMidPoint(Vector2 midPoint);
+	void setLength(float length);
+	void setHeight(float height);
+
+	void setHalfLength(float halfLength);
+	void setHalfHeight(float halfHeight);
+	
+	void setName(string name);
+
 	Vector2 getMidPoint(void) const;
 	float getLength(void) const;
 	float getHeight(void) const;

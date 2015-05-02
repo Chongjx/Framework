@@ -164,9 +164,6 @@ bool Weapon::getEmpty(void) const
 
 void Weapon::Fire(FPcamera &user)
 {
-	float worldHeight = 100.f;
-	float worldWidth = worldHeight * (float)Application::GetWindowWidth() / Application::GetWindowHeight();
-
 	for(std::vector<Bullet *>::iterator it = m_Ammo.begin(); it != m_Ammo.end(); ++it)
 	{
 		Bullet *bullet = (Bullet*) *it;
@@ -175,13 +172,28 @@ void Weapon::Fire(FPcamera &user)
 		{
 			bullet->setRender(true);
 			Vector3 view = (user.getTarget() - user.getPosition()).Normalized();
-			bullet->setPosition(view.x, view.y, view.z);
+			bullet->setPosition(user.getTarget());
 			bullet->m_v3Dir.Set(view.x, view.y, view.z);
-
 			break;
 		}
 	}
 	--m_iCurrentAmmo;
+}
+
+void Weapon::UpdateFire(double dt)
+{
+	for(std::vector<Bullet *>::iterator it = m_Ammo.begin(); it != m_Ammo.end(); ++it)
+	{
+		Bullet *bullet = (Bullet*) *it;
+		
+		if(bullet->getRender() == true)
+		{
+			bullet->setPosition(
+				Vector3(bullet->getPosition().x + (bullet->m_v3Dir.x * bullet->m_fBulletSpeed * dt), 
+				bullet->getPosition().y + (bullet->m_v3Dir.y * bullet->m_fBulletSpeed * dt), 
+				bullet->getPosition().z + (bullet->m_v3Dir.z * bullet->m_fBulletSpeed * dt)));
+		}
+	}
 }
 
 void Weapon::Reload(void)

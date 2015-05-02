@@ -12,10 +12,12 @@ Class to build ...
 #include "Scene.h"
 #include "Application.h"
 #include "FPcamera.h"
+
 #include "MeshBuilder.h"
 #include "Light.h"
 #include "twoDhitbox.h"
 #include "threeDhitbox.h"
+#include "Weapon.h"
 
 #include "GL\glew.h"
 #include "GLFW\glfw3.h"
@@ -144,6 +146,7 @@ public:
 	void InitCamera(void);
 	void InitSound(void);
 	void InitCharacters(void);
+	void InitWeapons(void);
 	void InitVariables(void);
 	void InitUI(void);
 	void ReInit(void);
@@ -152,6 +155,7 @@ public:
 	void UpdateLights(double dt);
 	void UpdateCamera(double dt);
 	void UpdateCharacters(double dt);
+	void UpdateWeapons(double dt);
 	void UpdateVariables(double dt);
 	void UpdateUI(double dt);
 	void UpdateSound(double dt);
@@ -162,6 +166,7 @@ public:
 	void RenderFloor(void);
 	void RenderEnvironment(void);
 	void RenderCharacters(void);
+	void RenderWeapons(void);
 	void RenderUI(void);
 
 	void Render3DMesh(Mesh *mesh, bool enableLight);
@@ -190,6 +195,10 @@ private:
 
 	ISoundEngine* engine;
     ISound* snd[TOTAL_SOUND];
+
+	Weapon pistol;
+
+	threeDhitbox hb1, hb2;
 };
 
 #endif

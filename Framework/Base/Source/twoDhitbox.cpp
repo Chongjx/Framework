@@ -113,6 +113,36 @@ void twoDhitbox::create2Dhitbox(Vector2 bottomRight, Vector2 topRight, Vector2 t
 	this->m_v2MidPoint.Set(bottomRight.x - m_fHalfLength, bottomRight.y + m_fHalfHeight);
 }
 
+void twoDhitbox::setMidPoint(Vector2 midPoint)
+{
+	this->m_v2MidPoint = midPoint;
+}
+
+void twoDhitbox::setLength(float length)
+{
+	this->m_fLength = length;
+}
+	
+void twoDhitbox::setHeight(float height)
+{
+	this->m_fHeight = height;
+}
+
+void twoDhitbox::setHalfLength(float halfLength)	
+{
+	this->m_fHalfLength = halfLength;
+}
+	
+void twoDhitbox::setHalfHeight(float halfHeight)
+{
+	this->m_fHalfHeight = halfHeight;
+}
+	
+void twoDhitbox::setName(string name)
+{
+	this->m_sName = name;
+}
+
 /******************************************************************************/
 /*!
 \brief	twoDhitbox getter functions

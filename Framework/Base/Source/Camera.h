@@ -11,7 +11,6 @@ To store camera position, target and up.
 
 #include "Application.h"
 #include "Vector3.h"
-#include "Vector2.h"
 #include "MatrixStack.h"
 #include "Mtx44.h"
 

@@ -1,6 +1,8 @@
-﻿Build started 30/4/2015 10:30:32 PM.
-     1>Project "C:\Users\Jun Xiang\Documents\GameDev\Framework\Common\Common.vcxproj" on node 2 (build target(s)).
-     1>InitializeBuildStatus:
+﻿Build started 2/5/2015 7:16:04 PM.
+     1>Project "C:\Users\Jun Xiang\Documents\GameDev\Framework\Common\Common.vcxproj" on node 2 (rebuild target(s)).
+     1>_PrepareForClean:
+         Deleting file "Debug\Common.lastbuildstate".
+       InitializeBuildStatus:
          Creating "Debug\Common.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _VARIADIC_MAX=10 /D WIN32 /D _DEBUG /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Source\MathUtility.cpp Source\MatrixStack.cpp Source\Mtx44.cpp Source\timer.cpp Source\Vector2.cpp Source\Vector3.cpp
@@ -24,8 +26,8 @@
        FinalizeBuildStatus:
          Deleting file "Debug\Common.unsuccessfulbuild".
          Touching "Debug\Common.lastbuildstate".
-     1>Done Building Project "C:\Users\Jun Xiang\Documents\GameDev\Framework\Common\Common.vcxproj" (build target(s)).
+     1>Done Building Project "C:\Users\Jun Xiang\Documents\GameDev\Framework\Common\Common.vcxproj" (rebuild target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:03.17
+Time Elapsed 00:00:02.27

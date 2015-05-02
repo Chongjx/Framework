@@ -1,11 +1,16 @@
 #include "Bullet.h"
 
-Bullet::Bullet()
+Bullet::Bullet(void)
 {
-	m_v3Dir.Set(0.f, 0.f, 1.f);
-	m_BulletBox.create3Dhitbox(Vector3(0, 0, 0), 1.f, 1.f, 1.f, "CLASSIC BULLET");
+	m_BulletBox.create3Dhitbox(Vector3(0.f, 0.f, 0.f), 0.5f, 0.5f, 0.5f, "CLASSIC BULLET"); 
+	m_fBulletSpeed = 100.f;
+	m_v3Dir.Set(0.0f, 0.0f, 0.0f);
 }
 
-Bullet::~Bullet()
+Bullet::~Bullet(void)
+{
+}
+
+void Bullet::UpdateHitBox(void)
 {
 }

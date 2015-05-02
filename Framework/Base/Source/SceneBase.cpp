@@ -16,6 +16,7 @@ void SceneBase::Init()
 	InitCamera();
 	InitSound();
 	InitCharacters();
+	InitWeapons();
 	InitVariables();
 	InitUI();
 }
@@ -26,6 +27,7 @@ void SceneBase::Update(double dt)
 	UpdateLights(dt);
 	UpdateCamera(dt);
 	UpdateCharacters(dt);
+	UpdateWeapons(dt);
 	UpdateVariables(dt);
 	UpdateUI(dt);
 	UpdateSound(dt);
@@ -37,6 +39,7 @@ void SceneBase::RenderScene()
 	RenderLights();
 	RenderEnvironment();
 	RenderCharacters();
+	RenderWeapons();
 	RenderUI();
 }
 

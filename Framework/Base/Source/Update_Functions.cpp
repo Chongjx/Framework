@@ -111,6 +111,56 @@ void SceneBase::UpdateCharacters(double dt)
 /******************************************************************************/
 /*!
 \brief
+Update Weapon
+
+\param dt
+time passed since last update
+*/
+/******************************************************************************/
+void SceneBase::UpdateWeapons(double dt)
+{
+	static bool bLButtonState = false;
+
+	if (pistol.getAmmo() < 1)
+	{
+		pistol.setEmpty(true);
+	}
+
+	if(!bLButtonState && Application::IsMousePressed(0) && pistol.getEmpty() == false)
+	{
+		bLButtonState = true;
+		pistol.Fire(camera);
+	}
+
+	else if(bLButtonState && !Application::IsMousePressed(0))
+	{
+		bLButtonState = false;	
+	}
+
+	pistol.UpdateFire(dt);
+
+	vector<threeDhitbox> tempHitBox;
+	bool shot = false;
+	string boxName;
+
+	/*for(std::vector<Bullet *>::iterator it = m_Ammo.begin(); it != m_Ammo.end(); ++it)
+	{
+		Bullet *bullet = (Bullet*) *it;
+
+		if (bullet->getRender() == true)
+		{
+			tempHitBox.push_back(bullet->m_BulletBox);
+		}
+	}*/
+
+	check3DCollision(hb1, tempHitBox, shot, boxName);
+
+	cout << shot << endl;
+}
+
+/******************************************************************************/
+/*!
+\brief
 Update Variables
 
 \param dt

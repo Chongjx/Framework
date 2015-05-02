@@ -141,10 +141,10 @@
     <ClCompile Include="Source\Inventory.cpp">
       <Filter>Source Files\Characters</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Weapon.cpp">
+    <ClCompile Include="Source\Bullet.cpp">
       <Filter>Source Files\Objects\Weapon</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Bullet.cpp">
+    <ClCompile Include="Source\Weapon.cpp">
       <Filter>Source Files\Objects\Weapon</Filter>
     </ClCompile>
   </ItemGroup>
@@ -209,10 +209,10 @@
     <ClInclude Include="Source\Inventory.h">
       <Filter>Header Files\Characters</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Weapon.h">
+    <ClInclude Include="Source\Bullet.h">
       <Filter>Header Files\Objects\Weapon</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Bullet.h">
+    <ClInclude Include="Source\Weapon.h">
       <Filter>Header Files\Objects\Weapon</Filter>
     </ClInclude>
   </ItemGroup>

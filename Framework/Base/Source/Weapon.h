@@ -17,7 +17,7 @@ enum WEAPON_TYPE
 	WEAP_MAX
 };
 
-class Weapon : GameObject
+class Weapon : public GameObject
 {
 private:
 	WEAPON_TYPE m_WeaponType;
@@ -29,7 +29,6 @@ private:
 	int m_iMagazineSize;
 	int m_iMaxAmmo;
 	int m_iCurrentAmmo;
-	vector<Bullet *> m_Ammo;
 
 	bool m_bCanFire;
 	bool m_bIsReload;
@@ -38,6 +37,8 @@ public:
 	Weapon(void);
 	~Weapon(void);
 	
+	vector<Bullet *> m_Ammo;
+
 	void setWeaponType(WEAPON_TYPE weaponType);
 	void setName(string name);
 	void setFireRate(float fireRate);
@@ -65,7 +66,7 @@ public:
 	bool getEmpty(void) const;
 
 	void Fire(FPcamera &user);
-	void updateFire(void);
+	void UpdateFire(double dt);
 	void Reload(void);
 	void SpecialFunc(void);
 };

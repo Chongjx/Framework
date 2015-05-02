@@ -17,7 +17,7 @@ FPS camera system
 \brief	First Person Camera System
 */
 /******************************************************************************/
-class FPcamera : Camera
+class FPcamera : public Camera
 {
 private:
 	Vector3 defaultPosition;

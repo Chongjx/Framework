@@ -236,6 +236,33 @@ void SceneBase::InitCharacters(void)
 /******************************************************************************/
 /*!
 \brief
+Init Weapons
+*/
+/******************************************************************************/
+void SceneBase::InitWeapons(void)
+{
+	pistol.setWeaponType(WEAP_PISTOL);
+	pistol.setName("Desert Eagle");
+	pistol.setMesh(meshList[GEO_CUBE]);
+	pistol.setFireRate(2.f);
+	pistol.setDmg(70.f);
+	pistol.setReloadSpeed(3.f);
+	pistol.setRecoil(5.f);
+	pistol.setAmmo(7);
+	pistol.setMagazineSize(7);
+	pistol.setMaxAmmo(40);
+	pistol.setFire(true);
+	pistol.setReload(false);
+	pistol.setEmpty(false);
+	pistol.setRender(false);
+
+	hb1.create3Dhitbox(Vector3(0.f, 0.f, 0.f), 5.f, 5.f, 5.f, "Hitbox1");
+	hb2.create3Dhitbox(Vector3(0.f, 5.f, -10.f), 1.f, 1.f, 1.f, "Hitbox2");
+}
+
+/******************************************************************************/
+/*!
+\brief
 Init variables
 */
 /******************************************************************************/
