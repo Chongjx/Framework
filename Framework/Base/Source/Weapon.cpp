@@ -11,7 +11,7 @@ Weapon::Weapon(void)
 	m_iMaxAmmo = 300;
 	m_iCurrentAmmo = 30;
 
-	for (int i = 0; i < m_iMagazineSize; ++i)
+	for (int i = 0; i < m_iMaxAmmo; ++i)
 	{
 		m_Ammo.push_back(new Bullet);
 	}
@@ -20,6 +20,7 @@ Weapon::Weapon(void)
 		{
 			Bullet *bullet = (Bullet*) *it;
 			bullet->setRender(false);
+			bullet->setStatus(false);
 	}
 
 	m_bCanFire = true;
@@ -168,32 +169,15 @@ void Weapon::Fire(FPcamera &user)
 	{
 		Bullet *bullet = (Bullet*) *it;
 			
-		if(bullet->getRender() == false)
+		if(bullet->getStatus() == false)
 		{
-			bullet->setRender(true);
+			bullet->setStatus(true);
 			Vector3 view = (user.getTarget() - user.getPosition()).Normalized();
-			bullet->setPosition(user.getTarget());
-			bullet->m_v3Dir.Set(view.x, view.y, view.z);
+			bullet->Shot(user.getTarget(), Vector3(view.x, view.y, view.z), 200.f, 5.f);
 			break;
 		}
 	}
 	--m_iCurrentAmmo;
-}
-
-void Weapon::UpdateFire(double dt)
-{
-	for(std::vector<Bullet *>::iterator it = m_Ammo.begin(); it != m_Ammo.end(); ++it)
-	{
-		Bullet *bullet = (Bullet*) *it;
-		
-		if(bullet->getRender() == true)
-		{
-			bullet->setPosition(
-				Vector3(bullet->getPosition().x + (bullet->m_v3Dir.x * bullet->m_fBulletSpeed * dt), 
-				bullet->getPosition().y + (bullet->m_v3Dir.y * bullet->m_fBulletSpeed * dt), 
-				bullet->getPosition().z + (bullet->m_v3Dir.z * bullet->m_fBulletSpeed * dt)));
-		}
-	}
 }
 
 void Weapon::Reload(void)

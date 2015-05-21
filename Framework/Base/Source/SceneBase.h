@@ -10,13 +10,10 @@ Class to build ...
 #define SCENE_BASE_H
 
 #include "Scene.h"
-#include "Application.h"
 #include "FPcamera.h"
 
 #include "MeshBuilder.h"
 #include "Light.h"
-#include "twoDhitbox.h"
-#include "threeDhitbox.h"
 #include "Weapon.h"
 
 #include "GL\glew.h"
@@ -25,6 +22,7 @@ Class to build ...
 #include "Utility.h"
 #include "shader.hpp"
 #include "LoadTGA.h"
+#include "LoadHmap.h"
 
 #include <string>
 #include <stdio.h>
@@ -44,6 +42,7 @@ using namespace irrklang;
 #pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
 
 static const float SKYBOXSIZE = 1000.f;
+static const Vector3 TERRAIN_SCALE(4000.f, 350.f, 4000.f);
 
 class SceneBase : public Scene
 {
@@ -85,8 +84,10 @@ class SceneBase : public Scene
 
         U_LIGHTENABLED,
         U_NUMLIGHTS,
-        U_COLOR_TEXTURE_ENABLED,
-        U_COLOR_TEXTURE,
+        U_COLOR0_TEXTURE_ENABLED,
+		U_COLOR0_TEXTURE,
+		U_COLOR1_TEXTURE_ENABLED,
+		U_COLOR1_TEXTURE,
         U_TEXT_ENABLED,
         U_TEXT_COLOR,
         U_TOTAL,
@@ -101,8 +102,10 @@ class SceneBase : public Scene
 		GEO_RING,
 		GEO_CONE,
 		GEO_SKYPLANE,
-		GEO_GRASS_DARKGREEN,
-		GEO_GRASS_LIGHTGREEN,
+		GEO_TERRAIN,
+		GEO_PLATFORM,
+		GEO_CRATE,
+		GEO_SANDBAG,
 		GEO_TEXT,
 		GEO_OBJECT,
 		GEO_MAX,
@@ -136,6 +139,8 @@ public:
 
 	virtual void Init(void);
     virtual void Update(double dt);
+	virtual void UpdateCameraStatus(const unsigned char key);
+	virtual void UpdateWeaponStatus(const unsigned char key);
     virtual void RenderScene(void);
 	virtual void RenderMiniMap(void);
     virtual void Exit(void);
@@ -153,7 +158,7 @@ public:
 
 	void UpdateOpenGL(void);
 	void UpdateLights(double dt);
-	void UpdateCamera(double dt);
+	void UpdateMovement(double dt);
 	void UpdateCharacters(double dt);
 	void UpdateWeapons(double dt);
 	void UpdateVariables(double dt);
@@ -163,10 +168,10 @@ public:
 	void SetCamera(void);
 	void RenderLights(void);
 	void RenderSkyPlane(void);
-	void RenderFloor(void);
+	void RenderTerrain(void);
 	void RenderEnvironment(void);
 	void RenderCharacters(void);
-	void RenderWeapons(void);
+	void RenderBullets(void);
 	void RenderUI(void);
 
 	void Render3DMesh(Mesh *mesh, bool enableLight);
@@ -178,6 +183,7 @@ private:
 	Mesh* meshList[GEO_MAX];
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
+	vector<unsigned char>m_heightMap;
 
 	static const int NUM_LIGHTS = 2;
 
@@ -198,7 +204,7 @@ private:
 
 	Weapon pistol;
 
-	threeDhitbox hb1, hb2;
+	vector<threeDObject *> threeDObjectList;
 };
 
 #endif

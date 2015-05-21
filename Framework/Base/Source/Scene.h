@@ -38,9 +38,20 @@ public:
 
 	virtual void Init() = 0;
 	virtual void Update(double dt) = 0;
+	virtual void UpdateCameraStatus(const unsigned char key) = 0;
+	virtual void UpdateWeaponStatus(const unsigned char key) = 0;
 	virtual void RenderScene() = 0;
 	virtual void RenderMiniMap() = 0;
 	virtual void Exit() = 0;
+
+	enum WEAPON_ACTION
+	{
+		WA_NIL = 0,
+		WA_FIRE,
+		WA_RELOAD,
+		WA_CHANGEWEAPON,
+		WA_TOTAL,
+	};
 
 	SCENE_STATE currentScene, prevScene;
 };

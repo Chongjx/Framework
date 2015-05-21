@@ -1,20 +1,38 @@
 #ifndef BULLET_H
 #define BULLET_H
 
-#include "GameObject.h"
-#include "threeDhitbox.h"
+#include "threeDObject.h"
 
-class Bullet : public GameObject
+class Bullet : public threeDObject
 {
+private:
+	bool m_bStatus;
+	Vector3 m_v3Dir;
+	float m_fBulletSpeed;
+	float m_fLifeTime;
+	threeDhitbox m_BulletBox;
+
 public:
 	Bullet(void);
 	~Bullet(void);
 
-	Vector3 m_v3Dir;
-	float m_fBulletSpeed;
-	threeDhitbox m_BulletBox;
+	void setStatus(const bool status);
+	bool getStatus(void) const;
 
-	void UpdateHitBox(void);
+	void setDir(const Vector3 dir);
+	Vector3 getDir(void) const;
+
+	void setBulletSpeed(const float speed);
+	float getBulletSpeed(void) const;
+
+	void setLifeTime(const float lifeTime);
+	float getLifeTime(void) const;
+
+	void setBulletBox(threeDhitbox bulletBox);
+	threeDhitbox getBulletBox(void);
+
+	void Update(const double dt);
+	void Shot(const Vector3 position, const Vector3 dir, const float speed, const float lifeTime);
 };
 
 #endif

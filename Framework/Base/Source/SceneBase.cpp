@@ -25,7 +25,7 @@ void SceneBase::Update(double dt)
 {
 	UpdateOpenGL();
 	UpdateLights(dt);
-	UpdateCamera(dt);
+	UpdateMovement(dt);
 	UpdateCharacters(dt);
 	UpdateWeapons(dt);
 	UpdateVariables(dt);
@@ -39,7 +39,7 @@ void SceneBase::RenderScene()
 	RenderLights();
 	RenderEnvironment();
 	RenderCharacters();
-	RenderWeapons();
+	RenderBullets();
 	RenderUI();
 }
 
@@ -84,6 +84,14 @@ void SceneBase::Exit()
 		if(meshList[i])
 			delete meshList[i];
 	}
+
+	/*while(threeDObjectList.size() > 0)
+	{
+		threeDObject *go = threeDObjectList.back();
+		delete go;
+		threeDObjectList.pop_back();
+	}*/
+
 	glDeleteProgram(m_programID);
 	glDeleteVertexArrays(1, &m_vertexArrayID);
 	engine->drop(); // delete engine

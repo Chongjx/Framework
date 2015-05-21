@@ -19,6 +19,7 @@
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\Init_Functions.cpp" />
     <ClCompile Include="Source\Inventory.cpp" />
+    <ClCompile Include="Source\LoadHmap.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
     <ClCompile Include="Source\LoadTGA.cpp" />
     <ClCompile Include="Source\main.cpp" />
@@ -28,7 +29,9 @@
     <ClCompile Include="Source\SceneBase.cpp" />
     <ClCompile Include="Source\shader.cpp" />
     <ClCompile Include="Source\threeDhitbox.cpp" />
+    <ClCompile Include="Source\threeDObject.cpp" />
     <ClCompile Include="Source\twoDhitbox.cpp" />
+    <ClCompile Include="Source\twoDObject.cpp" />
     <ClCompile Include="Source\Update_Functions.cpp" />
     <ClCompile Include="Source\Utility.cpp" />
     <ClCompile Include="Source\Weapon.cpp" />
@@ -43,6 +46,7 @@
     <ClInclude Include="Source\Geometry.h" />
     <ClInclude Include="Source\Inventory.h" />
     <ClInclude Include="Source\Light.h" />
+    <ClInclude Include="Source\LoadHmap.h" />
     <ClInclude Include="Source\LoadOBJ.h" />
     <ClInclude Include="Source\LoadTGA.h" />
     <ClInclude Include="Source\Material.h" />
@@ -52,7 +56,9 @@
     <ClInclude Include="Source\SceneBase.h" />
     <ClInclude Include="Source\shader.hpp" />
     <ClInclude Include="Source\threeDhitbox.h" />
+    <ClInclude Include="Source\threeDObject.h" />
     <ClInclude Include="Source\twoDhitbox.h" />
+    <ClInclude Include="Source\twoDObject.h" />
     <ClInclude Include="Source\Utility.h" />
     <ClInclude Include="Source\Vertex.h" />
     <ClInclude Include="Source\Weapon.h" />

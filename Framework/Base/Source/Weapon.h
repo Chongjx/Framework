@@ -1,7 +1,6 @@
 #ifndef WEAPON_H
 #define WEAPON_H
 
-#include "Application.h"
 #include "GameObject.h"
 #include "Bullet.h"
 #include "FPcamera.h"
@@ -17,7 +16,7 @@ enum WEAPON_TYPE
 	WEAP_MAX
 };
 
-class Weapon : public GameObject
+class Weapon : public threeDObject
 {
 private:
 	WEAPON_TYPE m_WeaponType;
@@ -66,7 +65,6 @@ public:
 	bool getEmpty(void) const;
 
 	void Fire(FPcamera &user);
-	void UpdateFire(double dt);
 	void Reload(void);
 	void SpecialFunc(void);
 };

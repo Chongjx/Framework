@@ -7,6 +7,7 @@ Update all the scene stuff here
 */
 /******************************************************************************/
 #include "SceneBase.h"
+#include "Application.h"
 
 /******************************************************************************/
 /*!
@@ -86,13 +87,13 @@ void SceneBase::UpdateLights(double dt)
 \brief
 Update Camera position and target
 
-\param dt
-time passed since last update
+\param key
+	the key pressed
 */
 /******************************************************************************/
-void SceneBase::UpdateCamera(double dt)
+void SceneBase::UpdateMovement(double dt)
 {
-	camera.Update(dt, 0);
+	camera.Update(dt, TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, camera.getPosition().x/TERRAIN_SCALE.x, camera.getPosition().z/TERRAIN_SCALE.z));
 }
 
 /******************************************************************************/
@@ -119,43 +120,22 @@ time passed since last update
 /******************************************************************************/
 void SceneBase::UpdateWeapons(double dt)
 {
-	static bool bLButtonState = false;
-
-	if (pistol.getAmmo() < 1)
-	{
-		pistol.setEmpty(true);
-	}
-
-	if(!bLButtonState && Application::IsMousePressed(0) && pistol.getEmpty() == false)
-	{
-		bLButtonState = true;
-		pistol.Fire(camera);
-	}
-
-	else if(bLButtonState && !Application::IsMousePressed(0))
-	{
-		bLButtonState = false;	
-	}
-
-	pistol.UpdateFire(dt);
-
 	vector<threeDhitbox> tempHitBox;
 	bool shot = false;
 	string boxName;
 
-	/*for(std::vector<Bullet *>::iterator it = m_Ammo.begin(); it != m_Ammo.end(); ++it)
+	for (int i = 0; i < pistol.m_Ammo.size(); ++i)
 	{
-		Bullet *bullet = (Bullet*) *it;
+		pistol.m_Ammo[i]->Update(dt);
+	}
 
-		if (bullet->getRender() == true)
+	for (int i = 0; i < pistol.m_Ammo.size(); ++i)
+	{
+		if (pistol.m_Ammo[i]->getStatus() == true)
 		{
-			tempHitBox.push_back(bullet->m_BulletBox);
+			//cout << pistol.m_Ammo[i]->getHitBox().getMidPoint() << endl;
 		}
-	}*/
-
-	check3DCollision(hb1, tempHitBox, shot, boxName);
-
-	cout << shot << endl;
+	}
 }
 
 /******************************************************************************/
@@ -196,4 +176,35 @@ time passed since last update
 /******************************************************************************/
 void SceneBase::UpdateSound(double dt)
 {
+}
+
+/******************************************************************************/
+/*!
+\brief
+Update camera status
+
+\param key
+	the key pressed
+*/
+/******************************************************************************/
+void SceneBase::UpdateCameraStatus(const unsigned char key)
+{
+	camera.UpdateStatus(key);
+}
+
+/******************************************************************************/
+/*!
+\brief
+Update weapon status
+
+\param key
+	the key pressed
+*/
+/******************************************************************************/
+void SceneBase::UpdateWeaponStatus(const unsigned char key)
+{
+	if (key == WA_FIRE)
+	{
+		pistol.Fire(camera);
+	}
 }

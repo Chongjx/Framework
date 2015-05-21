@@ -4,3 +4,14 @@ IJKLOP - light movement
 1,2 - toggle front face culling
 3,4 - toggle wireframe mode
 5,6,7 - toggle point, directional, spotlight
+
+
+Assignment 1
+---------------
+Progress check:
+---------------
+Skyplane
+Terrain
+Multitexture
+Some Objs
+---------------

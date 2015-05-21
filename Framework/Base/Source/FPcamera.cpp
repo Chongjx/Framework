@@ -7,7 +7,10 @@ Camera funtions that calculate and return the latest position of the camera.
 */
 /******************************************************************************/
 #include "FPcamera.h"
+#include "Application.h"
+#include "Mtx44.h"
 
+static const float CAMERA_SPEED = 200.f;
 /******************************************************************************/
 /*!
 \brief
@@ -50,6 +53,11 @@ void FPcamera::Init(const Vector3& pos, const Vector3& target, const Vector3& up
     right.Normalize();
 	this->up = defaultUp = right.Cross(view).Normalized();
 	this->sensitivity = defaultSensitivity = 1.0f;
+
+	for (int i = 0; i < 255; ++i)
+	{
+		myKeys[i] = false;
+	}
 }
 
 /******************************************************************************/
@@ -62,99 +70,80 @@ void FPcamera::Init(const Vector3& pos, const Vector3& target, const Vector3& up
 /******************************************************************************/
 void FPcamera::Update(double dt, float floorLevel)
 {
-	static const float CAMERA_SPEED = 200.f;
-	
-	if(Application::IsKeyPressed('A'))
+	if(myKeys['a'])
 	{
-		Vector3 tempPosition = position;
-		Vector3 tempTarget = target;
-		
-		Vector3 view = (target - position).Normalized();
-		right = view.Cross(up);
-		right.y = 0;
-		right.Normalize();
-		position -= right * CAMERA_SPEED * (float)dt;
-		target -= right * CAMERA_SPEED * (float)dt;
-
-		position.y = tempPosition.y;
-		target.y = tempTarget.y;
+		moveLeft(dt, floorLevel);
+		myKeys['a'] = false;
 	}
 
-	if(Application::IsKeyPressed('D'))
+	if(myKeys['d'])
 	{
-		Vector3 tempPosition = position;
-		Vector3 tempTarget = target;
-
-		Vector3 view = (target - position).Normalized();
-		right = view.Cross(up);
-		right.y = 0;
-		right.Normalize();
-		position += right * CAMERA_SPEED * (float)dt;
-		target += right * CAMERA_SPEED * (float)dt;
-
-		position.y = tempPosition.y;
-		target.y = tempTarget.y;
+		moveRight(dt, floorLevel);
+		myKeys['d'] = false;
 	}
 
-	if(Application::IsKeyPressed('W'))
+	if(myKeys['w'])
 	{
-		Vector3 tempPosition = position;
-		Vector3 tempTarget = target;
-
-		Vector3 view = (target - position).Normalized();
-		position += view * CAMERA_SPEED * (float)dt;
-		target += view * CAMERA_SPEED * (float)dt;
-
-		position.y = tempPosition.y;
-		target.y = tempTarget.y;
-
+		moveForward(dt, floorLevel);
+		myKeys['w'] = false;
 	}
 
-	if(Application::IsKeyPressed('S'))
+	if(myKeys['s'])
 	{
-		Vector3 tempPosition = position;
-		Vector3 tempTarget = target;
-
-		Vector3 view = (target - position).Normalized();
-		position -= view * CAMERA_SPEED * (float)dt;
-		target -= view * CAMERA_SPEED * (float)dt;
-
-		position.y = tempPosition.y;
-		target.y = tempTarget.y;
+		moveBackward(dt, floorLevel);	
+		myKeys['s'] = false;
 	}
 
-	//Update the camera direction based on mouse move
-	// left-right rotate
+	if(myKeys['q'])
 	{
-		Vector3 view = (target - position).Normalized();
-		float yaw = (float)(-CAMERA_SPEED * Application::camera_yaw * (float)dt * sensitivity);
-		Mtx44 rotation;
-		rotation.SetToRotation(yaw, 0, 1, 0);
-		view = rotation * view;
-		target = position + view;
-		right = view.Cross(up);
-		right.y = 0;
-		right.Normalize();
-		up = right.Cross(view).Normalized();
+		moveUp(dt);
+		myKeys['q'] = false;
 	}
 
+	if(myKeys['e'])
 	{
-		float pitch = (float)(-CAMERA_SPEED * Application::camera_pitch * (float)dt * sensitivity);
-		Vector3 view = (target - position).Normalized();
-		right = view.Cross(up);
-		right.y = 0;
-		right.Normalize();
-		up = right.Cross(view).Normalized();
-		Mtx44 rotation;
-		rotation.SetToRotation(pitch, right.x, right.y, right.z);
-		view = rotation * view;
-		target = position + view;
+		moveDown(dt);
+		myKeys['e'] = false;
 	}
 
-	if(Application::IsKeyPressed('R'))
+	if(myKeys['i'])
+	{
+		turnUp(dt);
+	}
+
+	if(myKeys['j'])
+	{
+		turnDown(dt);
+	}
+
+	if(myKeys['j'])
+	{
+		turnLeft(dt);
+	}
+
+	if(myKeys['k'])
+	{
+		turnRight(dt);
+	}
+
+	if(myKeys['r'])
 	{
 		Reset();
+		myKeys['r'] = false;
 	}
+}
+
+/******************************************************************************/
+/*!
+\brief	Camera Update function
+
+\param	key
+	reflect the key that is pressed
+*/
+/******************************************************************************/
+void FPcamera::UpdateStatus(const unsigned char key)
+{
+	myKeys[key] = true;
 }
 
 /******************************************************************************/
@@ -173,6 +162,11 @@ void FPcamera::Reset(void)
     right = view.Cross(up).Normalized();
 	right.y = 0;
     right.Normalize();
+
+	for (int i = 0; i < 255; ++i)
+	{
+		myKeys[i] = false;
+	}
 }
 
 /******************************************************************************/
@@ -290,4 +284,128 @@ Vector3 FPcamera::getRight(void) const
 float FPcamera::getSensitivity(void) const
 {
 	return sensitivity;
+}
+
+void FPcamera::moveForward(const double dt, float heightOffset)
+{
+	float heightDiff = target.y - position.y;
+
+	Vector3 view = (target - position).Normalized();
+	position += view * CAMERA_SPEED * (float)dt;
+	target += view * CAMERA_SPEED * (float)dt;
+
+	position.y = heightOffset + 20.f;
+	target.y = position.y + heightDiff;
+}
+
+void FPcamera::moveBackward(const double dt, float heightOffset)
+{
+	float heightDiff = target.y - position.y;
+
+	Vector3 view = (target - position).Normalized();
+	position -= view * CAMERA_SPEED * (float)dt;
+	target -= view * CAMERA_SPEED * (float)dt;
+
+	position.y = heightOffset + 20.f;
+	target.y = position.y + heightDiff;
+}
+
+void FPcamera::moveLeft(const double dt, float heightOffset)
+{
+	float heightDiff = target.y - position.y;
+
+	Vector3 view = (target - position).Normalized();
+	Vector3 right = view.Cross(up);
+	right.y = 0;
+	right.Normalize();
+	position -= right * CAMERA_SPEED * (float)dt;
+	target -= right * CAMERA_SPEED * (float)dt;
+
+	position.y = heightOffset + 20.f;
+	target.y = position.y + heightDiff;
+}
+
+void FPcamera::moveRight(const double dt, float heightOffset)
+{
+	float heightDiff = target.y - position.y;
+
+	Vector3 view = (target - position).Normalized();
+	Vector3 right = view.Cross(up);
+	right.y = 0;
+	right.Normalize();
+	position += right * CAMERA_SPEED * (float)dt;
+	target += right * CAMERA_SPEED * (float)dt;
+
+	position.y = heightOffset + 20.f;
+	target.y = position.y + heightDiff;
+}
+
+void FPcamera::moveUp(double dt)
+{
+	position.y += CAMERA_SPEED * (float)dt;
+	target.y += CAMERA_SPEED * (float)dt;
+}
+
+void FPcamera::moveDown(double dt)
+{
+	position.y -= CAMERA_SPEED * (float)dt;
+	target.y -= CAMERA_SPEED * (float)dt;
+}
+
+void FPcamera::turnLeft(double dt)
+{
+	//Update the camera direction based on mouse move
+	// left-right rotate
+	Vector3 view = (target - position).Normalized();
+	float yaw = (float)(-CAMERA_SPEED * Application::camera_yaw * (float)dt);
+	Mtx44 rotation;
+	rotation.SetToRotation(yaw, 0, 1, 0);
+	view = rotation * view;
+	target = position + view;
+	Vector3 right = view.Cross(up);
+	right.y = 0;
+	right.Normalize();
+	up = right.Cross(view).Normalized();
+}
+
+void FPcamera::turnRight(double dt)
+{
+	Vector3 view = (target - position).Normalized();
+	float yaw = (float)(-CAMERA_SPEED * Application::camera_yaw * (float)dt);
+	Mtx44 rotation;
+	rotation.SetToRotation(yaw, 0, 1, 0);
+	view = rotation * view;
+	target = position + view;
+	Vector3 right = view.Cross(up);
+	right.y = 0;
+	right.Normalize();
+	up = right.Cross(view).Normalized();
+}
+
+void FPcamera::turnUp(double dt)
+{
+	float pitch = (float)(-CAMERA_SPEED * Application::camera_pitch * (float)dt);
+	Vector3 view = (target - position).Normalized();
+	Vector3 right = view.Cross(up);
+	right.y = 0;
+	right.Normalize();
+	up = right.Cross(view).Normalized();
+	Mtx44 rotation;
+	rotation.SetToRotation(pitch, right.x, right.y, right.z);
+	view = rotation * view;
+	target = position + view;
+}
+
+void FPcamera::turnDown(double dt)
+{
+	float pitch = (float)(-CAMERA_SPEED * Application::camera_pitch * (float)dt);
+	Vector3 view = (target - position).Normalized();
+	Vector3 right = view.Cross(up);
+	right.y = 0;
+	right.Normalize();
+	up = right.Cross(view).Normalized();
+	Mtx44 rotation;
+	rotation.SetToRotation(pitch, right.x, right.y, right.z);
+	view = rotation * view;
+	target = position + view;
 }

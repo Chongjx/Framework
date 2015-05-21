@@ -49,7 +49,8 @@ Init Lights variables
 void SceneBase::InitLights(void)
 {
 	//Load vertex and fragment shaders
-	m_programID = LoadShaders( "Shader//Texture.vertexshader", "Shader//MultiLight.fragmentshader" );
+	m_programID = LoadShaders( "Shader//comg.vertexshader", "Shader//MultiTexture.fragmentshader" );
+
 	m_parameters[U_MVP] = glGetUniformLocation(m_programID, "MVP");
 	m_parameters[U_MODELVIEW] = glGetUniformLocation(m_programID, "MV");
 	m_parameters[U_MODELVIEW_INVERSE_TRANSPOSE] = glGetUniformLocation(m_programID, "MV_inverse_transpose");
@@ -86,8 +87,11 @@ void SceneBase::InitLights(void)
 
 	m_parameters[U_LIGHTENABLED] = glGetUniformLocation(m_programID, "lightEnabled");
 	m_parameters[U_NUMLIGHTS] = glGetUniformLocation(m_programID, "numLights"); 
-	m_parameters[U_COLOR_TEXTURE_ENABLED] = glGetUniformLocation(m_programID, "colorTextureEnabled");
-	m_parameters[U_COLOR_TEXTURE] = glGetUniformLocation(m_programID, "colorTexture");
+	// Get a handle for our "colorTexture" uniform
+	m_parameters[U_COLOR0_TEXTURE_ENABLED] = glGetUniformLocation(m_programID, "colorTextureEnabled[0]");
+	m_parameters[U_COLOR0_TEXTURE] = glGetUniformLocation(m_programID, "colorTexture[0]");
+	m_parameters[U_COLOR1_TEXTURE_ENABLED] = glGetUniformLocation(m_programID, "colorTextureEnabled[1]");
+	m_parameters[U_COLOR1_TEXTURE] = glGetUniformLocation(m_programID, "colorTexture[1]");
 	// Get a handle for our "textColor" uniform
 	m_parameters[U_TEXT_ENABLED] = glGetUniformLocation(m_programID, "textEnabled");
 	m_parameters[U_TEXT_COLOR] = glGetUniformLocation(m_programID, "textColor");
@@ -152,31 +156,37 @@ void SceneBase::InitMesh(void)
 
 	meshList[GEO_SPHERE] = MeshBuilder::GenerateSphere("sphere", Color(1, 0, 0), 18, 36, 10.f);
 
-	meshList[GEO_QUAD] = MeshBuilder::GenerateQuad("quad", Color(1, 1, 1), 1.f);
-	meshList[GEO_QUAD]->textureID = LoadTGA("Image//calibri.tga");
-
 	meshList[GEO_CUBE] = MeshBuilder::GenerateCube("cube", Color(1, 0, 1), 1.f);
 
 	meshList[GEO_RING] = MeshBuilder::GenerateRing("ring", Color(1, 0, 1), 36, 1, 0.5f);
+
+	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
+	meshList[GEO_TEXT]->textureID[0] = LoadTGA("Image//calibri.tga");
+	meshList[GEO_TEXT]->material.kAmbient.Set(1, 0, 0);
 
 	meshList[GEO_CONE] = MeshBuilder::GenerateCone("cone", Color(0.5f, 1, 0.3f), 36, 10.f, 10.f);
 	meshList[GEO_CONE]->material.kDiffuse.Set(0.99f, 0.99f, 0.99f);
 	meshList[GEO_CONE]->material.kSpecular.Set(0.f, 0.f, 0.f);
 
-	meshList[GEO_SKYPLANE] = MeshBuilder::GenerateSkyPlane("GEO_SKYPLANE", Color(1, 1, 1), 128, 200.0f, 2000.f, 1.0f, 1.0f);
-	meshList[GEO_SKYPLANE]->textureID = LoadTGA("Image//top.tga");
+	meshList[GEO_SKYPLANE] = MeshBuilder::GenerateSkyPlane("skyplane", Color(1, 1, 1), 128, 1000.0f, 2500.f, 1.0f, 1.0f);
+	meshList[GEO_SKYPLANE]->textureID[0] = LoadTGA("Image//top.tga");
 
-	meshList[GEO_GRASS_DARKGREEN] = MeshBuilder::GenerateQuad("GRASS_DARKGREEN", Color(1, 1, 1), 1.f);
-	meshList[GEO_GRASS_DARKGREEN]->textureID = LoadTGA("Image//grass_darkgreen.tga");
-	meshList[GEO_GRASS_LIGHTGREEN] = MeshBuilder::GenerateQuad("GEO_GRASS_LIGHTGREEN", Color(1, 1, 1), 1.f);
-	meshList[GEO_GRASS_LIGHTGREEN]->textureID = LoadTGA("Image//grass_lightgreen.tga");
+	meshList[GEO_TERRAIN] = MeshBuilder::GenerateTerrain("terrain", "Image//heightmap.raw", m_heightMap);
+	meshList[GEO_TERRAIN]->textureID[0] = LoadTGA("Image//sand.tga");
+	meshList[GEO_TERRAIN]->textureID[1] = LoadTGA("Image//dust.tga");
 
-	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
-	meshList[GEO_TEXT]->material.kAmbient.Set(1, 0, 0);
-	
-	meshList[GEO_OBJECT] = MeshBuilder::GenerateOBJ("OBJ1", "OBJ//chair.obj");
-	meshList[GEO_OBJECT]->textureID = LoadTGA("Image//chair.tga");
+	meshList[GEO_PLATFORM] = MeshBuilder::GenerateOBJ("platform", "OBJ//platform.obj");
+	meshList[GEO_PLATFORM]->textureID[0] = LoadTGA("Image//concrete.tga");
+	meshList[GEO_PLATFORM]->textureID[1] = LoadTGA("Image//crack.tga");
+	meshList[GEO_PLATFORM]->material.kSpecular.Set(0.f, 0.f, 0.f);
+
+	meshList[GEO_CRATE] = MeshBuilder::GenerateOBJ("crate", "OBJ//crate.obj");
+	//meshList[GEO_CRATE]->material.kShininess = 0.1f;
+	meshList[GEO_CRATE]->textureID[0] = LoadTGA("Image//crate.tga");
+	meshList[GEO_CRATE]->textureID[1] = LoadTGA("Image//rough.tga");
+
+	meshList[GEO_SANDBAG] = MeshBuilder::GenerateOBJ("sandbag", "OBJ//sandbag.obj");
+	meshList[GEO_SANDBAG]->textureID[0] = LoadTGA("Image//sandbag.tga");
 }
 
 /******************************************************************************/
@@ -187,7 +197,10 @@ Init Camera
 /******************************************************************************/
 void SceneBase::InitCamera(void)
 {
-	camera.Init(Vector3(0, 0, 10), Vector3(0, 0, 0), Vector3(0, 1, 0));
+	camera.Init(
+		Vector3(0, 25 + TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, 0/TERRAIN_SCALE.x, -1600/TERRAIN_SCALE.z), -1600), 
+		Vector3(0, 25 + TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, 0/TERRAIN_SCALE.x, -1600/TERRAIN_SCALE.z), -1590), 
+		Vector3(0, 1, 0));
 }
 
 /******************************************************************************/
@@ -255,9 +268,6 @@ void SceneBase::InitWeapons(void)
 	pistol.setReload(false);
 	pistol.setEmpty(false);
 	pistol.setRender(false);
-
-	hb1.create3Dhitbox(Vector3(0.f, 0.f, 0.f), 5.f, 5.f, 5.f, "Hitbox1");
-	hb2.create3Dhitbox(Vector3(0.f, 5.f, -10.f), 1.f, 1.f, 1.f, "Hitbox2");
 }
 
 /******************************************************************************/
@@ -275,6 +285,56 @@ void SceneBase::InitVariables(void)
 	projectionStack.LoadMatrix(perspective);
 
 	bLightEnabled = true;
+
+	threeDObject *platform = new threeDObject;
+	threeDObject *crate = new threeDObject;
+
+	for (int i = 0; i < 2; ++i)
+	{
+		// create a platform for starting
+		if(i == 0)
+		{
+			platform->setPosition(Vector3(0, TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, 0/TERRAIN_SCALE.x, 1400/TERRAIN_SCALE.z), 1400));
+		}
+		else
+		{
+			platform->setPosition(Vector3(0, 2.5f + TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, 0/TERRAIN_SCALE.x, -1600/TERRAIN_SCALE.z), -1600));
+		}
+		platform->setScale(Vector3(20, 5, 10));
+		platform->setMesh(meshList[GEO_PLATFORM]);
+		platform->setType(GAMEOBJECT_TYPE::GO_ENVIRONMENT);
+
+		threeDhitbox platformArea;
+		platformArea.create3Dhitbox(Vector3(platform->getPosition()), 10, 5, 10, "platform");
+		platform->setHitBox(platformArea);
+
+		platform->setReflectLight(true);
+		platform->setRender(true);
+
+		threeDObjectList.push_back(platform);
+
+		// crates and sandbag
+		for (int  j = 0; j < 10; ++j)
+		{
+			float xCoord = Math::RandFloatMinMax(-100.f, 100.f);
+			float zCoord = Math::RandFloatMinMax(-1600.f - 50.f, -1600.f + 50.f);
+			float scale = 5.f;
+
+			crate->setPosition(Vector3(xCoord, 10.f + TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, xCoord/TERRAIN_SCALE.x, zCoord/TERRAIN_SCALE.z), zCoord));
+			crate->setScale(Vector3(scale, scale, scale));
+			crate->setMesh(meshList[GEO_CRATE]);
+			crate->setType(GAMEOBJECT_TYPE::GO_ENVIRONMENT);
+
+			threeDhitbox crateHitBox;
+			crateHitBox.create3Dhitbox(Vector3(crate->getPosition()), scale, scale, scale, "crate");
+			crate->setHitBox(crateHitBox);
+
+			crate->setReflectLight(true);
+			crate->setRender(true);
+
+			threeDObjectList.push_back(crate);
+		}
+	}
 }
 
 /******************************************************************************/

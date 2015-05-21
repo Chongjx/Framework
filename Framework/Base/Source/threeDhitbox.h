@@ -14,6 +14,7 @@ Create a 3D hitbox
 
 #include "Vector3.h"
 #include "MyMath.h"
+#include "Mtx44.h"
 
 using std::string;
 using std::vector;
@@ -63,6 +64,10 @@ public:
 
 	friend void check3DCollision(threeDhitbox &user, vector<threeDhitbox> &target, bool &collide, string &boxName);
 	friend void check3DCollision(threeDhitbox &user, threeDhitbox &target, bool &collide, string &boxName);
+
+	friend void updateHitBox(threeDhitbox &user, Mtx44 TRSvalue); 
+
+	threeDhitbox &operator= (threeDhitbox &input);
 };
 
 #endif

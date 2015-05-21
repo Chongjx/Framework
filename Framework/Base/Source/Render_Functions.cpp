@@ -78,7 +78,7 @@ Render Sky plane here
 void SceneBase::RenderSkyPlane(void)
 {
 	modelStack.PushMatrix();
-	modelStack.Translate(500, 1800, -500);
+	modelStack.Translate(0, 1800, 0);
 	Render3DMesh(meshList[GEO_SKYPLANE], false);
 	modelStack.PopMatrix();
 }
@@ -86,30 +86,14 @@ void SceneBase::RenderSkyPlane(void)
 /******************************************************************************/
 /*!
 \brief
-Render Floor here
+Render Terrain here
 */
 /******************************************************************************/
-void SceneBase::RenderFloor(void)
+void SceneBase::RenderTerrain(void)
 {
 	modelStack.PushMatrix();
-	modelStack.Rotate(-90, 1, 0, 0);
-	modelStack.Translate(0, 0, -10);
-	modelStack.Rotate(-90, 0, 0, 1);
-	modelStack.Scale(1000.0f, 1000.0f, 1000.0f);
-
-	for (int x=0; x<10; x++)
-	{
-		for (int z=0; z<10; z++)
-		{
-			modelStack.PushMatrix();
-			modelStack.Translate(x-5.0f, z-5.0f, 0.0f);
-			if ( ((x*9+z) % 2) == 0)
-				Render3DMesh(meshList[GEO_GRASS_DARKGREEN], false);
-			else
-				Render3DMesh(meshList[GEO_GRASS_LIGHTGREEN], false);
-			modelStack.PopMatrix();
-		}
-	}
+	modelStack.Scale(TERRAIN_SCALE.x, TERRAIN_SCALE.y, TERRAIN_SCALE.z);
+	Render3DMesh(meshList[GEO_TERRAIN], false);
 	modelStack.PopMatrix();
 }
 
@@ -125,25 +109,27 @@ void SceneBase::RenderEnvironment(void)
 	Render3DMesh(meshList[GEO_AXES], false);
 
 	RenderSkyPlane();
-	RenderFloor();
+	RenderTerrain();
 
-	// chair 1
-	modelStack.PushMatrix();
-	modelStack.Translate(-20, 0, -20);
-	Render3DMesh(meshList[GEO_OBJECT], false);
-	modelStack.PopMatrix();
-	
-	// chair 2
-	modelStack.PushMatrix();
-	modelStack.Translate(20, 0, -20);
-	Render3DMesh(meshList[GEO_OBJECT], true);
-	modelStack.PopMatrix();
+	for(std::vector<threeDObject *>::iterator it = threeDObjectList.begin(); it != threeDObjectList.end(); ++it)
+	{
+		threeDObject *go = (threeDObject *)*it;
+		if(go->getRender())
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(go->getPosition().x, go->getPosition().y, go->getPosition().z);
+			modelStack.MultMatrix(go->getRotation());
+			modelStack.Scale(go->getScale().x, go->getScale().y, go->getScale().z);
+			Render3DMesh(go->getMesh(), go->getReflectLight());
+			modelStack.PopMatrix();
+		}
+	}
 
-	// text
-	modelStack.PushMatrix();
-	modelStack.Scale(10, 10, 10);
-	RenderText(meshList[GEO_TEXT], "Hello World", Color(0, 1, 0));
-	modelStack.PopMatrix();
+	//// text
+	//modelStack.PushMatrix();
+	//modelStack.Scale(10, 10, 10);
+	//RenderText(meshList[GEO_TEXT], "Hello World", Color(0, 1, 0));
+	//modelStack.PopMatrix();
 }
 
 /******************************************************************************/
@@ -162,11 +148,11 @@ void SceneBase::RenderCharacters(void)
 Render Bullet here
 */
 /******************************************************************************/
-void SceneBase::RenderWeapons(void)
+void SceneBase::RenderBullets(void)
 {
 	for(int i = 0; i < pistol.m_Ammo.size(); ++i)
 	{
-		if (pistol.m_Ammo[i]->getRender() == true)
+		if (pistol.m_Ammo[i]->getStatus() == true)
 		{
 			modelStack.PushMatrix();
 			modelStack.Translate(pistol.m_Ammo[i]->getPosition().x, pistol.m_Ammo[i]->getPosition().y, pistol.m_Ammo[i]->getPosition().z);
@@ -174,19 +160,6 @@ void SceneBase::RenderWeapons(void)
 			modelStack.PopMatrix();
 		}
 	}
-
-	modelStack.PushMatrix();
-	modelStack.Translate(hb1.getMidPoint().x, hb1.getMidPoint().y, hb1.getMidPoint().z);
-	modelStack.Scale(hb1.getLength(), hb1.getHeight(), hb1.getDepth());
-	Render3DMesh(meshList[GEO_CUBE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(hb2.getMidPoint().x, hb2.getMidPoint().y, hb2.getMidPoint().z);
-	modelStack.Scale(hb2.getLength(), hb2.getHeight(), hb2.getDepth());
-	Render3DMesh(meshList[GEO_CUBE], true);
-	modelStack.PopMatrix();
-
 }
 
 /******************************************************************************/
@@ -244,23 +217,29 @@ void SceneBase::Render3DMesh(Mesh *mesh, bool enableLight)
 		glUniform1i(m_parameters[U_LIGHTENABLED], 0);
 	}
 
-	if (mesh->textureID > 0)
+	for (unsigned i = 0; i < mesh->MAX_TEXTURES; ++i)
 	{
-		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mesh->textureID);
-		glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
-	}
-	else
-	{
-		glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 0);
-	}
+		if(mesh->textureID[i] > 0)
+		{
+			glUniform1i(m_parameters[U_COLOR0_TEXTURE_ENABLED + (i * 2)], 1);
 
+			glActiveTexture(GL_TEXTURE0 + i);
+			glBindTexture(GL_TEXTURE_2D, mesh->textureID[i]);
+			glUniform1i(m_parameters[U_COLOR0_TEXTURE + (i * 2)], i);
+		}
+		else
+		{
+			glUniform1i(m_parameters[U_COLOR0_TEXTURE_ENABLED + (i * 2)], 0);
+		}
+	}
 	mesh->Render();
 
-	if (mesh->textureID > 0)
+	for (unsigned i = 0; i < mesh->MAX_TEXTURES; ++i)
 	{
-		glBindTexture(GL_TEXTURE_2D, 0);
+		if(mesh->textureID[i] > 0)
+		{
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
 	}
 }
 
@@ -289,15 +268,15 @@ void SceneBase::Render2DMesh(Mesh* mesh, bool enableLight, float size, float x, 
 
 			if (mesh->textureID > 0)
 			{
-				glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+				glUniform1i(m_parameters[U_COLOR0_TEXTURE_ENABLED], 1);
 				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, mesh->textureID);
-				glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+				glBindTexture(GL_TEXTURE_2D, mesh->textureID[0]);
+				glUniform1i(m_parameters[U_COLOR0_TEXTURE], 0);
 			}
 
 			else
 			{
-				glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 0);
+				glUniform1i(m_parameters[U_COLOR0_TEXTURE_ENABLED], 0);
 			}
 
 			mesh->Render();
@@ -327,10 +306,10 @@ void SceneBase::RenderText(Mesh* mesh, std::string text, Color color)
 	glUniform1i(m_parameters[U_TEXT_ENABLED], 1);
 	glUniform3fv(m_parameters[U_TEXT_COLOR], 1, &color.r);
 	glUniform1i(m_parameters[U_LIGHTENABLED], 0);
-	glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+	glUniform1i(m_parameters[U_COLOR0_TEXTURE_ENABLED], 1);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, mesh->textureID);
-	glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+	glBindTexture(GL_TEXTURE_2D, mesh->textureID[0]);
+	glUniform1i(m_parameters[U_COLOR0_TEXTURE], 0);
 	
 	for (unsigned i = 0; i < text.length(); ++i)
 	{
@@ -372,10 +351,10 @@ void SceneBase::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, fl
 	glUniform1i(m_parameters[U_TEXT_ENABLED], 1);
 	glUniform3fv(m_parameters[U_TEXT_COLOR], 1, &color.r);
 	glUniform1i(m_parameters[U_LIGHTENABLED], 0);
-	glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+	glUniform1i(m_parameters[U_COLOR0_TEXTURE_ENABLED], 1);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, mesh->textureID);
-	glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+	glBindTexture(GL_TEXTURE_2D, mesh->textureID[0]);
+	glUniform1i(m_parameters[U_COLOR0_TEXTURE], 0);
 	
 	for (unsigned i = 0; i < text.length(); ++i)
 	{

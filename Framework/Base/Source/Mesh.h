@@ -19,6 +19,7 @@ public:
 	void Render();
 	void Render(unsigned offset, unsigned count);
 
+	static const unsigned MAX_TEXTURES = 2;
 	const std::string name;
 	DRAW_MODE mode;
 	unsigned vertexBuffer;
@@ -26,7 +27,7 @@ public:
 	unsigned indexSize;
 
 	Material material;
-	unsigned textureID;
+	unsigned textureID[MAX_TEXTURES];
 };
 
 #endif

@@ -28,74 +28,9 @@ enum GAMEOBJECT_TYPE
 		GO_NONE = 0,
 		GO_CHARACTER,
 		GO_WEAPON,
+		GO_BULLET,
 		GO_ENVIRONMENT,
 		GO_TOTAL, //must be last
-};
-
-/******************************************************************************/
-/*!
-		Struct Properties:
-\brief	Consists of translation, rotation and scale of a basic object
-*/
-/******************************************************************************/
-struct Properties
-{
-	Mtx44 translation, rotation, scale;
-
-	Properties()
-	{
-		translation.SetToIdentity();
-		rotation.SetToIdentity();
-		scale.SetToIdentity();
-	}
-
-	Properties& operator=(const Properties& rhs)
-	{
-		this->translation = rhs.translation;
-		this->rotation = rhs.rotation;
-		this->scale = rhs.scale;
-
-		return *this;
-	}
-};
-
-/******************************************************************************/
-/*!
-		Struct Dimension:
-\brief	Consists of length, width and height of a basic object
-*/
-/******************************************************************************/
-struct Dimension
-{
-	float fLength, fHeight, fDepth;
-
-	Dimension()
-	{
-		fLength = fHeight = fDepth = 2.f;
-	}
-
-	Dimension(float _length, float _height, float _width)
-	{
-		fLength = _length;
-		fHeight = _height;
-		fDepth = _width;
-	}
-
-	void set(float _length, float _height, float _width = 0.f)
-	{
-		fLength = _length;
-		fHeight = _height;
-		fDepth = _width;
-	}
-
-	Dimension& operator=(const Dimension& rhs)
-	{
-		this->fLength = rhs.fLength;
-		this->fHeight = rhs.fHeight;
-		this->fDepth = rhs.fDepth;
-
-		return *this;
-	}
 };
 
 class GameObject
@@ -103,10 +38,10 @@ class GameObject
 protected:
 	GAMEOBJECT_TYPE m_GOType;
 	Mesh* m_pMesh;
-	Properties m_TRS;
 	Vector3 m_v3Position;
+	Mtx44 m_matRotation;
+	Vector3 m_v3Scale;
 	Vector3 m_v3Velocity;
-	Dimension m_Size;
 	float m_fMass;
 	bool m_bRender;
 	bool m_bReflectLight;
@@ -114,25 +49,25 @@ public:
 	GameObject(GAMEOBJECT_TYPE typeValue = GO_NONE);
 	~GameObject(void);
 
-	void setType(GAMEOBJECT_TYPE type);
-	void setMesh(Mesh* mesh);
-	void setProperties(Properties TRS);
-	void setPosition(Vector3 position);
-	void setVelocity(Vector3 velocity);
-	void setSize(Dimension size);
-	void setMass(float mass);
-	void setRender(bool render);
-	void setReflectLight(bool lighting);
+	virtual void setType(GAMEOBJECT_TYPE type);
+	virtual void setMesh(Mesh* mesh);
+	virtual void setPosition(Vector3 position);
+	virtual void setRotation(Mtx44 rotation);
+	virtual void setScale(Vector3 scale);
+	virtual void setVelocity(Vector3 velocity);
+	virtual void setMass(float mass);
+	virtual void setRender(bool render);
+	virtual void setReflectLight(bool lighting);
 	
-	GAMEOBJECT_TYPE getGOTYPE(void) const;
-	Mesh* getMesh(void) const;
-	Properties getTRS(void) const;
-	Vector3 getPosition(void) const;
-	Vector3 getVelocity(void) const;
-	Dimension getSize(void) const;
-	float getMass(void) const;
-	bool getRender(void) const;
-	bool getReflectLight(void) const;
+	virtual GAMEOBJECT_TYPE getGOTYPE(void) const;
+	virtual Mesh* getMesh(void) const;
+	virtual Vector3 getPosition(void) const;
+	virtual Mtx44 getRotation(void) const;
+	virtual Vector3 getScale(void) const;
+	virtual Vector3 getVelocity(void) const;
+	virtual float getMass(void) const;
+	virtual bool getRender(void) const;
+	virtual bool getReflectLight(void) const;
 };
 
 #endif

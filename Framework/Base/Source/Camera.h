@@ -9,10 +9,7 @@ To store camera position, target and up.
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "Application.h"
 #include "Vector3.h"
-#include "MatrixStack.h"
-#include "Mtx44.h"
 
 /******************************************************************************/
 /*!

@@ -8,6 +8,8 @@ Camera funtions that calculate and return the latest position of the camera.
 /******************************************************************************/
 #include "Camera.h"
 
+#include "Application.h"
+#include "Mtx44.h"
 /******************************************************************************/
 /*!
 \brief

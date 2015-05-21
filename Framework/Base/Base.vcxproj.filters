@@ -147,6 +147,15 @@
     <ClCompile Include="Source\Weapon.cpp">
       <Filter>Source Files\Objects\Weapon</Filter>
     </ClCompile>
+    <ClCompile Include="Source\twoDObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\threeDObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LoadHmap.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -214,6 +223,15 @@
     </ClInclude>
     <ClInclude Include="Source\Weapon.h">
       <Filter>Header Files\Objects\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\twoDObject.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\threeDObject.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LoadHmap.h">
+      <Filter>Header Files\Misc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

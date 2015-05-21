@@ -10,8 +10,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "SceneBase.h"
-
 GLFWwindow* m_window;
 const unsigned char FPS = 120; // FPS of this game
 const unsigned int frameTime = 1000 / FPS; // time for each frame
@@ -54,7 +52,7 @@ bool Application::IsMousePressed(unsigned short key) //0 - Left, 1 - Right, 2 - 
 	return glfwGetMouseButton(m_window, key) != 0;
 }
 
-bool Application::getMouseUpdate(void)
+bool Application::GetMouseUpdate(void)
 {
 	glfwGetCursorPos(m_window, &mouse_current_x, &mouse_current_y);
 
@@ -83,7 +81,67 @@ bool Application::getMouseUpdate(void)
 	mouse_last_x = mouse_current_x;
 	mouse_last_y = mouse_current_y;
 
+	if (mouse_diff_x < 0)
+	{
+		scene->UpdateCameraStatus('j');
+	}
+
+	if (mouse_diff_x > 0)
+	{
+		scene->UpdateCameraStatus('l');
+	}
+
+	if (mouse_diff_y < 0)
+	{
+		scene->UpdateCameraStatus('k');
+	}
+
+	if (mouse_diff_y > 0)
+	{
+		scene->UpdateCameraStatus('i');
+	}
+
+	if (glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+	{
+		scene->UpdateWeaponStatus(scene->WA_FIRE);
+	}
+
 	return false;
+}
+
+bool Application::GetKeyboardUpdate()
+{
+	if (IsKeyPressed('A'))
+	{
+		scene->UpdateCameraStatus('a');
+	}
+
+	if (IsKeyPressed('D'))
+	{
+		scene->UpdateCameraStatus('d');
+	}
+
+	if (IsKeyPressed('W'))
+	{
+		scene->UpdateCameraStatus('w');
+	}
+
+	if (IsKeyPressed('S'))
+	{
+		scene->UpdateCameraStatus('s');
+	}
+
+	if (IsKeyPressed('Q'))
+	{
+		scene->UpdateCameraStatus('q');
+	}
+
+	if (IsKeyPressed('E'))
+	{
+		scene->UpdateCameraStatus('e');
+	}
+
+	return true;
 }
 
 Application::Application()
@@ -114,6 +172,7 @@ void Application::Init()
 
 	//Create a window and create its OpenGL context
 	m_window = glfwCreateWindow(m_window_width, m_window_height, "DM2231_Framework", glfwGetPrimaryMonitor(), NULL);
+	//m_window = glfwCreateWindow(1366, 768, "DM2231_Framework", NULL, NULL);
 
 	//If the window couldn't be created
 	if (!m_window)
@@ -147,14 +206,30 @@ void Application::Init()
 void Application::Run()
 {
 	//Main Loop
-	Scene *scene = new SceneBase();
+	scene = new SceneBase();
 	scene->Init();
 
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
 	while (!glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
 	{
-		getMouseUpdate();
-		scene->Update(m_timer.getElapsedTime());
+		// Get the elapsed time
+		m_dElapsedTime = m_timer.getElapsedTime();
+		m_dAccumulatedTime_ThreadOne += m_dElapsedTime;
+		m_dAccumulatedTime_ThreadTwo += m_dElapsedTime;
+
+		if (m_dAccumulatedTime_ThreadOne > (float)(1/120))
+		{
+			GetKeyboardUpdate();
+			GetMouseUpdate();
+			scene->Update(m_dElapsedTime);
+			m_dAccumulatedTime_ThreadOne = 0.0;
+		}
+
+		if (m_dAccumulatedTime_ThreadTwo > 0.03)
+		{
+			// updateAI();
+			m_dAccumulatedTime_ThreadTwo = 0.0;
+		}
 		scene->RenderScene();
 		//Swap buffers
 		glfwSwapBuffers(m_window);

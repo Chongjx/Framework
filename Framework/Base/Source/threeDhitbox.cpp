@@ -412,3 +412,49 @@ void check3DCollision(threeDhitbox &user, threeDhitbox &target, bool &collide, s
 		collide = false;
 	}
 }
+
+/******************************************************************************/
+/*!
+\brief	update the position of the hitbox base on the value
+*/
+/******************************************************************************/
+void updateHitBox(threeDhitbox &user, Mtx44 TRSvalue)
+{
+	user.create3Dhitbox
+		(TRSvalue * Vector3(user.m_fHalfLength, -user.m_fHalfHeight, user.m_fHalfDepth) + user.m_v3MidPoint,
+		TRSvalue * Vector3(user.m_fHalfLength, user.m_fHalfHeight, user.m_fHalfDepth) + user.m_v3MidPoint,
+		TRSvalue * Vector3(-user.m_fHalfLength, user.m_fHalfHeight, user.m_fHalfDepth) + user.m_v3MidPoint,
+		TRSvalue * Vector3(-user.m_fHalfLength, -user.m_fHalfHeight, user.m_fHalfDepth) + user.m_v3MidPoint,
+		TRSvalue * Vector3(user.m_fHalfLength, -user.m_fHalfHeight, -user.m_fHalfDepth) + user.m_v3MidPoint,
+		TRSvalue * Vector3(user.m_fHalfLength, user.m_fHalfHeight, -user.m_fHalfDepth) + user.m_v3MidPoint,
+		TRSvalue * Vector3(-user.m_fHalfLength, user.m_fHalfHeight, -user.m_fHalfDepth) + user.m_v3MidPoint,
+		TRSvalue * Vector3(-user.m_fHalfLength, -user.m_fHalfHeight, -user.m_fHalfDepth) + user.m_v3MidPoint, user.m_sName);
+}
+
+/******************************************************************************/
+/*!
+\brief	overloaded operator= to assign 3Dhitbox
+
+\param	hitbox
+    hitbox to be equate to
+*/
+/******************************************************************************/
+threeDhitbox &threeDhitbox::operator=(threeDhitbox &input)
+{
+	this->m_v3MidPoint = input.m_v3MidPoint;
+	this->m_fLength = input.m_fLength;
+	this->m_fHeight = input.m_fHeight;
+	this->m_fDepth = input.m_fDepth;
+
+	this->m_fHalfLength = input.m_fHalfLength;
+	this->m_fHalfHeight = input.m_fHalfHeight;
+	this->m_fHalfDepth = input.m_fHalfDepth;
+
+	this->m_v3UnitVecX = input.m_v3UnitVecX;
+	this->m_v3UnitVecY = input.m_v3UnitVecY;
+	this->m_v3UnitVecZ = input.m_v3UnitVecZ;
+
+	this->m_sName = input.m_sName;
+
+	return *this;
+}
