@@ -156,6 +156,9 @@
     <ClCompile Include="Source\LoadHmap.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
+    <ClCompile Include="Source\MiniMap.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -231,6 +234,9 @@
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="Source\LoadHmap.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MiniMap.h">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
   </ItemGroup>

@@ -286,6 +286,8 @@ void SceneBase::InitVariables(void)
 
 	bLightEnabled = true;
 
+	m_Minimap = NULL;
+
 	threeDObject *platform = new threeDObject;
 	threeDObject *crate = new threeDObject;
 
@@ -345,6 +347,12 @@ Init User Interface
 /******************************************************************************/
 void SceneBase::InitUI(void)
 {
+	m_Minimap = new MiniMap();
+	m_Minimap->SetBackground(MeshBuilder::GenerateMinimap("Minimap", Color(1, 1, 1), 1.f));
+	m_Minimap->GetBackground()->textureID[0] = LoadTGA("Image//sand.tga");
+	m_Minimap->GetBackground()->textureID[1] = LoadTGA("Image//dust.tga");
+	m_Minimap->SetBorder(MeshBuilder::GenerateMinimapBorder("MinimapBorder", Color(1, 1, 0), 1.f));
+	m_Minimap->SetAvatar(MeshBuilder::GenerateMinimapAvatar("MinimapAvatar", Color(1, 0, 0), 1.f));
 }
 
 /******************************************************************************/

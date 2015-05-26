@@ -85,6 +85,11 @@ void SceneBase::Exit()
 			delete meshList[i];
 	}
 
+	if (m_Minimap)
+	{
+		delete m_Minimap;
+		m_Minimap = NULL;
+	}
 	/*while(threeDObjectList.size() > 0)
 	{
 		threeDObject *go = threeDObjectList.back();

@@ -23,6 +23,7 @@ Class to build ...
 #include "shader.hpp"
 #include "LoadTGA.h"
 #include "LoadHmap.h"
+#include "MiniMap.h"
 
 #include <string>
 #include <stdio.h>
@@ -174,6 +175,9 @@ public:
 	void RenderBullets(void);
 	void RenderUI(void);
 
+	// Toggle HUD mode
+	void SetHUD(const bool m_bHUDmode);
+
 	void Render3DMesh(Mesh *mesh, bool enableLight);
 	void Render2DMesh(Mesh* mesh, bool enableLight, float size = 1.0f, float x = 0.0f, float y = 0.0f);
 	void RenderText(Mesh* mesh, std::string text, Color color);
@@ -184,6 +188,8 @@ private:
 	unsigned m_programID;
 	unsigned m_parameters[U_TOTAL];
 	vector<unsigned char>m_heightMap;
+	// handle to the minimap
+	MiniMap* m_Minimap;
 
 	static const int NUM_LIGHTS = 2;
 
