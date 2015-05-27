@@ -10,15 +10,23 @@ class Inventory
 {
 public:
 	Inventory(void);
+	Inventory(int bagSize);
 	~Inventory(void);
 
 	vector<Weapon *> weaponList;
 	int m_iSlots;
+	int m_iNumWeap;
 
-	void removeWeapon(Weapon &oldWeapon);
-	void addWeapon(Weapon &newWeapon);
+	Weapon* currentWeapon;
+	Weapon* nextWeapon;
 
-	Weapon* currentWeapon(void);
+	Weapon pistol;
+	Weapon rifle;
+	Weapon sniper;
+
+	//bool addWeapon(Weapon &newWeapon);
+	//void switchWeapon(bool increment);
+	//bool removeWeapon(void);
 };
 
 #endif

@@ -1,7 +1,10 @@
 #include "Bullet.h"
 
-Bullet::Bullet(void) : m_bStatus(false), m_fBulletSpeed(0), m_fLifeTime(0)
+Bullet::Bullet(void)
 {
+	m_bStatus = false;
+	m_fBulletSpeed = 600.f;
+	m_fLifeTime = 5.f;
 	m_BulletBox.create3Dhitbox(Vector3(0.f, 0.f, 0.f), 0.5f, 0.5f, 0.5f, "CLASSIC BULLET"); 
 	m_v3Dir.Set(0.0f, 0.0f, 0.0f);
 }
@@ -73,6 +76,8 @@ void Bullet::Update(const double dt)
 		if (getLifeTime() < 0)
 		{
 			setStatus(false);
+
+			setLifeTime(5.f);
 		}
 	}
 }

@@ -8,34 +8,19 @@ Weapon::Weapon(void)
 	m_fDmg = 10.f;
 	m_fReloadSpeed = 3.f;
 	m_iMagazineSize = 30;
+	m_iMagazineAmmo = 30;
 	m_iMaxAmmo = 300;
 	m_iCurrentAmmo = 30;
-
-	for (int i = 0; i < m_iMagazineSize * 2; ++i)
-	{
-		m_Ammo.push_back(new Bullet);
-	}
-
-	for(std::vector<Bullet *>::iterator it = m_Ammo.begin(); it != m_Ammo.end(); ++it)
-	{
-		Bullet *bullet = (Bullet*) *it;
-		bullet->setRender(false);
-		bullet->setStatus(false);
-	}
 
 	m_bCanFire = true;
 	m_bIsReload = false;
 	m_bIsEmpty = false;
+
+	m_fFireTimer = 0.f;
 }
 
 Weapon::~Weapon(void)
 {
-	while(m_Ammo.size() > 0)
-	{
-		Bullet *bullet = m_Ammo.back();
-		delete bullet;
-		m_Ammo.pop_back();
-	}
 }
 
 void Weapon::setWeaponType(WEAPON_TYPE weaponType)
@@ -76,11 +61,11 @@ void Weapon::setAmmo(int ammo)
 void Weapon::setMagazineSize(int magazineSize)
 {
 	this->m_iMagazineSize = magazineSize;
+}
 
-	for (int i = 0; i < m_iMagazineSize; ++i)
-	{
-		m_Ammo.push_back(new Bullet);
-	}
+void Weapon::setMagazineAmmo(int magazineAmmo)
+{
+	this->m_iMagazineAmmo = magazineAmmo;
 }
 
 void Weapon::setMaxAmmo(int maxAmmo)
@@ -143,6 +128,11 @@ int Weapon::getMagazineSize(void) const
 	return this->m_iMagazineSize;
 }
 
+int Weapon::getMagazineAmmo(void) const
+{
+	return this->m_iMagazineAmmo;
+}
+
 int Weapon::getMaxAmmo(void) const
 {
 	return this->m_iMaxAmmo;
@@ -163,25 +153,100 @@ bool Weapon::getEmpty(void) const
 	return this->m_bIsEmpty;
 }
 
-void Weapon::Fire(FPcamera &user)
+void Weapon::Update(double dt)
 {
-	for(std::vector<Bullet *>::iterator it = m_Ammo.begin(); it != m_Ammo.end(); ++it)
+	m_fFireTimer += dt;
+
+	if (m_iCurrentAmmo <= 0)
 	{
-		Bullet *bullet = (Bullet*) *it;
-			
-		if(bullet->getStatus() == false)
-		{
-			bullet->setStatus(true);
-			Vector3 view = (user.getTarget() - user.getPosition()).Normalized();
-			bullet->Shot(user.getTarget(), Vector3(view.x, view.y, view.z), 200.f, 5.f);
-			break;
-		}
+		m_bIsEmpty = true;
+		m_bCanFire = false;
 	}
-	--m_iCurrentAmmo;
+
+	else if (m_iMagazineAmmo > 0)
+	{ 
+		m_bIsEmpty = false;
+		m_bCanFire = true;
+	}
 }
 
-void Weapon::Reload(void)
+bool Weapon::Fire(void)
 {
+	if(m_bCanFire)
+	{
+		switch(m_WeaponType)
+		{
+			case WEAP_PISTOL:
+			{
+				if (m_fFireTimer > m_fFireRate)
+				{
+					--m_iMagazineAmmo;
+					m_fFireTimer = 0.f;
+					m_bCanFire = true;
+					break;
+				}
+
+				else
+				{
+					m_bCanFire = false;
+				}
+				
+			}
+			case WEAP_RIFLE:
+			{
+				if (m_fFireTimer > m_fFireRate)
+				{
+					--m_iMagazineAmmo;
+					m_fFireTimer = 0.f;
+					m_bCanFire = true;
+					break;
+				}
+				break;
+			}
+			case WEAP_SNIPER:
+			{
+				if (m_fFireTimer > m_fFireRate)
+				{
+					--m_iMagazineAmmo;
+					m_fFireTimer = 0.f;
+					m_bCanFire = true;
+					break;
+				}
+				break;
+			}
+		}
+
+		return m_bCanFire;
+	}
+
+	else
+	{
+		return false;
+	}
+}
+
+bool Weapon::Reload(void)
+{
+	if (m_iCurrentAmmo <= 0)
+	{
+		return false;
+	}
+
+	// if there are enough ammo to reload
+	else if (m_iCurrentAmmo > m_iMagazineSize && m_iMagazineAmmo < m_iMagazineSize)
+	{
+		int ammoReloaded = m_iMagazineSize - m_iMagazineAmmo;
+
+		m_iCurrentAmmo -= ammoReloaded;
+		m_iMagazineAmmo = m_iMagazineSize;
+
+		return true;
+	}
+
+	else
+	{
+		return false;
+	}
 }
 
 void Weapon::SpecialFunc(void)

@@ -26,12 +26,15 @@ private:
 	float m_fReloadSpeed;
 	float m_fRecoil;
 	int m_iMagazineSize;
+	int m_iMagazineAmmo;
 	int m_iMaxAmmo;
 	int m_iCurrentAmmo;
 
 	bool m_bCanFire;
 	bool m_bIsReload;
 	bool m_bIsEmpty;
+
+	float m_fFireTimer;
 public:
 	Weapon(void);
 	~Weapon(void);
@@ -44,6 +47,7 @@ public:
 	void setRecoil(float recoil);
 	void setAmmo(int ammo);
 	void setMagazineSize(int magazineSize);
+	void setMagazineAmmo(int magazienAmmo);
 	void setMaxAmmo(int maxAmmo);
 	void setFire(bool canFire);
 	void setReload(bool reloading);
@@ -57,13 +61,15 @@ public:
 	float getRecoil(void) const;
 	int getAmmo(void) const;
 	int getMagazineSize(void) const;
+	int getMagazineAmmo(void) const;
 	int getMaxAmmo(void) const;
 	bool getCanFire(void) const;
 	bool getReload(void) const;
 	bool getEmpty(void) const;
 
-	void Fire(FPcamera &user);
-	void Reload(void);
+	void Update(double dt);
+	bool Fire(void);
+	bool Reload(void);
 	void SpecialFunc(void);
 };
 

@@ -81,5 +81,6 @@ void Mesh::Render(unsigned offset, unsigned count)
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(2);					glDisableVertexAttribArray(3);
+	glDisableVertexAttribArray(2);					
+	glDisableVertexAttribArray(3);
 }

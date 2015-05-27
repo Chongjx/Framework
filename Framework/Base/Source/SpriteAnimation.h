@@ -23,7 +23,7 @@ struct Animation
 	float animTime;
 	bool ended;
 
-	void Set(int startFrame, int endFrame, int repeat, int time)
+	void Set(int startFrame, int endFrame, int repeat, float time)
 	{
 		this->startFrame = startFrame;
 		this->endFrame = endFrame;

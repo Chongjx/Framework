@@ -143,12 +143,12 @@ void SceneBase::InitLights(void)
 
 	Color fogColor(0.913f, 0.725f, 0.549f);
 	glUniform3fv(m_parameters[U_FOG_COLOR], 1, &fogColor.r);
-	glUniform1f(m_parameters[U_FOG_START], 10);
-	glUniform1f(m_parameters[U_FOG_END], 1000);
+	glUniform1f(m_parameters[U_FOG_START], 200);
+	glUniform1f(m_parameters[U_FOG_END], 2000);
 	glUniform1f(m_parameters[U_FOG_DENSITY], 0.005f);
 	glUniform1f(m_parameters[U_FOG_TYPE], 2);
 	// Disable fog
-	glUniform1f(m_parameters[U_FOG_ENABLED], 1);
+	glUniform1f(m_parameters[U_FOG_ENABLED], 0);
 
 	//Number of lights in Shader
 	glUniform1i(m_parameters[U_NUMLIGHTS], 2);
@@ -171,7 +171,7 @@ void SceneBase::InitMesh(void)
 
 	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 18, 36, 1.f);
 
-	meshList[GEO_SPHERE] = MeshBuilder::GenerateSphere("sphere", Color(1, 0, 0), 18, 36, 10.f);
+	meshList[GEO_SPHERE] = MeshBuilder::GenerateSphere("sphere", Color(1, 0, 0), 18, 36, 1.f);
 
 	meshList[GEO_CUBE] = MeshBuilder::GenerateCube("cube", Color(1, 0, 1), 1.f);
 
@@ -185,12 +185,14 @@ void SceneBase::InitMesh(void)
 	meshList[GEO_CONE]->material.kDiffuse.Set(0.99f, 0.99f, 0.99f);
 	meshList[GEO_CONE]->material.kSpecular.Set(0.f, 0.f, 0.f);
 
-	meshList[GEO_SKYPLANE] = MeshBuilder::GenerateSkyPlane("skyplane", Color(1, 1, 1), 128, 1000.0f, 2500.f, 1.0f, 1.0f);
+	meshList[GEO_CURSOR] = MeshBuilder::GenerateQuad("cursor", Color(1.f, 1.f, 1.f), 1.f);
+	meshList[GEO_CURSOR]->textureID[0] = LoadTGA("Image//cursor.tga");
+
+	meshList[GEO_SKYPLANE] = MeshBuilder::GenerateSkyPlane("skyplane", Color(1, 1, 1), 128, 2000.0f, 4000.f, 1.0f, 1.0f);
 	meshList[GEO_SKYPLANE]->textureID[0] = LoadTGA("Image//top.tga");
 
 	meshList[GEO_TERRAIN] = MeshBuilder::GenerateTerrain("terrain", "Image//heightmap.raw", m_heightMap);
 	meshList[GEO_TERRAIN]->textureID[0] = LoadTGA("Image//sand.tga");
-	//meshList[GEO_TERRAIN]->textureID[1] = LoadTGA("Image//dust.tga");
 
 	meshList[GEO_PLATFORM] = MeshBuilder::GenerateOBJ("platform", "OBJ//platform.obj");
 	meshList[GEO_PLATFORM]->textureID[0] = LoadTGA("Image//concrete.tga");
@@ -203,6 +205,10 @@ void SceneBase::InitMesh(void)
 
 	meshList[GEO_SANDBAG] = MeshBuilder::GenerateOBJ("sandbag", "OBJ//sandbag.obj");
 	meshList[GEO_SANDBAG]->textureID[0] = LoadTGA("Image//sandbag.tga");
+
+	meshList[GEO_P90] = MeshBuilder::GenerateOBJ("sandbag", "OBJ//weap_P90.obj");
+	meshList[GEO_P90]->textureID[0] = LoadTGA("Image//weap_P90_0.tga");
+	meshList[GEO_P90]->textureID[1] = LoadTGA("Image//weap_P90_1.tga");
 }
 
 /******************************************************************************/
@@ -213,7 +219,7 @@ Init Camera
 /******************************************************************************/
 void SceneBase::InitCamera(void)
 {
-	camera.Init(
+	player.camera.Init(
 		Vector3(0, 25 + TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, 0/TERRAIN_SCALE.x, 0/TERRAIN_SCALE.z), 0), 
 		Vector3(0, 25 + TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, 0/TERRAIN_SCALE.x, 0/TERRAIN_SCALE.z), 10), 
 		Vector3(0, 1, 0));
@@ -260,6 +266,8 @@ Init Characters
 /******************************************************************************/
 void SceneBase::InitCharacters(void)
 {
+	player.setMesh(meshList[GEO_CUBE]);
+	player.setRender(true);
 }
 
 /******************************************************************************/
@@ -270,20 +278,20 @@ Init Weapons
 /******************************************************************************/
 void SceneBase::InitWeapons(void)
 {
-	pistol.setWeaponType(WEAP_PISTOL);
-	pistol.setName("Desert Eagle");
-	pistol.setMesh(meshList[GEO_CUBE]);
-	pistol.setFireRate(2.f);
-	pistol.setDmg(70.f);
-	pistol.setReloadSpeed(3.f);
-	pistol.setRecoil(5.f);
-	pistol.setAmmo(7);
-	pistol.setMagazineSize(7);
-	pistol.setMaxAmmo(40);
-	pistol.setFire(true);
-	pistol.setReload(false);
-	pistol.setEmpty(false);
-	pistol.setRender(false);
+	player.bagpack.pistol.setWeaponType(WEAP_PISTOL);
+	player.bagpack.pistol.setName("Desert Eagle");
+	player.bagpack.pistol.setFireRate(0.5f);
+	player.bagpack.pistol.setDmg(10.f);
+	player.bagpack.pistol.setReloadSpeed(3.f);
+	player.bagpack.pistol.setRecoil(5.f);
+	player.bagpack.pistol.setMagazineSize(7);
+	player.bagpack.pistol.setMagazineAmmo(7);
+	player.bagpack.pistol.setMaxAmmo(49);
+	player.bagpack.pistol.setAmmo(49);
+	player.bagpack.pistol.setFire(true);
+	player.bagpack.pistol.setReload(false);
+	player.bagpack.pistol.setEmpty(false);
+	player.bagpack.pistol.setRender(true);
 }
 
 /******************************************************************************/
@@ -300,66 +308,38 @@ void SceneBase::InitVariables(void)
 	//perspective.SetToOrtho(-80, 80, -60, 60, -1000, 1000);
 	projectionStack.LoadMatrix(perspective);
 
-	Properties TRS;
-	ResetTRS(TRS);
-
 	bLightEnabled = true;
 
 	m_Minimap = NULL;
 
-	threeDObject *platform = new threeDObject;
-	threeDObject *crate = new threeDObject;
+	Properties TRS;
 
-	for (int i = 0; i < 2; ++i)
+	//Construct 50 environment objects
+	for (int i = 0; i < 50; ++i)
 	{
-		// create a platform for starting
-		if(i == 0)
-		{
-			platform->setPosition(Vector3(0, TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, 0/TERRAIN_SCALE.x, 1400/TERRAIN_SCALE.z), 1400));
-		}
-		else
-		{
-			platform->setPosition(Vector3(0, 2.5f + TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, 0/TERRAIN_SCALE.x, -1600/TERRAIN_SCALE.z), -1600));
-		}
-		TRS.translation.SetToTranslation(platform->getPosition());
-		TRS.scale.SetToScale(Vector3(1.f, 1.f, 1.f));
-		platform->setTRS(TRS);
-		platform->setMesh(meshList[GEO_PLATFORM]);
-		platform->setType(GAMEOBJECT_TYPE::GO_ENVIRONMENT);
-		threeDhitbox platformArea;
-		platformArea.create3Dhitbox(Vector3(platform->getPosition()), 10, 5, 10, "platform");
-		platform->setHitBox(platformArea);
-
-		platform->setReflectLight(true);
-		platform->setRender(true);
-
-		threeDObjectList.push_back(platform);
-
-		ResetTRS(TRS);
-		// crates and sandbag
-		for (int  j = 0; j < 10; ++j)
-		{
-			float xCoord = Math::RandFloatMinMax(-100.f, 100.f);
-			float zCoord = Math::RandFloatMinMax(-1600.f - 50.f, -1600.f + 50.f);
-			float scale = 5.f;
-
-			crate->setPosition(Vector3(xCoord, 10.f + TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, xCoord/TERRAIN_SCALE.x, zCoord/TERRAIN_SCALE.z), zCoord));
-			TRS.translation.SetToTranslation(crate->getPosition());
-			TRS.scale.SetToScale(Vector3(1.f, 1.f, 1.f));
-			crate->setTRS(TRS);
-			crate->setMesh(meshList[GEO_CRATE]);
-			crate->setType(GAMEOBJECT_TYPE::GO_ENVIRONMENT);
-
-			threeDhitbox crateHitBox;
-			crateHitBox.create3Dhitbox(Vector3(crate->getPosition()), scale, scale, scale, "crate");
-			crate->setHitBox(crateHitBox);
-
-			crate->setReflectLight(true);
-			crate->setRender(true);
-
-			threeDObjectList.push_back(crate);
-		}
+		environmentList.push_back(new threeDObject());
 	}
+
+	//Construct 10 character
+	for (int i = 0; i < 10; ++i)
+	{
+		characterList.push_back(new Character());
+	}
+
+	//Construct 100 bullets
+	for (int i = 0; i < 100; ++i)
+	{
+		bulletList.push_back(new Bullet());
+		bulletList[i]->setMesh(meshList[GEO_SPHERE]);
+		TRS.scale.SetToScale(5.f, 5.f, 5.f);
+		bulletList[i]->setTRS(TRS);
+	}
+
+	
+	ResetTRS(TRS);
+	// Init weapon pos
+
+	// Init all environment objs here
 
 	ResetTRS(TRS);
 }
@@ -403,4 +383,87 @@ void SceneBase::ResetTRS(Properties &TRS)
 	TRS.translation.SetToIdentity();
 	TRS.rotation.SetToIdentity();
 	TRS.scale.SetToIdentity();
+}
+
+threeDObject* SceneBase::fetchEnvironment(void)
+{
+	//Fetch an object from the list and return it
+	for(std::vector<threeDObject *>::iterator it = environmentList.begin(); it != environmentList.end(); ++it)
+	{
+		threeDObject *go = (threeDObject*) *it;
+		if(go->getRender() == false)
+		{
+			go->setRender(true);
+			go->setVelocity(Vector3(0, 0, 0));
+			return go;
+		}
+	}
+
+	//Handle the situation whenever the list runs out of objects
+	for (int i = 0; i < 10; ++i)
+	{
+		threeDObject *go = new threeDObject;
+		go->setType(GO_ENVIRONMENT);
+		environmentList.push_back(go);
+	}
+
+	threeDObject *go = environmentList.back();
+	go->setRender(true);
+	return go;
+}
+
+Character* SceneBase::fetchCharacter(void)
+{
+	//Fetch an object from the list and return it
+	for(std::vector<Character *>::iterator it = characterList.begin(); it != characterList.end(); ++it)
+	{
+		Character *go = (Character*) *it;
+		if(go->getRender() == false)
+		{
+			go->setRender(true);
+			go->setVelocity(Vector3(0, 0, 0));
+			return go;
+		}
+	}
+
+	//Handle the situation whenever the list runs out of objects
+	for (int i = 0; i < 10; ++i)
+	{
+		Character *go = new Character;
+		go->setType(GO_CHARACTER);
+		characterList.push_back(go);
+	}
+
+	Character *go = characterList.back();
+	go->setRender(true);
+	return go;
+}
+
+Bullet* SceneBase::fetchBullet(void)
+{
+	//Fetch an object from the list and return it
+	for(std::vector<Bullet *>::iterator it = bulletList.begin(); it != bulletList.end(); ++it)
+	{
+		Bullet *go = (Bullet*) *it;
+		if(go->getRender() == false)
+		{
+			go->setRender(true);
+			go->setStatus(true);
+			go->setVelocity(Vector3(0, 0, 0));
+			return go;
+		}
+	}
+
+	//Handle the situation whenever the list runs out of objects
+	for (int i = 0; i < 10; ++i)
+	{
+		Bullet *go = new Bullet;
+		go->setType(GO_BULLET);
+		bulletList.push_back(go);
+	}
+
+	Bullet *go = bulletList.back();
+	go->setRender(true);
+	go->setStatus(true);
+	return go;
 }

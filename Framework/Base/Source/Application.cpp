@@ -106,6 +106,11 @@ bool Application::GetMouseUpdate(void)
 		scene->UpdateWeaponStatus(scene->WA_FIRE);
 	}
 
+	if (glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS)
+	{
+		scene->UpdateWeaponStatus(scene->WA_CHANGEWEAPON);
+	}
+
 	return false;
 }
 
@@ -144,6 +149,11 @@ bool Application::GetKeyboardUpdate()
 	if(IsKeyPressed(VK_SPACE))
 	{
 		scene->UpdateCameraStatus(32);
+	}
+
+	if(IsKeyPressed('R'))
+	{
+		scene->UpdateWeaponStatus(scene->WA_RELOAD);
 	}
 
 	if (IsKeyPressed(VK_LSHIFT))
@@ -210,7 +220,7 @@ void Application::Init()
 		//return -1;
 	}
 
-	//glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 }
 
 void Application::Run()

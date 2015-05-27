@@ -10,12 +10,12 @@ Class to build ...
 #define SCENE_BASE_H
 
 #include "Scene.h"
-#include "FPcamera.h"
+#include "Character.h"
+#include "twoDObject.h"
 
 #include "MeshBuilder.h"
 #include "SpriteAnimation.h"
 #include "Light.h"
-#include "Weapon.h"
 
 #include "GL\glew.h"
 #include "GLFW\glfw3.h"
@@ -110,11 +110,14 @@ class SceneBase : public Scene
 		GEO_CUBE,
 		GEO_RING,
 		GEO_CONE,
+		GEO_CURSOR,
 		GEO_SKYPLANE,
 		GEO_TERRAIN,
 		GEO_PLATFORM,
 		GEO_CRATE,
 		GEO_SANDBAG,
+		GEO_P90,
+		GEO_DESERTEAGLE,
 		GEO_TEXT,
 		GEO_OBJECT,
 		GEO_MAX,
@@ -181,6 +184,7 @@ public:
 	void RenderTerrain(void);
 	void RenderEnvironment(void);
 	void RenderCharacters(void);
+	void RenderWeapons(void);
 	void RenderBullets(void);
 	void RenderUI(void);
 
@@ -191,6 +195,11 @@ public:
 	void Render2DMesh(Mesh* mesh, bool enableLight, float size = 1.0f, float x = 0.0f, float y = 0.0f);
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
+
+	threeDObject* fetchEnvironment(void);
+	Character* fetchCharacter(void);
+	Bullet* fetchBullet(void);
+	
 private:
 	unsigned m_vertexArrayID;
 	Mesh* meshList[GEO_MAX];
@@ -202,7 +211,7 @@ private:
 
 	static const int NUM_LIGHTS = 2;
 
-	FPcamera camera;
+	Character player;
 
 	MS modelStack;
 	MS viewStack;
@@ -219,7 +228,9 @@ private:
 
 	Weapon pistol;
 
-	vector<threeDObject *> threeDObjectList;
+	vector<threeDObject *> environmentList;
+	vector<Character *> characterList;
+	vector<Bullet *> bulletList;
 };
 
 #endif

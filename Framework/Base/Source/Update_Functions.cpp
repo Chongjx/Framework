@@ -93,7 +93,7 @@ Update Camera position and target
 /******************************************************************************/
 void SceneBase::UpdateMovement(double dt)
 {
-	camera.Update(dt, TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, camera.getPosition().x/TERRAIN_SCALE.x, camera.getPosition().z/TERRAIN_SCALE.z));
+	player.camera.Update(dt, TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, player.camera.getPosition().x/TERRAIN_SCALE.x, player.camera.getPosition().z/TERRAIN_SCALE.z));
 }
 
 /******************************************************************************/
@@ -120,16 +120,26 @@ time passed since last update
 /******************************************************************************/
 void SceneBase::UpdateWeapons(double dt)
 {
-	for (int i = 0; i < pistol.m_Ammo.size(); ++i)
+	if (player.getRender())
 	{
-		pistol.m_Ammo[i]->Update(dt);
+		player.bagpack.currentWeapon->Update(dt);
 	}
 
-	for (int i = 0; i < pistol.m_Ammo.size(); ++i)
+	for(std::vector<Character *>::iterator it = characterList.begin(); it != characterList.end(); ++it)
 	{
-		if (pistol.m_Ammo[i]->getStatus() == true)
+		Character *go = (Character *)*it;
+		if(go->getRender())
 		{
-			cout << pistol.m_Ammo[i]->getHitBox().getMidPoint() << endl;
+			go->bagpack.currentWeapon->Update(dt);
+		}
+	}
+
+	for(std::vector<Bullet *>::iterator it = bulletList.begin(); it != bulletList.end(); ++it)
+	{
+		Bullet *go = (Bullet *)*it;
+		if(go->getRender())
+		{
+			go->Update(dt);
 		}
 	}
 }
@@ -185,7 +195,7 @@ Update camera status
 /******************************************************************************/
 void SceneBase::UpdateCameraStatus(const unsigned char key)
 {
-	camera.UpdateStatus(key);
+	player.camera.UpdateStatus(key);
 }
 
 /******************************************************************************/
@@ -201,6 +211,20 @@ void SceneBase::UpdateWeaponStatus(const unsigned char key)
 {
 	if (key == WA_FIRE)
 	{
-		pistol.Fire(camera);
+		if(player.bagpack.currentWeapon->Fire())
+		{
+			Bullet* firedBullet = fetchBullet();
+			firedBullet->setDir(player.camera.getTarget());
+
+			player.bagpack.currentWeapon->setMesh(firedBullet->getMesh());
+		}
+	}
+
+	else if (key == WA_RELOAD)
+	{
+		if(player.bagpack.currentWeapon->Reload())
+		{
+			cout << "reload" << endl;
+		}
 	}
 }

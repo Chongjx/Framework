@@ -178,7 +178,7 @@ void FPcamera::UpdateJump(const double dt, float heightOffset)
 		// Factor in gravity
 		JumpVel += GRAVITY * dt;
 
-		// Update the camera and targt position
+		// Update the camera and target position
 		position.y += JumpVel * (float)dt;
 		target.y += JumpVel * (float)dt;
 

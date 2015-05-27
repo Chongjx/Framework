@@ -7,6 +7,7 @@ Render all the scene stuff here
 */
 /******************************************************************************/
 #include "SceneBase.h"
+#include "Application.h"
 
 /******************************************************************************/
 /*!
@@ -23,9 +24,9 @@ void SceneBase::SetCamera(void)
 
 	// Camera matrix
 	viewStack.LoadIdentity();
-	viewStack.LookAt(camera.getPosition().x, camera.getPosition().y, camera.getPosition().z,
-		camera.getTarget().x, camera.getTarget().y, camera.getTarget().z,
-		camera.getUp().x, camera.getUp().y, camera.getUp().z);
+	viewStack.LookAt(player.camera.getPosition().x, player.camera.getPosition().y, player.camera.getPosition().z,
+		player.camera.getTarget().x, player.camera.getTarget().y, player.camera.getTarget().z,
+		player.camera.getUp().x, player.camera.getUp().y, player.camera.getUp().z);
 	// Model matrix : an identity matrix (model will be at the origin)
 	modelStack.LoadIdentity();
 }
@@ -78,7 +79,7 @@ Render Sky plane here
 void SceneBase::RenderSkyPlane(void)
 {
 	modelStack.PushMatrix();
-	modelStack.Translate(0, 1800, 0);
+	modelStack.Translate(0, 2000, 0);
 	Render3DMesh(meshList[GEO_SKYPLANE], false);
 	modelStack.PopMatrix();
 }
@@ -111,19 +112,19 @@ void SceneBase::RenderEnvironment(void)
 	RenderSkyPlane();
 	RenderTerrain();
 
-	/*for(std::vector<threeDObject *>::iterator it = threeDObjectList.begin(); it != threeDObjectList.end(); ++it)
+	for(std::vector<threeDObject *>::iterator it = environmentList.begin(); it != environmentList.end(); ++it)
 	{
 		threeDObject *go = (threeDObject *)*it;
 		if(go->getRender())
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(go->getPosition().x, go->getPosition().y, go->getPosition().z);
-			modelStack.MultMatrix(go->getRotation());
-			modelStack.Scale(go->getScale().x, go->getScale().y, go->getScale().z);
+			modelStack.Translate(go->getProperties().translation);
+			modelStack.MultMatrix(go->getProperties().rotation);
+			modelStack.Scale(go->getProperties().scale);
 			Render3DMesh(go->getMesh(), go->getReflectLight());
 			modelStack.PopMatrix();
 		}
-	}*/
+	}
 
 	//// text
 	//modelStack.PushMatrix();
@@ -140,6 +141,19 @@ Render Characters and NPCs here
 /******************************************************************************/
 void SceneBase::RenderCharacters(void)
 {
+	for(std::vector<Character *>::iterator it = characterList.begin(); it != characterList.end(); ++it)
+	{
+		Character *go = (Character *)*it;
+		if(go->getRender())
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(go->getProperties().translation);
+			modelStack.MultMatrix(go->getProperties().rotation);
+			modelStack.Scale(go->getProperties().scale);
+			Render3DMesh(go->getMesh(), go->getReflectLight());
+			modelStack.PopMatrix();
+		}
+	}
 }
 
 /******************************************************************************/
@@ -150,13 +164,16 @@ Render Bullet here
 /******************************************************************************/
 void SceneBase::RenderBullets(void)
 {
-	for(int i = 0; i < pistol.m_Ammo.size(); ++i)
+	for(std::vector<Bullet *>::iterator it = bulletList.begin(); it != bulletList.end(); ++it)
 	{
-		if (pistol.m_Ammo[i]->getStatus() == true)
+		Bullet *go = (Bullet *)*it;
+		if(go->getRender())
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(pistol.m_Ammo[i]->getPosition().x, pistol.m_Ammo[i]->getPosition().y, pistol.m_Ammo[i]->getPosition().z);
-			Render3DMesh(pistol.getMesh(), pistol.getReflectLight());
+			modelStack.Translate(go->getProperties().translation);
+			modelStack.MultMatrix(go->getProperties().rotation);
+			modelStack.Scale(go->getProperties().scale);
+			Render3DMesh(go->getMesh(), go->getReflectLight());
 			modelStack.PopMatrix();
 		}
 	}
@@ -184,6 +201,8 @@ void SceneBase::RenderUI(void)
 	RenderTextOnScreen(meshList[GEO_TEXT], ss1.str(), Color(0, 1, 0), 3, 0, 3);
 
 	RenderTextOnScreen(meshList[GEO_TEXT], "Hello Screen", Color(0, 1, 0), 3, 0, 0);
+
+	Render2DMesh(meshList[GEO_CURSOR], false, 10.f, 0, 0);
 
 	Render2DMesh(m_Minimap->GetBackground(), false, 20.f, 55, 45);
 	Render2DMesh(m_Minimap->GetBorder(), false, 20.f, 55, 45);
