@@ -33,14 +33,32 @@ enum GAMEOBJECT_TYPE
 		GO_TOTAL, //must be last
 };
 
+/******************************************************************************/
+/*!
+		Struct properties:
+\brief	Consists of translation, rotation and scale of a basic object
+*/
+/******************************************************************************/
+struct Properties
+{
+	Mtx44 modelProperties, translation, rotation, scale;
+
+	Properties()
+	{
+		modelProperties.SetToIdentity();
+		translation.SetToIdentity();
+		rotation.SetToIdentity();
+		scale.SetToIdentity();
+	}
+};
+
 class GameObject
 {
 protected:
 	GAMEOBJECT_TYPE m_GOType;
 	Mesh* m_pMesh;
 	Vector3 m_v3Position;
-	Mtx44 m_matRotation;
-	Vector3 m_v3Scale;
+	Properties TRS;
 	Vector3 m_v3Velocity;
 	float m_fMass;
 	bool m_bRender;
@@ -52,8 +70,7 @@ public:
 	virtual void setType(GAMEOBJECT_TYPE type);
 	virtual void setMesh(Mesh* mesh);
 	virtual void setPosition(Vector3 position);
-	virtual void setRotation(Mtx44 rotation);
-	virtual void setScale(Vector3 scale);
+	virtual void setTRS(Properties _TRS);
 	virtual void setVelocity(Vector3 velocity);
 	virtual void setMass(float mass);
 	virtual void setRender(bool render);
@@ -62,8 +79,7 @@ public:
 	virtual GAMEOBJECT_TYPE getGOTYPE(void) const;
 	virtual Mesh* getMesh(void) const;
 	virtual Vector3 getPosition(void) const;
-	virtual Mtx44 getRotation(void) const;
-	virtual Vector3 getScale(void) const;
+	virtual Properties getProperties(void);
 	virtual Vector3 getVelocity(void) const;
 	virtual float getMass(void) const;
 	virtual bool getRender(void) const;

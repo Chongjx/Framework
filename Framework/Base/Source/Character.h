@@ -14,6 +14,7 @@ public:
 	FPcamera userCam;
 	threeDhitbox body;
 
+	//Weapon* 
 };
 
 #endif

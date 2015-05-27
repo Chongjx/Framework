@@ -1,8 +1,7 @@
 #include "GameObject.h"
 
-GameObject::GameObject(GAMEOBJECT_TYPE typeValue) : m_GOType(typeValue), m_bRender(false), m_fMass(1.f), m_v3Position(0, 0, 0), m_v3Scale(1, 1, 1)
+GameObject::GameObject(GAMEOBJECT_TYPE typeValue) : m_GOType(typeValue), m_bRender(false), m_bReflectLight(false), m_fMass(1.f), m_v3Position(0, 0, 0)
 {
-	m_matRotation.SetToIdentity();
 }
 
 GameObject::~GameObject(void)
@@ -24,14 +23,9 @@ void GameObject::setPosition(Vector3 position)
 	this->m_v3Position = position;
 }
 
-void GameObject::setRotation(Mtx44 rotation)
+void GameObject::setTRS(Properties _TRS)
 {
-	this->m_matRotation = rotation;
-}
-
-void GameObject::setScale(Vector3 scale)
-{
-	this->m_v3Scale = scale;
+	this->TRS = _TRS;
 }
 
 void GameObject::setVelocity(Vector3 velocity)
@@ -69,14 +63,14 @@ Vector3 GameObject::getPosition(void) const
 	return this->m_v3Position;
 }
 
-Mtx44 GameObject::getRotation(void) const
+Properties GameObject::getProperties(void)
 {
-	return this->m_matRotation;
-}
+	Mtx44 overall;
+	overall.SetToIdentity();
 
-Vector3 GameObject::getScale(void) const
-{
-	return this->m_v3Scale;
+	TRS.modelProperties = overall * TRS.translation * TRS.rotation * TRS.scale;
+
+	return TRS;
 }
 
 Vector3 GameObject::getVelocity(void) const

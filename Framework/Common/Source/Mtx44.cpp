@@ -383,6 +383,37 @@ void Mtx44::SetToTranslation(float tx, float ty, float tz) {
 /******************************************************************************/
 /*!
 \brief
+Set this matrix to a scaling matrix with scale factors sx, sy and sz
+
+\param Vector3
+	scale for all 3 sides
+*/ 
+/******************************************************************************/
+void Mtx44::SetToScale(Vector3 scaleFactor) {
+	SetToIdentity();
+	a[0] = scaleFactor.x;
+	a[5] = scaleFactor.y;
+	a[10] = scaleFactor.z;
+}
+
+/******************************************************************************/
+/*!
+\brief
+Set this matrix to a translation matrix with translation of (x, y, z)
+
+\param Vector3
+*/
+/******************************************************************************/
+void Mtx44::SetToTranslation(Vector3 translationFactor) {
+	SetToIdentity();
+	a[12] = translationFactor.x;
+	a[13] = translationFactor.y;
+	a[14] = translationFactor.z;
+}
+
+/******************************************************************************/
+/*!
+\brief
 Set this matrix to frustum matrix
 
 \param left

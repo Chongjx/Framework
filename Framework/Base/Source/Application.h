@@ -27,7 +27,7 @@ private:
 	~Application();
 
 	//Declare a window object
-	const static int m_window_deadzone = 50;
+	const static int m_window_deadzone = 100;
 	const static int m_window_width = 1366;
 	const static int m_window_height = 768;
 

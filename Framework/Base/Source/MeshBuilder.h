@@ -2,6 +2,7 @@
 #define MESH_BUILDER_H
 
 #include "Mesh.h"
+#include "SpriteAnimation.h"
 #include "Vertex.h"
 #include <vector>
 
@@ -25,6 +26,7 @@ public:
 	static Mesh* GenerateSkyPlane(const std::string & meshName, Color color, int slices, float PlanetRadius, float AtmosphereRadius, float hTile, float vTile);
 	static Mesh* GenerateTerrain(const std::string & meshName, const std::string &file_path, std::vector<unsigned char> &heightMap);
 	// sprite animation code here
+	static SpriteAnimation* GenerateSpriteAnimation(const std::string & meshName, unsigned numRow, unsigned numCol);
 	static Mesh* GenerateMinimap(const std::string &meshName, Color color, float length = 1.f);
 	static Mesh* GenerateMinimapBorder(const std::string &meshName, Color color, float length = 1.f);
 	static Mesh* GenerateMinimapAvatar(const std::string &meshName, Color color, float length = 1.f);

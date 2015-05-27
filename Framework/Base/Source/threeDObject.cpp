@@ -8,6 +8,16 @@ threeDObject::~threeDObject(void)
 {
 }
 
+void threeDObject::setObjName(string name)
+{
+	this->objectName = name;
+}
+
+string threeDObject::getObjName(void) const
+{
+	return this->objectName;
+}
+
 void threeDObject::setHitBox(threeDhitbox hitbox)
 {
 	this->m_3Dhitbox = hitbox;
@@ -15,18 +25,18 @@ void threeDObject::setHitBox(threeDhitbox hitbox)
 
 threeDhitbox threeDObject::getHitBox(void)
 {
-	Mtx44 translation, rotation, scale;
-	translation.SetToIdentity();
-	rotation.SetToIdentity();
-	scale.SetToIdentity();
+	m_3Dhitbox.setMidPoint(this->m_v3Position);
+	Mtx44 vertex = this->getProperties().modelProperties;
 
-	translation.SetToTranslation(this->getPosition().x, this->getPosition().y, this->getPosition().z);
-	rotation = this->getRotation();
-	scale.SetToScale(this->getScale().x, this->getScale().y, this->getScale().z);
-
-	Mtx44 vertex = (translation * rotation *scale);
-
-	updateHitBox(this->m_3Dhitbox, vertex);
+	m_3Dhitbox.create3Dhitbox
+		(vertex * Vector3(m_3Dhitbox.getHalfLength(), -m_3Dhitbox.getHalfHeight(), m_3Dhitbox.getHalfDepth()) + m_3Dhitbox.getMidPoint(),
+		vertex * Vector3(m_3Dhitbox.getHalfLength(), m_3Dhitbox.getHalfHeight(),m_3Dhitbox.getHalfDepth()) + m_3Dhitbox.getMidPoint(),
+		vertex * Vector3(-m_3Dhitbox.getHalfLength(), m_3Dhitbox.getHalfHeight(), m_3Dhitbox.getHalfDepth()) + m_3Dhitbox.getMidPoint(),
+		vertex * Vector3(-m_3Dhitbox.getHalfLength(), -m_3Dhitbox.getHalfHeight(), m_3Dhitbox.getHalfDepth()) + m_3Dhitbox.getMidPoint(),
+		vertex * Vector3(m_3Dhitbox.getHalfLength(), -m_3Dhitbox.getHalfHeight(), -m_3Dhitbox.getHalfDepth()) + m_3Dhitbox.getMidPoint(),
+		vertex * Vector3(m_3Dhitbox.getHalfLength(), m_3Dhitbox.getHalfHeight(), -m_3Dhitbox.getHalfDepth()) + m_3Dhitbox.getMidPoint(),
+		vertex * Vector3(-m_3Dhitbox.getHalfLength(), m_3Dhitbox.getHalfHeight(), -m_3Dhitbox.getHalfDepth()) + m_3Dhitbox.getMidPoint(),
+		vertex * Vector3(-m_3Dhitbox.getHalfLength(), -m_3Dhitbox.getHalfHeight(), -m_3Dhitbox.getHalfDepth()) + m_3Dhitbox.getMidPoint(), m_3Dhitbox.getName());
 
 	return this->m_3Dhitbox;
 }

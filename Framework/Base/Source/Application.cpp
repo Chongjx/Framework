@@ -73,7 +73,7 @@ bool Application::GetMouseUpdate(void)
 
 	if((mouse_current_y < m_window_deadzone) || (mouse_current_y > m_window_height - m_window_deadzone))
 	{
-		mouse_current_y = m_window_width >> 1;
+		mouse_current_y = m_window_height >> 1;
 		glfwSetCursorPos(m_window, mouse_current_x, mouse_current_y);
 	}
 
@@ -141,6 +141,16 @@ bool Application::GetKeyboardUpdate()
 		scene->UpdateCameraStatus('e');
 	}
 
+	if(IsKeyPressed(VK_SPACE))
+	{
+		scene->UpdateCameraStatus(32);
+	}
+
+	if (IsKeyPressed(VK_LSHIFT))
+	{
+		scene->UpdateCameraStatus('z');
+	}
+
 	return true;
 }
 
@@ -200,7 +210,7 @@ void Application::Init()
 		//return -1;
 	}
 
-	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	//glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 }
 
 void Application::Run()

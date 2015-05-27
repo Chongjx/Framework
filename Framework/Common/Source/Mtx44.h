@@ -40,6 +40,9 @@ public:
 	void SetToRotation(float degrees, float axisX, float axisY, float axisZ) throw( DivideByZero );
 	void SetToScale(float sx, float sy, float sz);
 	void SetToTranslation(float tx, float ty, float tz);
+
+	void SetToScale(Vector3 scaleFactor);
+	void SetToTranslation(Vector3 translationFactor);
 	void SetToFrustum(double left, double right, double	bottom, double top, double near, double far);
 	void SetToLookAt(double eyeX, double eyeY, double eyeZ,
 				double centerX, double centerY, double centerZ,

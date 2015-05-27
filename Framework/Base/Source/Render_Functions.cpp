@@ -111,7 +111,7 @@ void SceneBase::RenderEnvironment(void)
 	RenderSkyPlane();
 	RenderTerrain();
 
-	for(std::vector<threeDObject *>::iterator it = threeDObjectList.begin(); it != threeDObjectList.end(); ++it)
+	/*for(std::vector<threeDObject *>::iterator it = threeDObjectList.begin(); it != threeDObjectList.end(); ++it)
 	{
 		threeDObject *go = (threeDObject *)*it;
 		if(go->getRender())
@@ -123,7 +123,7 @@ void SceneBase::RenderEnvironment(void)
 			Render3DMesh(go->getMesh(), go->getReflectLight());
 			modelStack.PopMatrix();
 		}
-	}
+	}*/
 
 	//// text
 	//modelStack.PushMatrix();
@@ -185,12 +185,11 @@ void SceneBase::RenderUI(void)
 
 	RenderTextOnScreen(meshList[GEO_TEXT], "Hello Screen", Color(0, 1, 0), 3, 0, 0);
 
-	SetHUD(false);
-
-	Render2DMesh(m_Minimap->GetAvatar(), false, 10.f, 55, 45);
-	Render2DMesh(m_Minimap->GetBorder(), false, 20.f, 55, 45);
 	Render2DMesh(m_Minimap->GetBackground(), false, 20.f, 55, 45);
-	
+	Render2DMesh(m_Minimap->GetBorder(), false, 20.f, 55, 45);
+	Render2DMesh(m_Minimap->GetAvatar(), false, 10.f, 55, 45);
+
+	SetHUD(false);
 }
 
 /******************************************************************************/
@@ -208,12 +207,14 @@ void SceneBase::SetHUD(const bool m_bHUDmode)
 		ortho.SetToOrtho(0, 80, 0, 60, -10, 10);
 		projectionStack.PushMatrix();
 		projectionStack.LoadMatrix(ortho);
+		glUniform1f(m_parameters[U_FOG_ENABLED], 0);
 	}
 
 	else
 	{
 		projectionStack.PopMatrix();
 		glEnable(GL_DEPTH_TEST);
+		glUniform1f(m_parameters[U_FOG_ENABLED], 1);
 	}
 }
 
@@ -230,13 +231,14 @@ void SceneBase::Render3DMesh(Mesh *mesh, bool enableLight)
 	MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
 	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
 
+	modelView = viewStack.Top() * modelStack.Top();
+	glUniformMatrix4fv(m_parameters[U_MODELVIEW], 1, GL_FALSE, &modelView.a[0]);
+
 	if (enableLight && bLightEnabled)
 	{
 		glUniform1i(m_parameters[U_LIGHTENABLED], 1);
-		modelView = viewStack.Top() * modelStack.Top();
-		glUniformMatrix4fv(m_parameters[U_MODELVIEW], 1, GL_FALSE, &modelView.a[0]);
 		modelView_inverse_transpose = modelView.GetInverse().GetTranspose();
-		glUniformMatrix4fv(m_parameters[U_MODELVIEW_INVERSE_TRANSPOSE], 1, GL_FALSE, &modelView.a[0]);
+		glUniformMatrix4fv(m_parameters[U_MODELVIEW_INVERSE_TRANSPOSE], 1, GL_FALSE, &modelView_inverse_transpose.a[0]);
 
 		//load material
 		glUniform3fv(m_parameters[U_MATERIAL_AMBIENT], 1, &mesh->material.kAmbient.r);

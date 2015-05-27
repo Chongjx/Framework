@@ -19,6 +19,13 @@ FPS camera system
 /******************************************************************************/
 class FPcamera : public Camera
 {
+public:
+	enum CAM_TYPE
+	{
+		LAND_CAM,
+		AIR_CAM,
+		NUM_CAMTYPE
+	};
 private:
 	Vector3 defaultPosition;
 	Vector3 defaultTarget;
@@ -26,36 +33,60 @@ private:
 	Vector3 right;
 	float defaultSensitivity;
 	bool myKeys[255];
+	CAM_TYPE sCameraType;
+
+	bool m_bJumping;
+	float GRAVITY;
+	float JumpVel;
+	float JUMPMAXSPEED, JUMPACCEL;
 public:
 	FPcamera();
 	~FPcamera();
 
 	virtual void Init(const Vector3& pos, const Vector3& target, const Vector3& up);
 	virtual void Update(double dt, float floorLevel);
+	virtual void UpdateJump(const double dt, float heightOffset);
 	virtual void UpdateStatus(const unsigned char key);
 	virtual void Reset(void);
 
+	virtual void SetCameraType(CAM_TYPE sCameraType);
 	virtual void setPosition(Vector3 position);
 	virtual void setTarget(Vector3 target);
 	virtual void setUp(Vector3 up);
 	virtual void setSensitivity(float sensitivity);
 
+	virtual CAM_TYPE GetCameraType(void);
 	virtual Vector3 getPosition(void) const;
 	virtual Vector3 getTarget(void) const;
 	virtual Vector3 getUp(void) const;
 	virtual Vector3 getRight(void) const;
 	virtual float getSensitivity(void) const;
 
-	virtual void moveForward(const double dt, float heightOffset);
-	virtual void moveBackward(const double dt, float heightOffset);
+	// basic methods
+	virtual void moveForward(const double dt, float heightOffset, bool run = false);
+	virtual void moveBackward(const double dt, float heightOffset, bool run = false);
 	virtual void moveLeft(const double dt, float heightOffset);
 	virtual void moveRight(const double dt, float heightOffset);
-	virtual void moveUp(const double dt);
-	virtual void moveDown(const double dt);
-	virtual void turnLeft(const double dt);
-	virtual void turnRight(const double dt);
-	virtual void turnUp(const double dt);
-	virtual void turnDown(const double dt);
+	virtual void moveUp(const double dt, float heightOffset);
+	virtual void moveDown(const double dt, float heightOffset);
+
+	virtual void lookLeft(const double dt);
+	virtual void lookRight(const double dt);
+	virtual void lookUp(const double dt);
+	virtual void lookDown(const double dt);
+	virtual void lookUp(const double dt, float upValue);
+	virtual void lookDown(const double dt, float downValue);
+	virtual void SpinClockwise(const double dt);
+	virtual void SpinCounterClockwise(const double dt);
+
+	// applied methods
+	virtual void Pitch(const double dt);
+	virtual void Yaw(const double dt);
+	virtual void Walk(const double dt, float heightOffset);
+	virtual void Run(const double dt, float heightOffset);
+	virtual void Strafe(const double dt, float heightOffset);
+	virtual void Jump(const double dt);
+	virtual void Crouch(const double dt);
 };
 
 #endif

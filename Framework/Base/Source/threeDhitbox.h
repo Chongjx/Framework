@@ -44,12 +44,29 @@ private:
 	Vector3 m_v3UnitVecZ;
 
     string m_sName;
+	bool m_bCollide;
 public:
 	threeDhitbox(void);
 	~threeDhitbox(void);
 
 	void create3Dhitbox(Vector3 midPoint, float length, float height, float depth, const string name);
 	void create3Dhitbox(Vector3 frontBottomRight, Vector3 frontTopRight, Vector3 frontTopLeft, Vector3 frontBottomLeft, Vector3 backBottomRight, Vector3 backTopRight, Vector3 backTopLeft, Vector3 backBottomLeft, const string name);
+
+	void setMidPoint(Vector3 newMidPoint);
+	void setLength(float length);
+	void setHeight(float height);
+	void setDepth(float depth);
+
+	void setHalfLength(float halfLength);
+	void setHalfHeight(float halfHeight);
+	void setHalfDepth(float halfDepth);
+
+	void setUnitVecX(Vector3 uniVecX);
+	void setUnitVecY(Vector3 uniVecY);
+	void setUnitVecZ(Vector3 uniVecZ);
+
+	void setName(string name);
+	void setCollide(bool collide);
 
 	Vector3 getMidPoint(void) const;
 	float getLength(void) const;
@@ -59,13 +76,16 @@ public:
 	float getHalfLength(void) const;
 	float getHalfHeight(void) const;
 	float getHalfDepth(void) const;
+
+	Vector3 getUnitVecX(void) const;
+	Vector3 getUnitVecY(void) const;
+	Vector3 getUnitVecZ(void) const;
 	
 	string getName(void) const;
+	bool getCollide(void) const;
 
 	friend void check3DCollision(threeDhitbox &user, vector<threeDhitbox> &target, bool &collide, string &boxName);
 	friend void check3DCollision(threeDhitbox &user, threeDhitbox &target, bool &collide, string &boxName);
-
-	friend void updateHitBox(threeDhitbox &user, Mtx44 TRSvalue); 
 
 	threeDhitbox &operator= (threeDhitbox &input);
 };

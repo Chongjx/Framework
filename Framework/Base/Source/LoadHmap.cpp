@@ -24,6 +24,11 @@ bool LoadHeightMap(const char *file_path, std::vector<unsigned char> &heightMap)
 
 float ReadHeightMap(std::vector<unsigned char> &heightMap, float x, float z)
 {
+	if (x > 0.5f || x < -0.5f || z > 0.5f || z < -0.5f)
+	{
+		return 0.f;
+	}
+
 	unsigned terrainSize = (unsigned)sqrt((double)heightMap.size());
 
 	unsigned xCoord = (x + 0.5f) * terrainSize;

@@ -120,10 +120,6 @@ time passed since last update
 /******************************************************************************/
 void SceneBase::UpdateWeapons(double dt)
 {
-	vector<threeDhitbox> tempHitBox;
-	bool shot = false;
-	string boxName;
-
 	for (int i = 0; i < pistol.m_Ammo.size(); ++i)
 	{
 		pistol.m_Ammo[i]->Update(dt);
@@ -133,7 +129,7 @@ void SceneBase::UpdateWeapons(double dt)
 	{
 		if (pistol.m_Ammo[i]->getStatus() == true)
 		{
-			//cout << pistol.m_Ammo[i]->getHitBox().getMidPoint() << endl;
+			cout << pistol.m_Ammo[i]->getHitBox().getMidPoint() << endl;
 		}
 	}
 }

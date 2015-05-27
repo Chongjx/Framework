@@ -29,6 +29,7 @@
     <ClCompile Include="Source\Render_Functions.cpp" />
     <ClCompile Include="Source\SceneBase.cpp" />
     <ClCompile Include="Source\shader.cpp" />
+    <ClCompile Include="Source\SpriteAnimation.cpp" />
     <ClCompile Include="Source\threeDhitbox.cpp" />
     <ClCompile Include="Source\threeDObject.cpp" />
     <ClCompile Include="Source\twoDhitbox.cpp" />
@@ -57,6 +58,7 @@
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\SceneBase.h" />
     <ClInclude Include="Source\shader.hpp" />
+    <ClInclude Include="Source\SpriteAnimation.h" />
     <ClInclude Include="Source\threeDhitbox.h" />
     <ClInclude Include="Source\threeDObject.h" />
     <ClInclude Include="Source\twoDhitbox.h" />

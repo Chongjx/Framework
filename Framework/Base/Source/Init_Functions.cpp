@@ -49,7 +49,7 @@ Init Lights variables
 void SceneBase::InitLights(void)
 {
 	//Load vertex and fragment shaders
-	m_programID = LoadShaders( "Shader//comg.vertexshader", "Shader//MultiTexture.fragmentshader" );
+	m_programID = LoadShaders( "Shader//Fog.vertexshader", "Shader//Fog.fragmentshader" );
 
 	m_parameters[U_MVP] = glGetUniformLocation(m_programID, "MVP");
 	m_parameters[U_MODELVIEW] = glGetUniformLocation(m_programID, "MV");
@@ -96,6 +96,14 @@ void SceneBase::InitLights(void)
 	m_parameters[U_TEXT_ENABLED] = glGetUniformLocation(m_programID, "textEnabled");
 	m_parameters[U_TEXT_COLOR] = glGetUniformLocation(m_programID, "textColor");
 
+	// Get a handle for fog uniform
+	m_parameters[U_FOG_COLOR] = glGetUniformLocation(m_programID, "fogParam.color");
+	m_parameters[U_FOG_START] = glGetUniformLocation(m_programID, "fogParam.start");
+	m_parameters[U_FOG_END] = glGetUniformLocation(m_programID, "fogParam.end");
+	m_parameters[U_FOG_DENSITY] = glGetUniformLocation(m_programID, "fogParam.density");
+	m_parameters[U_FOG_TYPE] = glGetUniformLocation(m_programID, "fogParam.type");
+	m_parameters[U_FOG_ENABLED] = glGetUniformLocation(m_programID, "fogParam.enabled");
+
 	glUseProgram(m_programID);
 
 	// directional light (sunlight)
@@ -132,6 +140,15 @@ void SceneBase::InitLights(void)
 		glUniform1f(m_parameters[i * 11 + 16], lights[i].kL);
 		glUniform1f(m_parameters[i * 11 + 17], lights[i].kQ);
 	}
+
+	Color fogColor(0.913f, 0.725f, 0.549f);
+	glUniform3fv(m_parameters[U_FOG_COLOR], 1, &fogColor.r);
+	glUniform1f(m_parameters[U_FOG_START], 10);
+	glUniform1f(m_parameters[U_FOG_END], 1000);
+	glUniform1f(m_parameters[U_FOG_DENSITY], 0.005f);
+	glUniform1f(m_parameters[U_FOG_TYPE], 2);
+	// Disable fog
+	glUniform1f(m_parameters[U_FOG_ENABLED], 1);
 
 	//Number of lights in Shader
 	glUniform1i(m_parameters[U_NUMLIGHTS], 2);
@@ -173,7 +190,7 @@ void SceneBase::InitMesh(void)
 
 	meshList[GEO_TERRAIN] = MeshBuilder::GenerateTerrain("terrain", "Image//heightmap.raw", m_heightMap);
 	meshList[GEO_TERRAIN]->textureID[0] = LoadTGA("Image//sand.tga");
-	meshList[GEO_TERRAIN]->textureID[1] = LoadTGA("Image//dust.tga");
+	//meshList[GEO_TERRAIN]->textureID[1] = LoadTGA("Image//dust.tga");
 
 	meshList[GEO_PLATFORM] = MeshBuilder::GenerateOBJ("platform", "OBJ//platform.obj");
 	meshList[GEO_PLATFORM]->textureID[0] = LoadTGA("Image//concrete.tga");
@@ -181,7 +198,6 @@ void SceneBase::InitMesh(void)
 	meshList[GEO_PLATFORM]->material.kSpecular.Set(0.f, 0.f, 0.f);
 
 	meshList[GEO_CRATE] = MeshBuilder::GenerateOBJ("crate", "OBJ//crate.obj");
-	//meshList[GEO_CRATE]->material.kShininess = 0.1f;
 	meshList[GEO_CRATE]->textureID[0] = LoadTGA("Image//crate.tga");
 	meshList[GEO_CRATE]->textureID[1] = LoadTGA("Image//rough.tga");
 
@@ -198,8 +214,8 @@ Init Camera
 void SceneBase::InitCamera(void)
 {
 	camera.Init(
-		Vector3(0, 25 + TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, 0/TERRAIN_SCALE.x, -1600/TERRAIN_SCALE.z), -1600), 
-		Vector3(0, 25 + TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, 0/TERRAIN_SCALE.x, -1600/TERRAIN_SCALE.z), -1590), 
+		Vector3(0, 25 + TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, 0/TERRAIN_SCALE.x, 0/TERRAIN_SCALE.z), 0), 
+		Vector3(0, 25 + TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, 0/TERRAIN_SCALE.x, 0/TERRAIN_SCALE.z), 10), 
 		Vector3(0, 1, 0));
 }
 
@@ -284,6 +300,9 @@ void SceneBase::InitVariables(void)
 	//perspective.SetToOrtho(-80, 80, -60, 60, -1000, 1000);
 	projectionStack.LoadMatrix(perspective);
 
+	Properties TRS;
+	ResetTRS(TRS);
+
 	bLightEnabled = true;
 
 	m_Minimap = NULL;
@@ -302,10 +321,11 @@ void SceneBase::InitVariables(void)
 		{
 			platform->setPosition(Vector3(0, 2.5f + TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, 0/TERRAIN_SCALE.x, -1600/TERRAIN_SCALE.z), -1600));
 		}
-		platform->setScale(Vector3(20, 5, 10));
+		TRS.translation.SetToTranslation(platform->getPosition());
+		TRS.scale.SetToScale(Vector3(1.f, 1.f, 1.f));
+		platform->setTRS(TRS);
 		platform->setMesh(meshList[GEO_PLATFORM]);
 		platform->setType(GAMEOBJECT_TYPE::GO_ENVIRONMENT);
-
 		threeDhitbox platformArea;
 		platformArea.create3Dhitbox(Vector3(platform->getPosition()), 10, 5, 10, "platform");
 		platform->setHitBox(platformArea);
@@ -315,6 +335,7 @@ void SceneBase::InitVariables(void)
 
 		threeDObjectList.push_back(platform);
 
+		ResetTRS(TRS);
 		// crates and sandbag
 		for (int  j = 0; j < 10; ++j)
 		{
@@ -323,7 +344,9 @@ void SceneBase::InitVariables(void)
 			float scale = 5.f;
 
 			crate->setPosition(Vector3(xCoord, 10.f + TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, xCoord/TERRAIN_SCALE.x, zCoord/TERRAIN_SCALE.z), zCoord));
-			crate->setScale(Vector3(scale, scale, scale));
+			TRS.translation.SetToTranslation(crate->getPosition());
+			TRS.scale.SetToScale(Vector3(1.f, 1.f, 1.f));
+			crate->setTRS(TRS);
 			crate->setMesh(meshList[GEO_CRATE]);
 			crate->setType(GAMEOBJECT_TYPE::GO_ENVIRONMENT);
 
@@ -337,6 +360,8 @@ void SceneBase::InitVariables(void)
 			threeDObjectList.push_back(crate);
 		}
 	}
+
+	ResetTRS(TRS);
 }
 
 /******************************************************************************/
@@ -350,7 +375,6 @@ void SceneBase::InitUI(void)
 	m_Minimap = new MiniMap();
 	m_Minimap->SetBackground(MeshBuilder::GenerateMinimap("Minimap", Color(1, 1, 1), 1.f));
 	m_Minimap->GetBackground()->textureID[0] = LoadTGA("Image//sand.tga");
-	m_Minimap->GetBackground()->textureID[1] = LoadTGA("Image//dust.tga");
 	m_Minimap->SetBorder(MeshBuilder::GenerateMinimapBorder("MinimapBorder", Color(1, 1, 0), 1.f));
 	m_Minimap->SetAvatar(MeshBuilder::GenerateMinimapAvatar("MinimapAvatar", Color(1, 0, 0), 1.f));
 }
@@ -371,4 +395,12 @@ void SceneBase::ReInit(void)
 	InitCharacters();
 	InitVariables();
 	InitUI();
+}
+
+void SceneBase::ResetTRS(Properties &TRS)
+{
+	TRS.modelProperties.SetToIdentity();
+	TRS.translation.SetToIdentity();
+	TRS.rotation.SetToIdentity();
+	TRS.scale.SetToIdentity();
 }

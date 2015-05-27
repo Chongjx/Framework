@@ -35,8 +35,6 @@ private:
 public:
 	Weapon(void);
 	~Weapon(void);
-	
-	vector<Bullet *> m_Ammo;
 
 	void setWeaponType(WEAPON_TYPE weaponType);
 	void setName(string name);

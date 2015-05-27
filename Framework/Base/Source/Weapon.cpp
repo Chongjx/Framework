@@ -11,16 +11,16 @@ Weapon::Weapon(void)
 	m_iMaxAmmo = 300;
 	m_iCurrentAmmo = 30;
 
-	for (int i = 0; i < m_iMaxAmmo; ++i)
+	for (int i = 0; i < m_iMagazineSize * 2; ++i)
 	{
 		m_Ammo.push_back(new Bullet);
 	}
 
 	for(std::vector<Bullet *>::iterator it = m_Ammo.begin(); it != m_Ammo.end(); ++it)
-		{
-			Bullet *bullet = (Bullet*) *it;
-			bullet->setRender(false);
-			bullet->setStatus(false);
+	{
+		Bullet *bullet = (Bullet*) *it;
+		bullet->setRender(false);
+		bullet->setStatus(false);
 	}
 
 	m_bCanFire = true;

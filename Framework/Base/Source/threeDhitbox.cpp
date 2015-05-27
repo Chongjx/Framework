@@ -26,6 +26,7 @@ threeDhitbox::threeDhitbox(void)
 	m_v3UnitVecZ.Set(0.0f, 0.0f, 0.0f);
 
 	m_sName = "DEFAULT_3D_HITBOX";
+	m_bCollide = false;
 }
 
 /******************************************************************************/
@@ -44,24 +45,24 @@ threeDhitbox::~threeDhitbox(void)
 overloaded twoDhitbox create function. Assuming the hitbox is parrallel to x, y and z axis.
 
 \param midPoint
-	centre point of the hitbox Vector2
+centre point of the hitbox Vector2
 
 \param length
-	length of the hitbox float
+length of the hitbox float
 
 \param height
-	height of the hitbox float
+height of the hitbox float
 
 \param depth
-	depth of the hitbox float
+depth of the hitbox float
 
 \ param name
-	name of the hitbox string
+name of the hitbox string
 */
 /******************************************************************************/
 void threeDhitbox::create3Dhitbox(Vector3 midPoint, float length, float height, float depth, const string name)
 {
-	
+
 	Vector3 temp_v3FrontBottomRight, temp_v3FrontTopRight, temp_v3FrontBottomLeft, temp_v3BackBottomRight;
 
 	this->m_v3MidPoint = midPoint;
@@ -90,31 +91,31 @@ void threeDhitbox::create3Dhitbox(Vector3 midPoint, float length, float height, 
 overloaded twoDhitbox create function. Providing the corners of the hitbox to create
 
 \param frontBottomRight
-	front bottom right corner of the hitbox Vector3
+front bottom right corner of the hitbox Vector3
 
 \param frontTopRight
-	front top right corner of the hitbox Vector3
+front top right corner of the hitbox Vector3
 
 \param frontTopLeft
-	front top left corner of the hitbox Vector3
+front top left corner of the hitbox Vector3
 
 \param frontBottomLeft
-	front bottom left corner of the hitbox Vector3
+front bottom left corner of the hitbox Vector3
 
 \param backBottomRight
-	back bottom right corner of the hitbox Vector3
+back bottom right corner of the hitbox Vector3
 
 \param backTopRight
-	back top right corner of the hitbox Vector3
+back top right corner of the hitbox Vector3
 
 \param backTopLeft
-	back top left corner of the hitbox Vector3
+back top left corner of the hitbox Vector3
 
 \param backBottomLeft
-	back bottom left corner of the hitbox Vector3
+back bottom left corner of the hitbox Vector3
 
 \ param name
-	name of the hitbox string
+name of the hitbox string
 */
 /******************************************************************************/
 void threeDhitbox::create3Dhitbox(Vector3 frontBottomRight, Vector3 frontTopRight, Vector3 frontTopLeft, Vector3 frontBottomLeft, Vector3 backBottomRight, Vector3 backTopRight, Vector3 backTopLeft, Vector3 backBottomLeft, const string name)
@@ -138,10 +139,79 @@ void threeDhitbox::create3Dhitbox(Vector3 frontBottomRight, Vector3 frontTopRigh
 
 /******************************************************************************/
 /*!
+\brief	threeDhitbox setter functions
+
+\param	Vector3
+Mid Point of the hitbox
+*/
+void threeDhitbox::setMidPoint(Vector3 newMidPoint)
+{
+	this->m_v3MidPoint = newMidPoint;
+}
+
+void threeDhitbox::setLength(float length)
+{
+	this->m_fLength = length;
+}
+
+void threeDhitbox::setHeight(float height)
+{
+	this->m_fHeight = height;
+}
+
+void threeDhitbox::setDepth(float depth)
+{
+	this->m_fDepth = depth;
+}
+
+void threeDhitbox::setHalfLength(float halfLength)
+{
+	this->m_fHalfLength = halfLength;
+}
+
+void threeDhitbox::setHalfHeight(float halfHeight)
+{
+	this->m_fHalfHeight = halfHeight;
+}
+
+void threeDhitbox::setHalfDepth(float halfDepth)
+{
+	this->m_fHalfDepth = halfDepth;
+}
+
+void threeDhitbox::setUnitVecX(Vector3 uniVecX)
+{
+	this->m_v3UnitVecX = uniVecX;
+}
+
+void threeDhitbox::setUnitVecY(Vector3 uniVecY)
+{
+	this->m_v3UnitVecY = uniVecY;
+}
+
+void threeDhitbox::setUnitVecZ(Vector3 uniVecZ)
+{
+	this->m_v3UnitVecZ = uniVecZ;
+}
+
+void threeDhitbox::setName(string name)
+{
+	this->m_sName = name;
+}
+
+void threeDhitbox::setCollide(bool collide)
+{
+	this->m_bCollide = collide;
+}
+
+/******************************************************************************/
+
+/******************************************************************************/
+/*!
 \brief	threeDhitbox getter functions
 
 \return	Vector3
-    Mid Point of the hitbox
+Mid Point of the hitbox
 */
 /******************************************************************************/
 Vector3 threeDhitbox::getMidPoint(void) const
@@ -154,7 +224,7 @@ Vector3 threeDhitbox::getMidPoint(void) const
 \brief	twoDhitbox getter functions
 
 \return	float
-    Length of the hitbox
+Length of the hitbox
 */
 /******************************************************************************/
 float threeDhitbox::getLength(void) const
@@ -167,7 +237,7 @@ float threeDhitbox::getLength(void) const
 \brief	twoDhitbox getter functions
 
 \return	float
-    Height of the hitbox
+Height of the hitbox
 */
 /******************************************************************************/
 float threeDhitbox::getHeight(void) const
@@ -180,7 +250,7 @@ float threeDhitbox::getHeight(void) const
 \brief	twoDhitbox getter functions
 
 \return	float
-    Depth of the hitbox
+Depth of the hitbox
 */
 /******************************************************************************/
 float threeDhitbox::getDepth(void) const
@@ -193,7 +263,7 @@ float threeDhitbox::getDepth(void) const
 \brief	twoDhitbox getter functions
 
 \return	float
-     Half length of the hitbox
+Half length of the hitbox
 */
 /******************************************************************************/
 float threeDhitbox::getHalfLength(void) const
@@ -206,7 +276,7 @@ float threeDhitbox::getHalfLength(void) const
 \brief	twoDhitbox getter functions
 
 \return	float
-     Half height of the hitbox
+Half height of the hitbox
 */
 /******************************************************************************/
 float threeDhitbox::getHalfHeight(void) const
@@ -219,7 +289,7 @@ float threeDhitbox::getHalfHeight(void) const
 \brief	twoDhitbox getter functions
 
 \return	float
-     Half width of the hitbox
+Half width of the hitbox
 */
 /******************************************************************************/
 float threeDhitbox::getHalfDepth(void) const
@@ -227,12 +297,27 @@ float threeDhitbox::getHalfDepth(void) const
 	return this->m_fHalfDepth;
 }
 
+Vector3 threeDhitbox::getUnitVecX(void) const
+{
+	return this->m_v3UnitVecX;
+}
+
+Vector3 threeDhitbox::getUnitVecY(void) const
+{
+	return this->m_v3UnitVecY;
+}
+
+Vector3 threeDhitbox::getUnitVecZ(void) const
+{
+	return this->m_v3UnitVecZ;
+}
+
 /******************************************************************************/
 /*!
 \brief	twoDhitbox getter functions
 
 \return	string
-      name of the hitbox
+name of the hitbox
 */
 /******************************************************************************/
 string threeDhitbox::getName(void) const
@@ -240,22 +325,27 @@ string threeDhitbox::getName(void) const
 	return this->m_sName;
 }
 
+bool threeDhitbox::getCollide(void) const
+{
+	return this->m_bCollide;
+}
+
 /******************************************************************************/
 /*!
 \brief	overloaded 3D collision checking function using Separating Axis Theorem
-		checking a hitbox against a vector of hitbox
+checking a hitbox against a vector of hitbox
 
 \param	user
-    hitbox of the user
+hitbox of the user
 
 \param target
-	hitbox of the target to check against with the user
+hitbox of the target to check against with the user
 
 \param collide
-	bool that determines if the hitboxes collide
+bool that determines if the hitboxes collide
 
 \param boxName
-	name of the hitbox that the user collide with
+name of the hitbox that the user collide with
 */
 /******************************************************************************/
 void check3DCollision(threeDhitbox &user, vector<threeDhitbox> &target, bool &collide, string &boxName)
@@ -268,7 +358,7 @@ void check3DCollision(threeDhitbox &user, vector<threeDhitbox> &target, bool &co
 	int iTestCases = 0;
 
 	for (unsigned int i = 0; i < target.size(); ++i)
-    {
+	{
 		v3MidPointDiff = target[i].m_v3MidPoint - user.m_v3MidPoint;
 
 		v3UnitVec[0] = user.m_v3UnitVecX;
@@ -332,19 +422,19 @@ void check3DCollision(threeDhitbox &user, vector<threeDhitbox> &target, bool &co
 /******************************************************************************/
 /*!
 \brief	overloaded 3D collision checking function using Separating Axis Theorem
-		checking a hitbox against a vector of hitbox
+checking a hitbox against a vector of hitbox
 
 \param	user
-    hitbox of the user
+hitbox of the user
 
 \param target
-	hitbox of the target to check against with the user
+hitbox of the target to check against with the user
 
 \param collide
-	bool that determines if the hitboxes collide
+bool that determines if the hitboxes collide
 
 \param boxName
-	name of the hitbox that the user collide with
+name of the hitbox that the user collide with
 */
 /******************************************************************************/
 void check3DCollision(threeDhitbox &user, threeDhitbox &target, bool &collide, string &boxName)
@@ -415,28 +505,10 @@ void check3DCollision(threeDhitbox &user, threeDhitbox &target, bool &collide, s
 
 /******************************************************************************/
 /*!
-\brief	update the position of the hitbox base on the value
-*/
-/******************************************************************************/
-void updateHitBox(threeDhitbox &user, Mtx44 TRSvalue)
-{
-	user.create3Dhitbox
-		(TRSvalue * Vector3(user.m_fHalfLength, -user.m_fHalfHeight, user.m_fHalfDepth) + user.m_v3MidPoint,
-		TRSvalue * Vector3(user.m_fHalfLength, user.m_fHalfHeight, user.m_fHalfDepth) + user.m_v3MidPoint,
-		TRSvalue * Vector3(-user.m_fHalfLength, user.m_fHalfHeight, user.m_fHalfDepth) + user.m_v3MidPoint,
-		TRSvalue * Vector3(-user.m_fHalfLength, -user.m_fHalfHeight, user.m_fHalfDepth) + user.m_v3MidPoint,
-		TRSvalue * Vector3(user.m_fHalfLength, -user.m_fHalfHeight, -user.m_fHalfDepth) + user.m_v3MidPoint,
-		TRSvalue * Vector3(user.m_fHalfLength, user.m_fHalfHeight, -user.m_fHalfDepth) + user.m_v3MidPoint,
-		TRSvalue * Vector3(-user.m_fHalfLength, user.m_fHalfHeight, -user.m_fHalfDepth) + user.m_v3MidPoint,
-		TRSvalue * Vector3(-user.m_fHalfLength, -user.m_fHalfHeight, -user.m_fHalfDepth) + user.m_v3MidPoint, user.m_sName);
-}
-
-/******************************************************************************/
-/*!
 \brief	overloaded operator= to assign 3Dhitbox
 
 \param	hitbox
-    hitbox to be equate to
+hitbox to be equate to
 */
 /******************************************************************************/
 threeDhitbox &threeDhitbox::operator=(threeDhitbox &input)
@@ -455,6 +527,7 @@ threeDhitbox &threeDhitbox::operator=(threeDhitbox &input)
 	this->m_v3UnitVecZ = input.m_v3UnitVecZ;
 
 	this->m_sName = input.m_sName;
+	this->m_bCollide = input.m_bCollide;
 
 	return *this;
 }

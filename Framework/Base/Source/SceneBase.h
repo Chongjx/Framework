@@ -13,6 +13,7 @@ Class to build ...
 #include "FPcamera.h"
 
 #include "MeshBuilder.h"
+#include "SpriteAnimation.h"
 #include "Light.h"
 #include "Weapon.h"
 
@@ -91,6 +92,13 @@ class SceneBase : public Scene
 		U_COLOR1_TEXTURE,
         U_TEXT_ENABLED,
         U_TEXT_COLOR,
+
+		U_FOG_COLOR,
+		U_FOG_START,
+		U_FOG_END,
+		U_FOG_DENSITY,
+		U_FOG_TYPE,
+		U_FOG_ENABLED,
         U_TOTAL,
 	};
 	enum GEOMETRY_TYPE
@@ -156,6 +164,7 @@ public:
 	void InitVariables(void);
 	void InitUI(void);
 	void ReInit(void);
+	void ResetTRS(Properties &TRS);
 
 	void UpdateOpenGL(void);
 	void UpdateLights(double dt);

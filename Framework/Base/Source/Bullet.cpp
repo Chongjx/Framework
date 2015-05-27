@@ -64,7 +64,7 @@ void Bullet::Update(const double dt)
 {
 	if (getStatus() == true)
 	{
-		setPosition(getPosition() + getDir() * getBulletSpeed() * dt);
+		this->setPosition(getPosition() + getDir() * getBulletSpeed() * dt);
 
 		this->getHitBox();
 
