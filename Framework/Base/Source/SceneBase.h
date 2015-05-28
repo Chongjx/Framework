@@ -45,6 +45,7 @@ using namespace irrklang;
 
 static const float SKYBOXSIZE = 1000.f;
 static const Vector3 TERRAIN_SCALE(4000.f, 350.f, 4000.f);
+static const int FONT_SIZE = 3;
 
 class SceneBase : public Scene
 {
@@ -116,8 +117,11 @@ class SceneBase : public Scene
 		GEO_PLATFORM,
 		GEO_CRATE,
 		GEO_SANDBAG,
-		GEO_P90,
+		GEO_PLAYER,
+		GEO_CHARACTER,
 		GEO_DESERTEAGLE,
+		GEO_P90,
+		GEO_SCAR,
 		GEO_TEXT,
 		GEO_OBJECT,
 		GEO_MAX,

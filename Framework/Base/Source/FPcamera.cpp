@@ -49,8 +49,8 @@ void FPcamera::Init(const Vector3& pos, const Vector3& target, const Vector3& up
 {
 	this->position = defaultPosition = pos;
 	this->target = defaultTarget = target;
-	Vector3 view = (target - position).Normalized();
-	right = view.Cross(up).Normalized();
+	view = (target - position).Normalized();
+	Vector3 right = view.Cross(up).Normalized();
 	right.y = 0;
 	right.Normalize();
 	this->up = defaultUp = right.Cross(view).Normalized();
@@ -63,6 +63,7 @@ void FPcamera::Init(const Vector3& pos, const Vector3& target, const Vector3& up
 		myKeys[i] = false;
 	}
 
+	m_bCrouching = false;
 	m_bJumping = false;
 	JumpVel = 0.0f;
 	JUMPMAXSPEED = 200.f;
@@ -144,6 +145,20 @@ void FPcamera::Update(double dt, float heightOffset)
 		Jump(dt);
 		myKeys[32] = false;
 	}
+
+	if(myKeys['c'])
+	{
+		m_bCrouching = true;
+		Crouch(dt, heightOffset);
+		myKeys['c'] = false;
+	}
+
+	else
+	{
+		m_bCrouching = false;
+		Crouch(-dt, heightOffset);
+	}
+
 	UpdateJump(dt, heightOffset);
 
 	if(Application::camera_pitch != 0)
@@ -219,8 +234,8 @@ void FPcamera::Reset(void)
 	this->up = defaultUp;
 	this->sensitivity = defaultSensitivity;
 
-	Vector3 view = (target - position).Normalized();
-	right = view.Cross(up).Normalized();
+	view = (target - position).Normalized();
+	Vector3 right = view.Cross(up).Normalized();
 	right.y = 0;
 	right.Normalize();
 
@@ -352,12 +367,12 @@ Vector3 FPcamera::getUp(void) const
 \brief	FPcamera Getter functions
 
 \return	Vector3
-right vector3
+view vector3
 */
 /******************************************************************************/
-Vector3 FPcamera::getRight(void) const
+Vector3 FPcamera::getView(void) const
 {
-	return right;
+	return view;
 }
 
 /******************************************************************************/
@@ -380,7 +395,7 @@ void FPcamera::moveForward(const double dt, float heightOffset, bool run)
 	Vector3 targetY = target;
 	targetY.y = position.y;
 
-	Vector3 view = (target - position).Normalized();
+	view = (target - position).Normalized();
 
 	if (!run)
 	{
@@ -407,7 +422,7 @@ void FPcamera::moveBackward(const double dt, float heightOffset, bool run)
 	Vector3 targetY = target;
 	targetY.y = position.y;
 
-	Vector3 view = (target - position).Normalized();
+	view = (target - position).Normalized();
 	if (!run)
 	{
 		position -= view * WALK_SPEED * (float)dt;
@@ -432,8 +447,8 @@ void FPcamera::moveLeft(const double dt, float heightOffset)
 	Vector3 targetY = target;
 	targetY.y = position.y;
 
-	Vector3 view = (target - position).Normalized();
-	right = view.Cross(up);
+	view = (target - position).Normalized();
+	Vector3 right = view.Cross(up);
 	right.y = 0;
 	right.Normalize();
 	position -= right * WALK_SPEED * (float)dt;
@@ -452,8 +467,8 @@ void FPcamera::moveRight(const double dt, float heightOffset)
 	Vector3 targetY = target;
 	targetY.y = position.y;
 
-	Vector3 view = (target - position).Normalized();
-	right = view.Cross(up);
+	view = (target - position).Normalized();
+	Vector3 right = view.Cross(up);
 	right.y = 0;
 	right.Normalize();
 	position += right * WALK_SPEED * (float)dt;
@@ -468,27 +483,27 @@ void FPcamera::moveRight(const double dt, float heightOffset)
 
 void FPcamera::moveUp(const double dt, float heightOffset)
 {
-	position.y += WALK_SPEED * (float)dt + heightOffset * dt;
-	target.y += WALK_SPEED * (float)dt + heightOffset * dt;
+	position.y += heightOffset * dt;
+	target.y += heightOffset * dt;
 }
 
 void FPcamera::moveDown(const double dt, float heightOffset)
 {
-	position.y -= WALK_SPEED * (float)dt + heightOffset * dt;
-	target.y -= WALK_SPEED * (float)dt + heightOffset * dt;
+	position.y -= heightOffset * dt;
+	target.y -= heightOffset * dt;
 }
 
 void FPcamera::lookLeft(const double dt)
 {
 	//Update the camera direction based on mouse move
 	// left-right rotate
-	Vector3 view = (target - position).Normalized();
+	view = (target - position).Normalized();
 	float yaw = (float)(-TURN_SPEED * Application::camera_yaw * (float)dt);
 	Mtx44 rotation;
 	rotation.SetToRotation(yaw, 0, 1, 0);
 	view = rotation * view;
 	target = position + view;
-	right = view.Cross(up);
+	Vector3 right = view.Cross(up);
 	right.y = 0;
 	right.Normalize();
 	up = right.Cross(view).Normalized();
@@ -496,13 +511,13 @@ void FPcamera::lookLeft(const double dt)
 
 void FPcamera::lookRight(const double dt)
 {
-	Vector3 view = (target - position).Normalized();
+	view = (target - position).Normalized();
 	float yaw = (float)(-TURN_SPEED * Application::camera_yaw * (float)dt);
 	Mtx44 rotation;
 	rotation.SetToRotation(yaw, 0, 1, 0);
 	view = rotation * view;
 	target = position + view;
-	right = view.Cross(up);
+	Vector3 right = view.Cross(up);
 	right.y = 0;
 	right.Normalize();
 	up = right.Cross(view).Normalized();
@@ -511,8 +526,8 @@ void FPcamera::lookRight(const double dt)
 void FPcamera::lookUp(const double dt)
 {
 	float pitch = (float)(-TURN_SPEED * Application::camera_pitch * (float)dt);
-	Vector3 view = (target - position).Normalized();
-	right = view.Cross(up);
+	view = (target - position).Normalized();
+	Vector3 right = view.Cross(up);
 	right.y = 0;
 	right.Normalize();
 	up = right.Cross(view).Normalized();
@@ -525,8 +540,8 @@ void FPcamera::lookUp(const double dt)
 void FPcamera::lookDown(const double dt)
 {
 	float pitch = (float)(-TURN_SPEED * Application::camera_pitch * (float)dt);
-	Vector3 view = (target - position).Normalized();
-	right = view.Cross(up);
+	view = (target - position).Normalized();
+	Vector3 right = view.Cross(up);
 	right.y = 0;
 	right.Normalize();
 	up = right.Cross(view).Normalized();
@@ -539,8 +554,8 @@ void FPcamera::lookDown(const double dt)
 void FPcamera::lookUp(const double dt, float upValue)
 {
 	float pitch = (float)(-TURN_SPEED * upValue * (float)dt);
-	Vector3 view = (target - position).Normalized();
-	right = view.Cross(up);
+	view = (target - position).Normalized();
+	Vector3 right = view.Cross(up);
 	right.y = 0;
 	right.Normalize();
 	up = right.Cross(view).Normalized();
@@ -553,8 +568,8 @@ void FPcamera::lookUp(const double dt, float upValue)
 void FPcamera::lookDown(const double dt, float downValue)
 {
 	float pitch = (float)(-TURN_SPEED * downValue * (float)dt);
-	Vector3 view = (target - position).Normalized();
-	right = view.Cross(up);
+	view = (target - position).Normalized();
+	Vector3 right = view.Cross(up);
 	right.y = 0;
 	right.Normalize();
 	up = right.Cross(view).Normalized();
@@ -567,7 +582,7 @@ void FPcamera::lookDown(const double dt, float downValue)
 void FPcamera::SpinClockwise(const double dt)
 {
 	float angle = (float)(TURN_SPEED * (float)dt);
-	Vector3 view = (target - position).Normalized();
+	view = (target - position).Normalized();
 	Mtx44 rotation;
 	rotation.SetToRotation(angle, 0, 0, 1);
 	view = rotation * view;
@@ -577,7 +592,7 @@ void FPcamera::SpinClockwise(const double dt)
 void FPcamera::SpinCounterClockwise(const double dt)
 {
 	float angle = (float)(-TURN_SPEED * (float)dt);
-	Vector3 view = (target - position).Normalized();
+	view = (target - position).Normalized();
 	Mtx44 rotation;
 	rotation.SetToRotation(angle, 0, 0, 1);
 	view = rotation * view;
@@ -620,7 +635,6 @@ void FPcamera::Walk(const double dt, float heightOffset)
 	{
 		moveBackward(abs(dt), heightOffset);
 	}
-	//SpinCounterClockwise(dt);
 }
 
 void FPcamera::Run(const double dt, float heightOffset)
@@ -663,7 +677,39 @@ void FPcamera::Jump(const double dt)
 	}
 }
 
-void FPcamera::Crouch(const double dt)
+void FPcamera::Crouch(const double dt, double heightOffset)
 {
+	if (dt > 0)
+	{
+		float diffY = (heightOffset + 10.f);
 
+		if (position.y > diffY)
+		{
+			moveDown(dt, 50.f);
+
+			if (position.y < diffY)
+			{
+				float posTarDiff = target.y - position.y;
+				position.y = diffY;
+				target.y = position.y + posTarDiff;
+			}
+		}
+	}
+
+	else if (dt < 0)
+	{
+		float diffY = (heightOffset + 20.f);
+
+		if (position.y < diffY)
+		{
+			moveUp(-dt, 50.f);
+
+			if (position.y > diffY)
+			{
+				float posTarDiff = target.y - position.y;
+				position.y = diffY;
+				target.y = position.y + posTarDiff;
+			}
+		}
+	}
 }

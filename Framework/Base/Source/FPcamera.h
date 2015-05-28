@@ -30,12 +30,13 @@ private:
 	Vector3 defaultPosition;
 	Vector3 defaultTarget;
 	Vector3 defaultUp;
-	Vector3 right;
+	Vector3 view;
 	float defaultSensitivity;
 	bool myKeys[255];
 	CAM_TYPE sCameraType;
 
 	bool m_bJumping;
+	bool m_bCrouching;
 	float GRAVITY;
 	float JumpVel;
 	float JUMPMAXSPEED, JUMPACCEL;
@@ -59,7 +60,7 @@ public:
 	virtual Vector3 getPosition(void) const;
 	virtual Vector3 getTarget(void) const;
 	virtual Vector3 getUp(void) const;
-	virtual Vector3 getRight(void) const;
+	virtual Vector3 getView(void) const;
 	virtual float getSensitivity(void) const;
 
 	// basic methods
@@ -86,7 +87,7 @@ public:
 	virtual void Run(const double dt, float heightOffset);
 	virtual void Strafe(const double dt, float heightOffset);
 	virtual void Jump(const double dt);
-	virtual void Crouch(const double dt);
+	virtual void Crouch(const double dt, double heightOffset);
 };
 
 #endif

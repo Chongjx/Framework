@@ -17,6 +17,9 @@ Weapon::Weapon(void)
 	m_bIsEmpty = false;
 
 	m_fFireTimer = 0.f;
+	m_fReloadTimer = 0.f;
+
+	this->m_bReflectLight = false;
 }
 
 Weapon::~Weapon(void)
@@ -168,6 +171,19 @@ void Weapon::Update(double dt)
 		m_bIsEmpty = false;
 		m_bCanFire = true;
 	}
+
+	if (m_bIsReload)
+	{
+		m_bCanFire = false;
+		m_fReloadTimer += dt;
+
+		if (m_fReloadTimer > m_fReloadSpeed)
+		{
+			m_bCanFire = true;
+			m_fReloadTimer = 0.f;
+			m_bIsReload = false;
+		}
+	}
 }
 
 bool Weapon::Fire(void)
@@ -201,7 +217,10 @@ bool Weapon::Fire(void)
 					m_bCanFire = true;
 					break;
 				}
-				break;
+				else
+				{
+					m_bCanFire = false;
+				}
 			}
 			case WEAP_SNIPER:
 			{
@@ -212,7 +231,10 @@ bool Weapon::Fire(void)
 					m_bCanFire = true;
 					break;
 				}
-				break;
+				else
+				{
+					m_bCanFire = false;
+				}
 			}
 		}
 
@@ -233,12 +255,14 @@ bool Weapon::Reload(void)
 	}
 
 	// if there are enough ammo to reload
-	else if (m_iCurrentAmmo > m_iMagazineSize && m_iMagazineAmmo < m_iMagazineSize)
+	else if (m_iMagazineAmmo < m_iMagazineSize)
 	{
 		int ammoReloaded = m_iMagazineSize - m_iMagazineAmmo;
 
 		m_iCurrentAmmo -= ammoReloaded;
 		m_iMagazineAmmo = m_iMagazineSize;
+
+		m_bIsReload = true;
 
 		return true;
 	}

@@ -97,12 +97,12 @@ void SceneBase::InitLights(void)
 	m_parameters[U_TEXT_COLOR] = glGetUniformLocation(m_programID, "textColor");
 
 	// Get a handle for fog uniform
-	m_parameters[U_FOG_COLOR] = glGetUniformLocation(m_programID, "fogParam.color");
-	m_parameters[U_FOG_START] = glGetUniformLocation(m_programID, "fogParam.start");
-	m_parameters[U_FOG_END] = glGetUniformLocation(m_programID, "fogParam.end");
-	m_parameters[U_FOG_DENSITY] = glGetUniformLocation(m_programID, "fogParam.density");
-	m_parameters[U_FOG_TYPE] = glGetUniformLocation(m_programID, "fogParam.type");
-	m_parameters[U_FOG_ENABLED] = glGetUniformLocation(m_programID, "fogParam.enabled");
+	m_parameters[U_FOG_COLOR] = glGetUniformLocation(m_programID, "fog.color");
+	m_parameters[U_FOG_START] = glGetUniformLocation(m_programID, "fog.start");
+	m_parameters[U_FOG_END] = glGetUniformLocation(m_programID, "fog.end");
+	m_parameters[U_FOG_DENSITY] = glGetUniformLocation(m_programID, "fog.density");
+	m_parameters[U_FOG_TYPE] = glGetUniformLocation(m_programID, "fog.type");
+	m_parameters[U_FOG_ENABLED] = glGetUniformLocation(m_programID, "fog.enabled");
 
 	glUseProgram(m_programID);
 
@@ -171,14 +171,14 @@ void SceneBase::InitMesh(void)
 
 	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 18, 36, 1.f);
 
-	meshList[GEO_SPHERE] = MeshBuilder::GenerateSphere("sphere", Color(1, 0, 0), 18, 36, 1.f);
+	meshList[GEO_SPHERE] = MeshBuilder::GenerateSphere("sphere", Color(0, 0, 0), 18, 36, 1.f);
 
 	meshList[GEO_CUBE] = MeshBuilder::GenerateCube("cube", Color(1, 0, 1), 1.f);
 
 	meshList[GEO_RING] = MeshBuilder::GenerateRing("ring", Color(1, 0, 1), 36, 1, 0.5f);
 
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
-	meshList[GEO_TEXT]->textureID[0] = LoadTGA("Image//calibri.tga");
+	meshList[GEO_TEXT]->textureID[0] = LoadTGA("Image//starwars.tga");
 	meshList[GEO_TEXT]->material.kAmbient.Set(1, 0, 0);
 
 	meshList[GEO_CONE] = MeshBuilder::GenerateCone("cone", Color(0.5f, 1, 0.3f), 36, 10.f, 10.f);
@@ -205,6 +205,8 @@ void SceneBase::InitMesh(void)
 
 	meshList[GEO_SANDBAG] = MeshBuilder::GenerateOBJ("sandbag", "OBJ//sandbag.obj");
 	meshList[GEO_SANDBAG]->textureID[0] = LoadTGA("Image//sandbag.tga");
+
+	meshList[GEO_PLAYER] = MeshBuilder::GenerateCube("player", Color(1, 1, 0), 20.f);
 
 	meshList[GEO_P90] = MeshBuilder::GenerateOBJ("sandbag", "OBJ//weap_P90.obj");
 	meshList[GEO_P90]->textureID[0] = LoadTGA("Image//weap_P90_0.tga");
@@ -278,20 +280,6 @@ Init Weapons
 /******************************************************************************/
 void SceneBase::InitWeapons(void)
 {
-	player.bagpack.pistol.setWeaponType(WEAP_PISTOL);
-	player.bagpack.pistol.setName("Desert Eagle");
-	player.bagpack.pistol.setFireRate(0.5f);
-	player.bagpack.pistol.setDmg(10.f);
-	player.bagpack.pistol.setReloadSpeed(3.f);
-	player.bagpack.pistol.setRecoil(5.f);
-	player.bagpack.pistol.setMagazineSize(7);
-	player.bagpack.pistol.setMagazineAmmo(7);
-	player.bagpack.pistol.setMaxAmmo(49);
-	player.bagpack.pistol.setAmmo(49);
-	player.bagpack.pistol.setFire(true);
-	player.bagpack.pistol.setReload(false);
-	player.bagpack.pistol.setEmpty(false);
-	player.bagpack.pistol.setRender(true);
 }
 
 /******************************************************************************/
@@ -331,8 +319,6 @@ void SceneBase::InitVariables(void)
 	{
 		bulletList.push_back(new Bullet());
 		bulletList[i]->setMesh(meshList[GEO_SPHERE]);
-		TRS.scale.SetToScale(5.f, 5.f, 5.f);
-		bulletList[i]->setTRS(TRS);
 	}
 
 	
@@ -355,7 +341,7 @@ void SceneBase::InitUI(void)
 	m_Minimap = new MiniMap();
 	m_Minimap->SetBackground(MeshBuilder::GenerateMinimap("Minimap", Color(1, 1, 1), 1.f));
 	m_Minimap->GetBackground()->textureID[0] = LoadTGA("Image//sand.tga");
-	m_Minimap->SetBorder(MeshBuilder::GenerateMinimapBorder("MinimapBorder", Color(1, 1, 0), 1.f));
+	m_Minimap->SetBorder(MeshBuilder::GenerateMinimapBorder("MinimapBorder", Color(0, 0, 0), 1.f));
 	m_Minimap->SetAvatar(MeshBuilder::GenerateMinimapAvatar("MinimapAvatar", Color(1, 0, 0), 1.f));
 }
 

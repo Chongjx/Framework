@@ -25,7 +25,7 @@ public:
 	Weapon sniper;
 
 	//bool addWeapon(Weapon &newWeapon);
-	//void switchWeapon(bool increment);
+	void switchWeapon(bool increment);
 	//bool removeWeapon(void);
 };
 

@@ -107,6 +107,7 @@ time passed since last update
 /******************************************************************************/
 void SceneBase::UpdateCharacters(double dt)
 {
+	player.setPosition(player.camera.getPosition());
 }
 
 /******************************************************************************/
@@ -209,22 +210,32 @@ Update weapon status
 /******************************************************************************/
 void SceneBase::UpdateWeaponStatus(const unsigned char key)
 {
+	static bool bSwitchWeapon = false;
+
 	if (key == WA_FIRE)
 	{
 		if(player.bagpack.currentWeapon->Fire())
 		{
 			Bullet* firedBullet = fetchBullet();
-			firedBullet->setDir(player.camera.getTarget());
-
-			player.bagpack.currentWeapon->setMesh(firedBullet->getMesh());
+			firedBullet->setPosition(player.camera.getTarget());
+			firedBullet->setDir(player.camera.getView());
+			firedBullet->setMesh(meshList[GEO_SPHERE]);
 		}
 	}
 
 	else if (key == WA_RELOAD)
 	{
-		if(player.bagpack.currentWeapon->Reload())
-		{
-			cout << "reload" << endl;
-		}
+		player.bagpack.currentWeapon->Reload();
+	}
+
+	else if (key == WA_CHANGEWEAPON && !bSwitchWeapon)
+	{
+		bSwitchWeapon = true;
+		player.bagpack.switchWeapon(true);
+	}
+
+	else if(key == WA_NIL && bSwitchWeapon)
+	{
+		bSwitchWeapon = false;
 	}
 }

@@ -35,6 +35,7 @@ private:
 	bool m_bIsEmpty;
 
 	float m_fFireTimer;
+	float m_fReloadTimer;
 public:
 	Weapon(void);
 	~Weapon(void);

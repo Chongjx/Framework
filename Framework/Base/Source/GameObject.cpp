@@ -21,6 +21,8 @@ void GameObject::setMesh(Mesh* mesh)
 void GameObject::setPosition(Vector3 position)
 {
 	this->m_v3Position = position;
+
+	TRS.translation.SetToTranslation(m_v3Position);
 }
 
 void GameObject::setTRS(Properties _TRS)

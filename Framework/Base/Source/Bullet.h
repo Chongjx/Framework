@@ -10,7 +10,6 @@ private:
 	Vector3 m_v3Dir;
 	float m_fBulletSpeed;
 	float m_fLifeTime;
-	threeDhitbox m_BulletBox;
 
 public:
 	Bullet(void);
@@ -27,9 +26,6 @@ public:
 
 	void setLifeTime(const float lifeTime);
 	float getLifeTime(void) const;
-
-	void setBulletBox(threeDhitbox bulletBox);
-	threeDhitbox getBulletBox(void);
 
 	void Update(const double dt);
 	void Shot(const Vector3 position, const Vector3 dir, const float speed, const float lifeTime);

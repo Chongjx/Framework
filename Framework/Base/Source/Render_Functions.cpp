@@ -125,12 +125,6 @@ void SceneBase::RenderEnvironment(void)
 			modelStack.PopMatrix();
 		}
 	}
-
-	//// text
-	//modelStack.PushMatrix();
-	//modelStack.Scale(10, 10, 10);
-	//RenderText(meshList[GEO_TEXT], "Hello World", Color(0, 1, 0));
-	//modelStack.PopMatrix();
 }
 
 /******************************************************************************/
@@ -141,6 +135,19 @@ Render Characters and NPCs here
 /******************************************************************************/
 void SceneBase::RenderCharacters(void)
 {
+	/*modelStack.PushMatrix();
+	modelStack.Translate(player.camera.getPosition().x, player.camera.getPosition().y, player.camera.getPosition().z);
+	modelStack.MultMatrix(player.camera);
+	modelStack.Scale(player.getProperties().scale);
+	Render3DMesh(player.getMesh(), player.getReflectLight());
+		modelStack.PushMatrix();
+		modelStack.Translate((player.bagpack.currentWeapon)->getProperties().translation);
+		modelStack.MultMatrix((player.bagpack.currentWeapon)->getProperties().rotation);
+		modelStack.Scale((player.bagpack.currentWeapon)->getProperties().scale);
+		Render3DMesh((player.bagpack.currentWeapon)->getMesh(), (player.bagpack.currentWeapon)->getReflectLight());
+		modelStack.PopMatrix();
+	modelStack.PopMatrix();*/
+
 	for(std::vector<Character *>::iterator it = characterList.begin(); it != characterList.end(); ++it)
 	{
 		Character *go = (Character *)*it;
@@ -173,7 +180,7 @@ void SceneBase::RenderBullets(void)
 			modelStack.Translate(go->getProperties().translation);
 			modelStack.MultMatrix(go->getProperties().rotation);
 			modelStack.Scale(go->getProperties().scale);
-			Render3DMesh(go->getMesh(), go->getReflectLight());
+			Render3DMesh(meshList[GEO_SPHERE], go->getReflectLight());
 			modelStack.PopMatrix();
 		}
 	}
@@ -191,22 +198,29 @@ void SceneBase::RenderUI(void)
 	SetHUD(true);
 
 	std::ostringstream ss;
-	ss.precision(5);
-	ss << "FPS: " << fps;
-	RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(0, 1, 0), 3, 0, 6);
+	ss.precision(4);
+	ss << "FPS:" << fps;
+	RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 0, 0), FONT_SIZE, 0, 57);
 
+	// ammo clip
 	std::ostringstream ss1;
 	ss1.precision(4);
-	ss1 << "Light(" << lights[0].position.x << ", " << lights[0].position.y << ", " << lights[0].position.z << ")";
-	RenderTextOnScreen(meshList[GEO_TEXT], ss1.str(), Color(0, 1, 0), 3, 0, 3);
+	ss1 << player.bagpack.currentWeapon->getName();
+	RenderTextOnScreen(meshList[GEO_TEXT], ss1.str(), Color(0, 0, 0), FONT_SIZE * 0.5f, 60, 57);
 
-	RenderTextOnScreen(meshList[GEO_TEXT], "Hello Screen", Color(0, 1, 0), 3, 0, 0);
+	std::ostringstream ss2;
+	ss2 << "Mag:" << player.bagpack.currentWeapon->getMagazineAmmo();
+	RenderTextOnScreen(meshList[GEO_TEXT], ss2.str(), Color(0, 0, 0), FONT_SIZE * 0.5f, 60, 54);
 
-	Render2DMesh(meshList[GEO_CURSOR], false, 10.f, 0, 0);
+	std::ostringstream ss3;
+	ss3 << "Ammo:" << player.bagpack.currentWeapon->getAmmo();
+	RenderTextOnScreen(meshList[GEO_TEXT], ss3.str(), Color(0, 0, 0), FONT_SIZE * 0.5f, 60, 51);
 
-	Render2DMesh(m_Minimap->GetBackground(), false, 20.f, 55, 45);
-	Render2DMesh(m_Minimap->GetBorder(), false, 20.f, 55, 45);
-	Render2DMesh(m_Minimap->GetAvatar(), false, 10.f, 55, 45);
+	//Render2DMesh(meshList[GEO_CURSOR], false, 10.f, 0, 0);
+
+	Render2DMesh(m_Minimap->GetBackground(), false, 20.f, -70, -50);
+	Render2DMesh(m_Minimap->GetBorder(), false, 20.f, -70, -50);
+	Render2DMesh(m_Minimap->GetAvatar(), false, 10.f, -70, -50);
 
 	SetHUD(false);
 }

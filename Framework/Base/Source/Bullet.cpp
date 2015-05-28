@@ -5,7 +5,6 @@ Bullet::Bullet(void)
 	m_bStatus = false;
 	m_fBulletSpeed = 600.f;
 	m_fLifeTime = 5.f;
-	m_BulletBox.create3Dhitbox(Vector3(0.f, 0.f, 0.f), 0.5f, 0.5f, 0.5f, "CLASSIC BULLET"); 
 	m_v3Dir.Set(0.0f, 0.0f, 0.0f);
 }
 
@@ -51,16 +50,6 @@ void Bullet::setLifeTime(const float lifeTime)
 float Bullet::getLifeTime(void) const
 {
 	return this->m_fLifeTime;
-}
-
-void Bullet::setBulletBox(threeDhitbox bulletBox)
-{
-	this->m_BulletBox = bulletBox;
-}
-
-threeDhitbox Bullet::getBulletBox(void)
-{
-	return this->m_BulletBox;
 }
 
 void Bullet::Update(const double dt)
