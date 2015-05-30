@@ -544,6 +544,8 @@ Mesh* MeshBuilder::GenerateTerrain(const std::string & meshName, const std::stri
 
 			v.texCoord.Set((float)x/terrainSize * 8, 1.f - (float)z / terrainSize * 8);
 			vertex_buffer_data.push_back(v);
+
+			v.normal.Set
 		}
 	}
 
