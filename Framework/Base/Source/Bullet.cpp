@@ -3,7 +3,7 @@
 Bullet::Bullet(void)
 {
 	m_bStatus = false;
-	m_fBulletSpeed = 600.f;
+	m_fBulletSpeed = 1000.f;
 	m_fLifeTime = 5.f;
 	m_v3Dir.Set(0.0f, 0.0f, 0.0f);
 }

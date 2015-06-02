@@ -111,10 +111,13 @@ time passed since last update
 */
 /******************************************************************************/
 void SceneBase::UpdateCharacters(double dt)
-{	
+{
+	TRS = player.getProperties();
+	TRS.rotation.SetToRotation(player.camera.rotationY, 0, 1, 0);
+	player.setTRS(TRS);
 	player.setPosition(player.camera.getPosition());
-
 	player.updateHitbox();
+	ResetTRS(TRS);
 }
 
 /******************************************************************************/
@@ -178,6 +181,22 @@ time passed since last update
 void SceneBase::UpdateCollisions(double dt)
 {
 	// check player with world bound
+	if (player.camera.getPosition().x >= TERRAIN_SCALE.x * 0.45f || player.camera.getPosition().x <= -TERRAIN_SCALE.x * 0.45f
+		|| player.camera.getPosition().z >= TERRAIN_SCALE.z * 0.45f || player.camera.getPosition().z <= -TERRAIN_SCALE.z * 0.45f)
+	{
+		player.camera.Reset();
+	}
+
+	if (player.camera.getPosition().x >= TERRAIN_SCALE.x * 0.35f || player.camera.getPosition().x <= -TERRAIN_SCALE.x * 0.35f
+		|| player.camera.getPosition().z >= TERRAIN_SCALE.z * 0.35f || player.camera.getPosition().z <= -TERRAIN_SCALE.z * 0.35f)
+	{
+		leaving = true;
+	}
+
+	else
+	{
+		leaving = false;
+	}
 
 	for(std::vector<Bullet *>::iterator it = bulletList.begin(); it != bulletList.end(); ++it)
 	{
@@ -283,6 +302,7 @@ void SceneBase::UpdateWeaponStatus(const unsigned char key)
 	{
 		if(player.bagpack.currentWeapon->Fire())
 		{
+			player.camera.setRecoiling(true);
 			Bullet* firedBullet = fetchBullet();
 			firedBullet->setPosition(player.camera.getTarget());
 			firedBullet->setDir(player.camera.getView());

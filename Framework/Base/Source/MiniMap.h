@@ -11,7 +11,10 @@ public:
 
 	Mesh* m_MiniMap_Background;  	
 	Mesh* m_MiniMap_Border; 
-	Mesh* m_MiniMap_Avatar; 
+	Mesh* m_MiniMap_Avatar;
+	Mesh* m_MiniMap_Enemy;
+	Mesh* m_MiniMap_Buildings;
+	Mesh* m_MiniMap_Ship;
 
 	// Set the background mesh to this class  	
 	bool SetBackground(Mesh* aBackground);  	
@@ -22,7 +25,10 @@ public:
 	// Get the Border mesh to this class 
 	Mesh* GetBorder(void); 
 	// Set the Avatar mesh to this class  	
-	bool SetAvatar(Mesh* anAvatar);  	
+	bool SetAvatar(Mesh* anAvatar);  
+	bool SetEnemy(Mesh* anEnemy);
+	bool SetBuildings(Mesh* aBuilding);
+	bool SetShip(Mesh* aShip);
 	// Get the Avatar mesh to this class 
 	Mesh* GetAvatar(void); 
 
@@ -46,7 +52,7 @@ private:
 	// Rotation from First Angle  	
 	int angle; 
 	// Offset in the minimap  	
-	int x, y; 
+	int x, y;
 	// Minimap size  	
 	int size_x, size_y; 
 };  

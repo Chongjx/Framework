@@ -1,0 +1,9 @@
+newmtl Material__35
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.60 0.60 0.60
+Tf 1.00 1.00 1.00
+map_Kd v_sniper_reference.tga
+Ni 1.00
+Ks 0.90 0.90 0.90
+Ns 0.00

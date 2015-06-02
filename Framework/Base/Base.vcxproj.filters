@@ -55,9 +55,6 @@
     <Filter Include="Source Files\Scene\Init">
       <UniqueIdentifier>{7e34c5e0-34c9-4795-85e3-165a98487360}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Scene\Update">
-      <UniqueIdentifier>{36cba596-00fa-4162-bfac-b7f39b1edce3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Scene\Render">
       <UniqueIdentifier>{0f07809c-d4d5-4de2-9593-6c5726107889}</UniqueIdentifier>
     </Filter>
@@ -81,6 +78,9 @@
     </Filter>
     <Filter Include="Header Files\Objects\Weapon">
       <UniqueIdentifier>{7acf79f6-5c97-4e28-9e97-4438ed38129a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene\Update">
+      <UniqueIdentifier>{36cba596-00fa-4162-bfac-b7f39b1edce3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

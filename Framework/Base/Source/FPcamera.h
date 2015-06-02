@@ -40,12 +40,14 @@ private:
 	float GRAVITY;
 	float JumpVel;
 	float JUMPMAXSPEED, JUMPACCEL;
+	bool m_bRecoil;
 public:
 	FPcamera();
 	~FPcamera();
 
 	float rotationX;
 	float rotationY;
+	float recoil;
 
 	virtual void Init(const Vector3& pos, const Vector3& target, const Vector3& up);
 	virtual void Update(double dt, float floorLevel);
@@ -58,6 +60,7 @@ public:
 	virtual void setTarget(Vector3 target);
 	virtual void setUp(Vector3 up);
 	virtual void setSensitivity(float sensitivity);
+	virtual void setRecoiling(bool recoiling);
 
 	virtual CAM_TYPE GetCameraType(void);
 	virtual Vector3 getPosition(void) const;
@@ -65,6 +68,7 @@ public:
 	virtual Vector3 getUp(void) const;
 	virtual Vector3 getView(void) const;
 	virtual float getSensitivity(void) const;
+	virtual bool getRecoiling(void) const;
 
 	// basic methods
 	virtual void moveForward(const double dt, float heightOffset, bool run = false);

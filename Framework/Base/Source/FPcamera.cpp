@@ -65,6 +65,7 @@ void FPcamera::Init(const Vector3& pos, const Vector3& target, const Vector3& up
 
 	m_bCrouching = false;
 	m_bJumping = false;
+	m_bRecoil = false;
 	JumpVel = 0.0f;
 	JUMPMAXSPEED = 200.f;
 	JUMPACCEL = 100.f;
@@ -72,6 +73,7 @@ void FPcamera::Init(const Vector3& pos, const Vector3& target, const Vector3& up
 
 	rotationX = 0.f;
 	rotationY = 0.f;
+	recoil = 0.f;
 }
 
 /******************************************************************************/
@@ -162,6 +164,25 @@ void FPcamera::Update(double dt, float heightOffset)
 		Crouch(-dt, heightOffset);
 	}
 
+	if(m_bRecoil)
+	{
+		static float timer = 0.f;
+
+		lookUp(dt, 20.f);
+		timer += (float)dt;
+
+		if (timer >= 0.1f)
+		{
+			m_bRecoil = false;
+			timer = 0.f;
+		}
+	}
+
+	else if (!m_bRecoil && recoil > 0.f)
+	{
+		lookDown(dt, 20.f);
+	}
+
 	UpdateJump(dt, heightOffset);
 
 	if(Application::camera_pitch != 0)
@@ -241,11 +262,27 @@ void FPcamera::Reset(void)
 	Vector3 right = view.Cross(up).Normalized();
 	right.y = 0;
 	right.Normalize();
+	this->up = defaultUp = right.Cross(view).Normalized();
+	this->sensitivity = defaultSensitivity = 1.0f;
+
+	sCameraType = LAND_CAM;
 
 	for (int i = 0; i < 255; ++i)
 	{
 		myKeys[i] = false;
 	}
+
+	m_bCrouching = false;
+	m_bJumping = false;
+	m_bRecoil = false;
+	JumpVel = 0.0f;
+	JUMPMAXSPEED = 200.f;
+	JUMPACCEL = 100.f;
+	GRAVITY = -200.f;
+
+	rotationX = 0.f;
+	rotationY = 0.f;
+	recoil = 0.f;
 }
 
 /******************************************************************************/
@@ -311,6 +348,19 @@ sensitivty of the mouse float
 void FPcamera::setSensitivity(float sensitivity)
 {
 	this->sensitivity = sensitivity;
+}
+
+/******************************************************************************/
+/*!
+\brief	FPcamera Setter functions
+
+\param	recoiling
+recoil of the mouse
+*/
+/******************************************************************************/
+void FPcamera::setRecoiling(bool recoiling)
+{
+	this->m_bRecoil = recoiling;
 }
 
 /******************************************************************************/
@@ -391,6 +441,19 @@ float FPcamera::getSensitivity(void) const
 	return sensitivity;
 }
 
+/******************************************************************************/
+/*!
+\brief	FPcamera Getter functions
+
+\return	bool
+mouse recoil
+*/
+/******************************************************************************/
+bool FPcamera::getRecoiling(void) const
+{
+	return m_bRecoil;
+}
+
 // basic methods
 void FPcamera::moveForward(const double dt, float heightOffset, bool run)
 {
@@ -399,7 +462,7 @@ void FPcamera::moveForward(const double dt, float heightOffset, bool run)
 	targetY.y = position.y;
 
 	view = (target - position).Normalized();
-
+	
 	if (!run)
 	{
 		position += view * WALK_SPEED * (float)dt;
@@ -531,7 +594,7 @@ void FPcamera::lookRight(const double dt)
 void FPcamera::lookUp(const double dt)
 {
 	float pitch = (float)(-TURN_SPEED * Application::camera_pitch * (float)dt);
-	rotationX += pitch;
+	rotationX -= pitch;
 	view = (target - position).Normalized();
 	Vector3 right = view.Cross(up);
 	right.y = 0;
@@ -546,7 +609,7 @@ void FPcamera::lookUp(const double dt)
 void FPcamera::lookDown(const double dt)
 {
 	float pitch = (float)(-TURN_SPEED * Application::camera_pitch * (float)dt);
-	rotationX += pitch;
+	rotationX -= pitch;
 	view = (target - position).Normalized();
 	Vector3 right = view.Cross(up);
 	right.y = 0;
@@ -560,8 +623,9 @@ void FPcamera::lookDown(const double dt)
 
 void FPcamera::lookUp(const double dt, float upValue)
 {
-	float pitch = (float)(-TURN_SPEED * upValue * (float)dt);
-	rotationX += pitch;
+	float pitch = (float)(-WALK_SPEED * Application::camera_pitch * (float)dt + upValue * (float)dt);
+	recoil += 5.f * (float)dt;
+	rotationX -= pitch;
 	view = (target - position).Normalized();
 	Vector3 right = view.Cross(up);
 	right.y = 0;
@@ -575,8 +639,9 @@ void FPcamera::lookUp(const double dt, float upValue)
 
 void FPcamera::lookDown(const double dt, float downValue)
 {
-	float pitch = (float)(-TURN_SPEED * downValue * (float)dt);
-	rotationX += pitch;
+	float pitch = (float)(-WALK_SPEED * Application::camera_pitch * (float)dt - downValue * (float)dt);
+	recoil -= 5.f * (float)dt;;
+	rotationX -= pitch;
 	view = (target - position).Normalized();
 	Vector3 right = view.Cross(up);
 	right.y = 0;

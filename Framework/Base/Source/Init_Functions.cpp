@@ -173,6 +173,9 @@ void SceneBase::InitMesh(void)
 
 	meshList[GEO_SPHERE] = MeshBuilder::GenerateSphere("sphere", Color(0, 0, 0), 18, 36, 1.f);
 
+	meshList[GEO_QUAD] = MeshBuilder::GenerateQuad("quad", Color(1, 1, 1), 1.f);
+	meshList[GEO_QUAD]->textureID[0] = LoadTGA("Image//cover.tga");
+
 	meshList[GEO_CUBE] = MeshBuilder::GenerateCube("cube", Color(1, 0, 1), 1.f);
 
 	meshList[GEO_RING] = MeshBuilder::GenerateRing("ring", Color(1, 0, 1), 36, 1, 0.5f);
@@ -187,6 +190,15 @@ void SceneBase::InitMesh(void)
 
 	meshList[GEO_CURSOR] = MeshBuilder::GenerateQuad("cursor", Color(1.f, 1.f, 1.f), 1.f);
 	meshList[GEO_CURSOR]->textureID[0] = LoadTGA("Image//cursor.tga");
+
+	meshList[GEO_PISTOLCH] = MeshBuilder::GenerateQuad("cursor", Color(1.f, 1.f, 1.f), 1.f);
+	meshList[GEO_PISTOLCH]->textureID[0] = LoadTGA("Image//pistolch.tga");
+
+	meshList[GEO_RIFLECH] = MeshBuilder::GenerateQuad("cursor", Color(1.f, 1.f, 1.f), 1.f);
+	meshList[GEO_RIFLECH]->textureID[0] = LoadTGA("Image//riflech.tga");
+
+	meshList[GEO_SNIPERCH] = MeshBuilder::GenerateQuad("cursor", Color(1.f, 1.f, 1.f), 1.f);
+	meshList[GEO_SNIPERCH]->textureID[0] = LoadTGA("Image//sniperch.tga");
 
 	meshList[GEO_SKYPLANE] = MeshBuilder::GenerateSkyPlane("skyplane", Color(1, 1, 1), 128, 2000.0f, 4000.f, 1.0f, 1.0f);
 	meshList[GEO_SKYPLANE]->textureID[0] = LoadTGA("Image//top.tga");
@@ -214,8 +226,8 @@ void SceneBase::InitMesh(void)
 	meshList[GEO_RIFLE] = MeshBuilder::GenerateOBJ("rifle", "OBJ//rifle.obj");
 	meshList[GEO_RIFLE]->textureID[0] = LoadTGA("Image//rifle.tga");
 
-	meshList[GEO_SNIPER] = MeshBuilder::GenerateOBJ("rifle", "OBJ//rifle.obj");
-	meshList[GEO_SNIPER]->textureID[0] = LoadTGA("Image//rifle.tga");
+	meshList[GEO_SNIPER] = MeshBuilder::GenerateOBJ("sniper", "OBJ//sniper.obj");
+	meshList[GEO_SNIPER]->textureID[0] = LoadTGA("Image//sniper.tga");
 
 	meshList[GEO_SHIP] = MeshBuilder::GenerateOBJ("wreckedship", "OBJ//ship.obj");
 	meshList[GEO_SHIP]->textureID[0] = LoadTGA("Image//ship.tga");
@@ -294,7 +306,7 @@ void SceneBase::InitWeapons(void)
 {
 	ResetTRS(TRS);
 	// Init weapon pos
-	TRS.translation.SetToTranslation(-0.5f, -0.5f, 2);
+	TRS.translation.SetToTranslation(-0.75f, -0.5f, 2);
 	TRS.rotation.SetToRotation(90, 0, 1, 0);
 	player.bagpack.pistol.setTRS(TRS);
 	player.bagpack.pistol.setMesh(meshList[GEO_PISTOL]);
@@ -302,16 +314,16 @@ void SceneBase::InitWeapons(void)
 
 	ResetTRS(TRS);
 
-	TRS.translation.SetToTranslation(-0.5f, -0.5f, 2);
-	TRS.rotation.SetToRotation(95, 0, 1, 0);
+	TRS.translation.SetToTranslation(-0.75f, -0.5f, 2);
+	TRS.rotation.SetToRotation(90, 0, 1, 0);
 	player.bagpack.rifle.setTRS(TRS);
 	player.bagpack.rifle.setMesh(meshList[GEO_RIFLE]);
 	player.bagpack.rifle.setReflectLight(false);
 
 	ResetTRS(TRS);
 
-	TRS.translation.SetToTranslation(-0.75f, -1, 1.5f);
-	TRS.rotation.SetToRotation(95, 0, 1, 0);
+	TRS.translation.SetToTranslation(-0.75f, -0.5f, 2);
+	TRS.rotation.SetToRotation(90, 0, 1, 0);
 	player.bagpack.sniper.setTRS(TRS);
 	player.bagpack.sniper.setMesh(meshList[GEO_SNIPER]);
 	player.bagpack.sniper.setReflectLight(false);
@@ -334,6 +346,7 @@ void SceneBase::InitVariables(void)
 	bLightEnabled = true;
 	bFogEnabled = false;
 	bDebugMode = true;
+	leaving = false;
 
 	m_Minimap = NULL;
 
@@ -352,9 +365,11 @@ void SceneBase::InitVariables(void)
 	}
 
 	//Construct 100 bullets
+	TRS.scale.SetToScale(0.5f, 0.5f, 0.5f);
 	for (int i = 0; i < 100; ++i)
 	{
 		bulletList.push_back(new Bullet());
+		bulletList[i]->setTRS(TRS);
 		bulletList[i]->setMesh(meshList[GEO_SPHERE]);
 	}
 
@@ -480,6 +495,9 @@ Bullet* SceneBase::fetchBullet(void)
 			go->setRender(true);
 			go->setStatus(true);
 			go->setVelocity(Vector3(0, 0, 0));
+
+			go->setTRS(TRS);
+
 			return go;
 		}
 	}

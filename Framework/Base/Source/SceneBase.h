@@ -112,6 +112,9 @@ class SceneBase : public Scene
 		GEO_RING,
 		GEO_CONE,
 		GEO_CURSOR,
+		GEO_PISTOLCH,
+		GEO_RIFLECH,
+		GEO_SNIPERCH,
 		GEO_SKYPLANE,
 		GEO_TERRAIN,
 		GEO_PLATFORM,
@@ -233,6 +236,7 @@ private:
 	bool bDebugMode;
 
 	float fps;
+	bool leaving;
 
 	ISoundEngine* engine;
     ISound* snd[TOTAL_SOUND];

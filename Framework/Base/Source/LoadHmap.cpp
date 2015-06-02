@@ -51,7 +51,7 @@ float ReadHeightMap(std::vector<unsigned char> &heightMap, float x, float z)
 
 	unsigned terrainSize = (unsigned)sqrt((double)heightMap.size());
 
-	float gridSquareSize = 1.f / terrainSize;
+	float gridSquareSize = 1.f / (terrainSize);
 
 	unsigned gridX = (x + 0.5f) / gridSquareSize;
 	unsigned gridZ = (z + 0.5f) / gridSquareSize;

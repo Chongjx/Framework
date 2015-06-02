@@ -147,11 +147,18 @@ void SceneBase::RenderCharacters(void)
 {
 	modelStack.PushMatrix();
 	modelStack.Translate(player.getProperties().translation);
-	modelStack.Rotate(player.camera.rotationY, 0, 1, 0);
+	modelStack.MultMatrix(player.getProperties().rotation);
 	modelStack.Scale(player.getProperties().scale);
 	//Render3DMesh(player.getMesh(), player.getReflectLight());
 		modelStack.PushMatrix();
-		modelStack.Rotate(-player.camera.rotationX, 1, 0, 0);
+		if (player.bagpack.currentWeapon->getReload())
+		{
+			modelStack.Rotate(player.camera.rotationX + 15, 1, 0, 0);
+		}
+		else
+		{
+			modelStack.Rotate(player.camera.rotationX, 1, 0, 0);
+		}
 		modelStack.Translate(player.bagpack.currentWeapon->getProperties().translation);
 		modelStack.MultMatrix(player.bagpack.currentWeapon->getProperties().rotation);
 		modelStack.Scale((player.bagpack.currentWeapon)->getProperties().scale);
@@ -159,10 +166,6 @@ void SceneBase::RenderCharacters(void)
 
 		modelStack.PopMatrix();
 	modelStack.PopMatrix();
-
-
-	std::cout << player.getHitBox().getMidPoint() << std::endl;
-	std::cout << player.camera.getPosition() << std::endl;
 
 	if(bDebugMode)
 	{
@@ -248,21 +251,48 @@ void SceneBase::RenderUI(void)
 	ss << "FPS:" << fps;
 	RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 0, 0), FONT_SIZE, 0, 57);
 
+	Render2DMesh(meshList[GEO_QUAD], false, 25.f, 67.5f, 55);
+
 	// ammo clip
 	std::ostringstream ss1;
 	ss1.precision(4);
 	ss1 << player.bagpack.currentWeapon->getName();
-	RenderTextOnScreen(meshList[GEO_TEXT], ss1.str(), Color(0, 0, 0), FONT_SIZE * 0.5f, 60, 57);
+	RenderTextOnScreen(meshList[GEO_TEXT], ss1.str(), Color(0, 0, 0), FONT_SIZE * 0.5f, 68, 57);
 
 	std::ostringstream ss2;
 	ss2 << "Mag:" << player.bagpack.currentWeapon->getMagazineAmmo();
-	RenderTextOnScreen(meshList[GEO_TEXT], ss2.str(), Color(0, 0, 0), FONT_SIZE * 0.5f, 60, 54);
+	RenderTextOnScreen(meshList[GEO_TEXT], ss2.str(), Color(0, 0, 0), FONT_SIZE * 0.5f, 68, 54);
 
 	std::ostringstream ss3;
 	ss3 << "Ammo:" << player.bagpack.currentWeapon->getAmmo();
-	RenderTextOnScreen(meshList[GEO_TEXT], ss3.str(), Color(0, 0, 0), FONT_SIZE * 0.5f, 60, 51);
+	RenderTextOnScreen(meshList[GEO_TEXT], ss3.str(), Color(0, 0, 0), FONT_SIZE * 0.5f, 68, 51);
 
-	//Render2DMesh(meshList[GEO_CURSOR], false, 10.f, 0, 0);
+	if(leaving)
+	{
+		std::ostringstream ss4;
+		ss4 << "WARINING: LEAVING ZONE";
+		Render2DMesh(meshList[GEO_QUAD], false, 70.f, 0, 0);
+		RenderTextOnScreen(meshList[GEO_TEXT], ss4.str(), Color(1, 1, 1), FONT_SIZE * 0.5f, 24, 30);
+	}
+
+	switch(player.bagpack.currentWeapon->getWeaponType())
+	{
+		case WEAP_PISTOL:
+		{
+			Render2DMesh(meshList[GEO_PISTOLCH], false, 10.f, 0, 0);
+			break;
+		}
+		case WEAP_RIFLE:
+		{
+			Render2DMesh(meshList[GEO_RIFLECH], false, 10.f, 0, 0);
+			break;
+		}
+		case WEAP_SNIPER:
+		{
+			Render2DMesh(meshList[GEO_SNIPERCH], false, 10.f, 0, 0);
+			break;
+		}
+	}
 
 	Render2DMesh(m_Minimap->GetBackground(), false, 20.f, -70, -50);
 	Render2DMesh(m_Minimap->GetBorder(), false, 20.f, -70, -50);

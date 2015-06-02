@@ -12,7 +12,7 @@ Inventory::Inventory(void)
 	}
 
 	pistol.setWeaponType(WEAP_PISTOL);
-	pistol.setName("Desert Eagle");
+	pistol.setName("P13");
 	pistol.setFireRate(0.25f);
 	pistol.setDmg(10.f);
 	pistol.setReloadSpeed(1.f);
@@ -27,7 +27,7 @@ Inventory::Inventory(void)
 	pistol.setRender(false);
 
 	rifle.setWeaponType(WEAP_RIFLE);
-	rifle.setName("P90");
+	rifle.setName("M18");
 	rifle.setFireRate(0.1f);
 	rifle.setDmg(20.f);
 	rifle.setReloadSpeed(2.f);
@@ -42,7 +42,7 @@ Inventory::Inventory(void)
 	rifle.setRender(false);
 
 	sniper.setWeaponType(WEAP_SNIPER);
-	sniper.setName("SCAR-20");
+	sniper.setName("R21");
 	sniper.setFireRate(0.5f);
 	sniper.setDmg(50.f);
 	sniper.setReloadSpeed(5.f);
@@ -162,7 +162,7 @@ void Inventory::switchWeapon(bool increment)
 
 			else
 			{
-				nextWeapon = &sniper;
+				nextWeapon = &rifle;
 				break;
 			}
 		}
@@ -170,7 +170,7 @@ void Inventory::switchWeapon(bool increment)
 		{
 			if (increment)
 			{
-				nextWeapon = &sniper;
+				nextWeapon = &pistol;
 				break;
 			}
 
