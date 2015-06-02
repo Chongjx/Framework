@@ -44,6 +44,9 @@ public:
 	FPcamera();
 	~FPcamera();
 
+	float rotationX;
+	float rotationY;
+
 	virtual void Init(const Vector3& pos, const Vector3& target, const Vector3& up);
 	virtual void Update(double dt, float floorLevel);
 	virtual void UpdateJump(const double dt, float heightOffset);

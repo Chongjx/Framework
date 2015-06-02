@@ -58,14 +58,14 @@ void Bullet::Update(const double dt)
 	{
 		this->setPosition(getPosition() + getDir() * getBulletSpeed() * dt);
 
-		this->getHitBox();
+		this->updateHitbox();
 
 		setLifeTime(getLifeTime() - dt);
 
 		if (getLifeTime() < 0)
 		{
 			setStatus(false);
-
+			setRender(false);
 			setLifeTime(5.f);
 		}
 	}

@@ -107,22 +107,22 @@ void SceneBase::InitLights(void)
 	glUseProgram(m_programID);
 
 	// directional light (sunlight)
-	lights[0].type = Light::LIGHT_DIRECTIONAL;
+	lights[0].type = Light::LIGHT_POINT;
 	lights[0].exponent = 3.f;
-	lights[0].position.Set(1.f, 1.f, 1.f);
+	lights[0].position.Set(0.f, 200.f, 0.f);
 	lights[0].color.Set(1, 1, 1);
-	lights[0].power = 1.f;
+	lights[0].power = 100.f;
 	lights[0].kC = 1.f;
 	lights[0].kL = 0.01f;
 	lights[0].kQ = 0.001f;
 	lights[0].spotDirection.Set(0.f, 1.f, 0.f);
 
 	// directional light (sunlight)
-	lights[1].type = Light::LIGHT_DIRECTIONAL;
+	lights[1].type = Light::LIGHT_POINT;
 	lights[1].exponent = 3.f;
-	lights[1].position.Set(-1.f, -1.f, -1.f);
+	lights[1].position.Set(0.f, 200.f, 0.f);
 	lights[1].color.Set(1, 1, 1);
-	lights[1].power = 1.f;
+	lights[1].power = 100.f;
 	lights[1].kC = 1.f;
 	lights[1].kL = 0.01f;
 	lights[1].kQ = 0.001f;
@@ -148,7 +148,7 @@ void SceneBase::InitLights(void)
 	glUniform1f(m_parameters[U_FOG_DENSITY], 0.005f);
 	glUniform1f(m_parameters[U_FOG_TYPE], 2);
 	// Disable fog
-	glUniform1f(m_parameters[U_FOG_ENABLED], 0);
+	glUniform1f(m_parameters[U_FOG_ENABLED], bFogEnabled);
 
 	//Number of lights in Shader
 	glUniform1i(m_parameters[U_NUMLIGHTS], 2);
@@ -208,9 +208,19 @@ void SceneBase::InitMesh(void)
 
 	meshList[GEO_PLAYER] = MeshBuilder::GenerateCube("player", Color(1, 1, 0), 20.f);
 
-	meshList[GEO_P90] = MeshBuilder::GenerateOBJ("sandbag", "OBJ//weap_P90.obj");
-	meshList[GEO_P90]->textureID[0] = LoadTGA("Image//weap_P90_0.tga");
-	meshList[GEO_P90]->textureID[1] = LoadTGA("Image//weap_P90_1.tga");
+	meshList[GEO_PISTOL] = MeshBuilder::GenerateOBJ("pistol", "OBJ//pistol.obj");
+	meshList[GEO_PISTOL]->textureID[0] = LoadTGA("Image//pistol.tga");
+
+	meshList[GEO_RIFLE] = MeshBuilder::GenerateOBJ("rifle", "OBJ//rifle.obj");
+	meshList[GEO_RIFLE]->textureID[0] = LoadTGA("Image//rifle.tga");
+
+	meshList[GEO_SNIPER] = MeshBuilder::GenerateOBJ("rifle", "OBJ//rifle.obj");
+	meshList[GEO_SNIPER]->textureID[0] = LoadTGA("Image//rifle.tga");
+
+	meshList[GEO_SHIP] = MeshBuilder::GenerateOBJ("wreckedship", "OBJ//ship.obj");
+	meshList[GEO_SHIP]->textureID[0] = LoadTGA("Image//ship.tga");
+
+	meshList[GEO_DEBUG] = MeshBuilder::GenerateDebugBox("debug", Color(0.f, 0.f, 0.f), 1.f);
 }
 
 /******************************************************************************/
@@ -269,6 +279,8 @@ Init Characters
 void SceneBase::InitCharacters(void)
 {
 	player.setMesh(meshList[GEO_CUBE]);
+	threeDhitbox body(Vector3(player.camera.getPosition().x, player.camera.getPosition().y, player.camera.getPosition().z), 20.f, 20.f, 20.f, "player");
+	player.setHitBox(body);
 	player.setRender(true);
 }
 
@@ -280,6 +292,29 @@ Init Weapons
 /******************************************************************************/
 void SceneBase::InitWeapons(void)
 {
+	ResetTRS(TRS);
+	// Init weapon pos
+	TRS.translation.SetToTranslation(-0.5f, -0.5f, 2);
+	TRS.rotation.SetToRotation(90, 0, 1, 0);
+	player.bagpack.pistol.setTRS(TRS);
+	player.bagpack.pistol.setMesh(meshList[GEO_PISTOL]);
+	player.bagpack.pistol.setReflectLight(false);
+
+	ResetTRS(TRS);
+
+	TRS.translation.SetToTranslation(-0.5f, -0.5f, 2);
+	TRS.rotation.SetToRotation(95, 0, 1, 0);
+	player.bagpack.rifle.setTRS(TRS);
+	player.bagpack.rifle.setMesh(meshList[GEO_RIFLE]);
+	player.bagpack.rifle.setReflectLight(false);
+
+	ResetTRS(TRS);
+
+	TRS.translation.SetToTranslation(-0.75f, -1, 1.5f);
+	TRS.rotation.SetToRotation(95, 0, 1, 0);
+	player.bagpack.sniper.setTRS(TRS);
+	player.bagpack.sniper.setMesh(meshList[GEO_SNIPER]);
+	player.bagpack.sniper.setReflectLight(false);
 }
 
 /******************************************************************************/
@@ -297,6 +332,8 @@ void SceneBase::InitVariables(void)
 	projectionStack.LoadMatrix(perspective);
 
 	bLightEnabled = true;
+	bFogEnabled = false;
+	bDebugMode = true;
 
 	m_Minimap = NULL;
 
@@ -321,11 +358,18 @@ void SceneBase::InitVariables(void)
 		bulletList[i]->setMesh(meshList[GEO_SPHERE]);
 	}
 
-	
-	ResetTRS(TRS);
-	// Init weapon pos
-
 	// Init all environment objs here
+	ResetTRS(TRS);
+
+	threeDObject* wreckedShip = fetchEnvironment();
+	TRS.rotation.SetToRotation(80, 1, 1, 0);
+	wreckedShip->setObjName("wreckedShip");
+	wreckedShip->setMesh(meshList[GEO_SHIP]);
+	wreckedShip->setTRS(TRS);
+	wreckedShip->setReflectLight(false);
+	wreckedShip->setPosition(Vector3(0, 100, 200));
+	wreckedShip->setHitBox(threeDhitbox(Vector3(0, 0, 0), 195.f, 55.f, 290.f, "wreckShip"));
+	wreckedShip->updateHitbox();
 
 	ResetTRS(TRS);
 }

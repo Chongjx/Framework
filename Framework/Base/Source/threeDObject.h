@@ -18,6 +18,7 @@ public:
 
 	void setHitBox(threeDhitbox threeDhitbox);
 	threeDhitbox getHitBox(void);
+	void updateHitbox(void);
 };
 
 #endif

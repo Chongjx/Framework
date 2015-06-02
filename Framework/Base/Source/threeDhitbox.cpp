@@ -21,9 +21,9 @@ threeDhitbox::threeDhitbox(void)
 	m_fLength = m_fHeight = m_fDepth = 1.0f;
 	m_fHalfLength = m_fHalfHeight = m_fHalfDepth = 0.5f;
 
-	m_v3UnitVecX.Set(0.0f, 0.0f, 0.0f);
-	m_v3UnitVecY.Set(0.0f, 0.0f, 0.0f);
-	m_v3UnitVecZ.Set(0.0f, 0.0f, 0.0f);
+	m_v3UnitVecX.Set(1.0f, 0.0f, 0.0f);
+	m_v3UnitVecY.Set(0.0f, 1.0f, 0.0f);
+	m_v3UnitVecZ.Set(0.0f, 0.0f, 1.0f);
 
 	m_sName = "DEFAULT_3D_HITBOX";
 	m_bCollide = false;
@@ -32,7 +32,37 @@ threeDhitbox::threeDhitbox(void)
 /******************************************************************************/
 /*!
 \brief
-twoDhitbox default destructor
+threeDhitbox overloaded constructor
+*/
+/******************************************************************************/
+threeDhitbox::threeDhitbox(Vector3 midPoint, float length, float height, float depth, const string name)
+{
+	Vector3 temp_v3FrontBottomRight, temp_v3FrontTopRight, temp_v3FrontBottomLeft, temp_v3BackBottomRight;
+
+	this->m_v3MidPoint = midPoint;
+	this->m_fLength = length;
+	this->m_fHeight = height;
+	this->m_fDepth = depth;
+	this->m_sName = name;
+
+	this->m_fHalfLength = length * 0.5f;
+	this->m_fHalfHeight = height * 0.5f;
+	this->m_fHalfDepth = depth * 0.5f;
+
+	temp_v3FrontBottomRight.Set(m_v3MidPoint.x + m_fHalfLength, m_v3MidPoint.y - m_fHalfHeight, m_v3MidPoint.z + m_fHalfDepth);
+	temp_v3FrontTopRight.Set(m_v3MidPoint.x + m_fHalfLength, m_v3MidPoint.y + m_fHalfHeight, m_v3MidPoint.z + m_fHalfDepth);
+	temp_v3FrontBottomLeft.Set(m_v3MidPoint.x - m_fHalfLength, m_v3MidPoint.y - m_fHalfHeight, m_v3MidPoint.z + m_fHalfDepth);
+	temp_v3BackBottomRight.Set(m_v3MidPoint.x + m_fHalfLength, m_v3MidPoint.y - m_fHalfHeight, m_v3MidPoint.z - m_fHalfDepth );
+
+	this->m_v3UnitVecX = (temp_v3FrontBottomRight - temp_v3FrontBottomLeft).Normalized();
+	this->m_v3UnitVecY = (temp_v3FrontTopRight - temp_v3FrontBottomRight).Normalized();
+	this->m_v3UnitVecZ = (temp_v3FrontBottomRight - temp_v3BackBottomRight).Normalized();
+}
+
+/******************************************************************************/
+/*!
+\brief
+threeDhitbox default destructor
 */
 /******************************************************************************/
 threeDhitbox::~threeDhitbox(void)
@@ -62,7 +92,6 @@ name of the hitbox string
 /******************************************************************************/
 void threeDhitbox::create3Dhitbox(Vector3 midPoint, float length, float height, float depth, const string name)
 {
-
 	Vector3 temp_v3FrontBottomRight, temp_v3FrontTopRight, temp_v3FrontBottomLeft, temp_v3BackBottomRight;
 
 	this->m_v3MidPoint = midPoint;
@@ -133,8 +162,6 @@ void threeDhitbox::create3Dhitbox(Vector3 frontBottomRight, Vector3 frontTopRigh
 	this->m_v3UnitVecX = (frontBottomRight - frontBottomLeft).Normalized();
 	this->m_v3UnitVecY = (frontTopRight - frontBottomRight).Normalized();
 	this->m_v3UnitVecZ = (frontBottomRight - backBottomRight).Normalized();
-
-	this->m_v3MidPoint.Set(frontBottomRight.x - m_fHalfLength, frontBottomRight.y + m_fHalfHeight, frontBottomRight.z - m_fHalfDepth);
 }
 
 /******************************************************************************/
@@ -348,7 +375,7 @@ bool that determines if the hitboxes collide
 name of the hitbox that the user collide with
 */
 /******************************************************************************/
-void check3DCollision(threeDhitbox &user, vector<threeDhitbox> &target, bool &collide, string &boxName)
+bool check3DCollision(threeDhitbox &user, vector<threeDhitbox> &target, string &boxName)
 {
 	Vector3 v3MidPointDiff;
 	Vector3 v3UnitVec[15];
@@ -406,14 +433,14 @@ void check3DCollision(threeDhitbox &user, vector<threeDhitbox> &target, bool &co
 
 		if (iTestCases == 15)
 		{
-			collide = true;
 			boxName = target[i].m_sName;
+			return true;
 			break;
 		}
 
 		else
 		{
-			collide = false;
+			return false;
 			iTestCases = 0;
 		}
 	}
@@ -437,7 +464,7 @@ bool that determines if the hitboxes collide
 name of the hitbox that the user collide with
 */
 /******************************************************************************/
-void check3DCollision(threeDhitbox &user, threeDhitbox &target, bool &collide, string &boxName)
+bool check3DCollision(threeDhitbox &user, threeDhitbox &target, string &boxName)
 {
 	Vector3 v3MidPointDiff;
 	Vector3 v3UnitVec[15];
@@ -493,13 +520,13 @@ void check3DCollision(threeDhitbox &user, threeDhitbox &target, bool &collide, s
 
 	if (iTestCases == 15)
 	{
-		collide = true;
 		boxName = target.m_sName;
+		return true;
 	}
 
 	else
 	{
-		collide = false;
+		return false;
 	}
 }
 

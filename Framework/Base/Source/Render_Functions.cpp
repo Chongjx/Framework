@@ -123,6 +123,16 @@ void SceneBase::RenderEnvironment(void)
 			modelStack.Scale(go->getProperties().scale);
 			Render3DMesh(go->getMesh(), go->getReflectLight());
 			modelStack.PopMatrix();
+
+			if (bDebugMode)
+			{
+				modelStack.PushMatrix();	
+				modelStack.Translate(go->getHitBox().getMidPoint().x, go->getHitBox().getMidPoint().y, go->getHitBox().getMidPoint().z);
+				modelStack.MultMatrix(go->getProperties().rotation);
+				modelStack.Scale(go->getHitBox().getLength(), go->getHitBox().getHeight(), go->getHitBox().getDepth());
+				Render3DMesh(meshList[GEO_DEBUG], false);
+				modelStack.PopMatrix();
+			}
 		}
 	}
 }
@@ -135,18 +145,34 @@ Render Characters and NPCs here
 /******************************************************************************/
 void SceneBase::RenderCharacters(void)
 {
-	/*modelStack.PushMatrix();
-	modelStack.Translate(player.camera.getPosition().x, player.camera.getPosition().y, player.camera.getPosition().z);
-	modelStack.MultMatrix(player.camera);
+	modelStack.PushMatrix();
+	modelStack.Translate(player.getProperties().translation);
+	modelStack.Rotate(player.camera.rotationY, 0, 1, 0);
 	modelStack.Scale(player.getProperties().scale);
-	Render3DMesh(player.getMesh(), player.getReflectLight());
+	//Render3DMesh(player.getMesh(), player.getReflectLight());
 		modelStack.PushMatrix();
-		modelStack.Translate((player.bagpack.currentWeapon)->getProperties().translation);
-		modelStack.MultMatrix((player.bagpack.currentWeapon)->getProperties().rotation);
+		modelStack.Rotate(-player.camera.rotationX, 1, 0, 0);
+		modelStack.Translate(player.bagpack.currentWeapon->getProperties().translation);
+		modelStack.MultMatrix(player.bagpack.currentWeapon->getProperties().rotation);
 		modelStack.Scale((player.bagpack.currentWeapon)->getProperties().scale);
 		Render3DMesh((player.bagpack.currentWeapon)->getMesh(), (player.bagpack.currentWeapon)->getReflectLight());
+
 		modelStack.PopMatrix();
-	modelStack.PopMatrix();*/
+	modelStack.PopMatrix();
+
+
+	std::cout << player.getHitBox().getMidPoint() << std::endl;
+	std::cout << player.camera.getPosition() << std::endl;
+
+	if(bDebugMode)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(player.getHitBox().getMidPoint().x, player.getHitBox().getMidPoint().y, player.getHitBox().getMidPoint().z);
+		modelStack.MultMatrix(player.getProperties().rotation);
+		modelStack.Scale(player.getProperties().scale);
+		Render3DMesh(meshList[GEO_DEBUG], false);
+		modelStack.PopMatrix();
+	}
 
 	for(std::vector<Character *>::iterator it = characterList.begin(); it != characterList.end(); ++it)
 	{
@@ -159,6 +185,16 @@ void SceneBase::RenderCharacters(void)
 			modelStack.Scale(go->getProperties().scale);
 			Render3DMesh(go->getMesh(), go->getReflectLight());
 			modelStack.PopMatrix();
+
+			if(bDebugMode)
+			{
+				modelStack.PushMatrix();
+				modelStack.Translate(go->getHitBox().getMidPoint().x,go->getHitBox().getMidPoint().y, go->getHitBox().getMidPoint().z);
+				modelStack.MultMatrix(go->getProperties().rotation);
+				modelStack.Scale(go->getHitBox().getLength(), go->getHitBox().getHeight(), go->getHitBox().getDepth());
+				Render3DMesh(meshList[GEO_DEBUG], false);
+				modelStack.PopMatrix();
+			}
 		}
 	}
 }
@@ -182,6 +218,16 @@ void SceneBase::RenderBullets(void)
 			modelStack.Scale(go->getProperties().scale);
 			Render3DMesh(meshList[GEO_SPHERE], go->getReflectLight());
 			modelStack.PopMatrix();
+
+			if (bDebugMode)
+			{
+				modelStack.PushMatrix();
+				modelStack.Translate(go->getHitBox().getMidPoint().x, go->getHitBox().getMidPoint().y, go->getHitBox().getMidPoint().z);
+				modelStack.MultMatrix(go->getProperties().rotation);
+				modelStack.Scale(go->getHitBox().getLength(), go->getHitBox().getHeight(), go->getHitBox().getDepth());
+				Render3DMesh(meshList[GEO_DEBUG], false);
+				modelStack.PopMatrix();
+			}
 		}
 	}
 }
@@ -247,7 +293,7 @@ void SceneBase::SetHUD(const bool m_bHUDmode)
 	{
 		projectionStack.PopMatrix();
 		glEnable(GL_DEPTH_TEST);
-		glUniform1f(m_parameters[U_FOG_ENABLED], 1);
+		glUniform1f(m_parameters[U_FOG_ENABLED], bFogEnabled);
 	}
 }
 

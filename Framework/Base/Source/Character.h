@@ -6,7 +6,7 @@
 #include "FPcamera.h"
 #include "Inventory.h"
 
-class Character : public GameObject
+class Character : public threeDObject
 {
 public:
 	Character(void);
@@ -21,7 +21,6 @@ public:
 	Character* enemyTarget;
 
 	FPcamera camera;
-	threeDhitbox body;
 	
 	Inventory bagpack;
 };

@@ -31,6 +31,11 @@ void SceneBase::UpdateOpenGL(void)
 
 	if(Application::IsKeyPressed('4'))
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	if(Application::IsKeyPressed('N'))
+		bDebugMode = true;
+	if(Application::IsKeyPressed('M'))
+		bDebugMode = false;
 }
 
 /******************************************************************************/
@@ -106,8 +111,10 @@ time passed since last update
 */
 /******************************************************************************/
 void SceneBase::UpdateCharacters(double dt)
-{
+{	
 	player.setPosition(player.camera.getPosition());
+
+	player.updateHitbox();
 }
 
 /******************************************************************************/
@@ -157,6 +164,66 @@ time passed since last update
 void SceneBase::UpdateVariables(double dt)
 {
 	fps = (float)(1.f / dt);
+}
+
+/******************************************************************************/
+/*!
+\brief
+Update collisions
+
+\param dt
+time passed since last update
+*/
+/******************************************************************************/
+void SceneBase::UpdateCollisions(double dt)
+{
+	// check player with world bound
+
+	for(std::vector<Bullet *>::iterator it = bulletList.begin(); it != bulletList.end(); ++it)
+	{
+		Bullet *go = (Bullet *)*it;
+		if(go->getRender())
+		{
+			// check bullet with terrain
+			if(go->getPosition().y < TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, go->getPosition().x/TERRAIN_SCALE.x, go->getPosition().z/TERRAIN_SCALE.z))
+			{
+				go->setRender(false);
+				go->setStatus(false);
+			}
+		}
+
+		for(std::vector<threeDObject *>::iterator it2 = environmentList.begin(); it2 != environmentList.end(); ++it2)
+		{
+			threeDObject *go2 = (threeDObject *)*it2;
+
+			if(go2->getRender())
+			{
+				string boxName = "";
+
+				if (check3DCollision(go->getHitBox(), go2->getHitBox(), boxName))
+				{
+					go->setRender(false);
+					go->setStatus(false);
+				}
+			}
+		}
+	}
+
+	// check player with environment obj
+	for(std::vector<threeDObject *>::iterator it = environmentList.begin(); it != environmentList.end(); ++it)
+	{
+		threeDObject *go = (threeDObject *)*it;
+
+		if(go->getRender())
+		{
+			string boxName = "";
+
+			if (check3DCollision(player.getHitBox(), go->getHitBox(), boxName))
+			{
+
+			}
+		}
+	}
 }
 
 /******************************************************************************/

@@ -25,6 +25,11 @@ void threeDObject::setHitBox(threeDhitbox hitbox)
 
 threeDhitbox threeDObject::getHitBox(void)
 {
+	return this->m_3Dhitbox;
+}
+
+void threeDObject::updateHitbox(void)
+{
 	m_3Dhitbox.setMidPoint(this->m_v3Position);
 	Mtx44 vertex = this->getProperties().modelProperties;
 
@@ -37,6 +42,4 @@ threeDhitbox threeDObject::getHitBox(void)
 		vertex * Vector3(m_3Dhitbox.getHalfLength(), m_3Dhitbox.getHalfHeight(), -m_3Dhitbox.getHalfDepth()) + m_3Dhitbox.getMidPoint(),
 		vertex * Vector3(-m_3Dhitbox.getHalfLength(), m_3Dhitbox.getHalfHeight(), -m_3Dhitbox.getHalfDepth()) + m_3Dhitbox.getMidPoint(),
 		vertex * Vector3(-m_3Dhitbox.getHalfLength(), -m_3Dhitbox.getHalfHeight(), -m_3Dhitbox.getHalfDepth()) + m_3Dhitbox.getMidPoint(), m_3Dhitbox.getName());
-
-	return this->m_3Dhitbox;
 }

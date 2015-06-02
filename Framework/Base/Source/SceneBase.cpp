@@ -29,6 +29,7 @@ void SceneBase::Update(double dt)
 	UpdateCharacters(dt);
 	UpdateWeapons(dt);
 	UpdateVariables(dt);
+	UpdateCollisions(dt);
 	UpdateUI(dt);
 	UpdateSound(dt);
 }
@@ -90,6 +91,7 @@ void SceneBase::Exit()
 		delete m_Minimap;
 		m_Minimap = NULL;
 	}
+
 	/*while(threeDObjectList.size() > 0)
 	{
 		threeDObject *go = threeDObjectList.back();

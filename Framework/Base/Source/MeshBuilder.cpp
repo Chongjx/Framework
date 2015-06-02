@@ -218,6 +218,101 @@ Mesh* MeshBuilder::GenerateCube(const std::string &meshName, Color color, float 
 	return mesh;
 }
 
+/******************************************************************************/
+/*!
+\brief
+Generate the vertices of a cube; Use random color for each vertex
+Then generate the VBO/IBO and store them in Mesh object
+
+\param meshName - name of mesh
+\param lengthX - width of cube
+\param lengthY - height of cube
+\param lengthZ - depth of cube
+
+\return Pointer to mesh storing VBO/IBO of cube
+*/
+/******************************************************************************/
+Mesh* MeshBuilder::GenerateDebugBox(const std::string &meshName, Color color, float length)
+{
+	Vertex v;
+	std::vector<Vertex> vertex_buffer_data;
+
+	v.pos.Set(-0.5f * length,-0.5f * length,-0.5f * length);
+	v.color = color;
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(0.5f * length,-0.5f * length,-0.5f * length);
+	v.color = color;
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(0.5f * length, 0.5f * length,-0.5f * length);
+	v.color = color;
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(-0.5f * length, 0.5f * length,-0.5f * length);
+	v.color = color;
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(-0.5f * length,-0.5f * length, 0.5f * length);
+	v.color = color;
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(0.5f * length,-0.5f * length, 0.5f * length);
+	v.color = color;
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(0.5f * length, 0.5f * length, 0.5f * length);
+	v.color = color;
+	vertex_buffer_data.push_back(v);
+	v.pos.Set(-0.5f * length, 0.5f * length, 0.5f * length);
+	v.color = color;
+	vertex_buffer_data.push_back(v);
+	
+	std::vector<GLuint> index_buffer_data;
+	index_buffer_data.push_back(7);
+	index_buffer_data.push_back(4);
+	index_buffer_data.push_back(6);
+	index_buffer_data.push_back(5);
+	index_buffer_data.push_back(6);
+	index_buffer_data.push_back(4);
+	index_buffer_data.push_back(6);
+	index_buffer_data.push_back(5);
+	index_buffer_data.push_back(2);
+	index_buffer_data.push_back(1);
+	index_buffer_data.push_back(2);
+	index_buffer_data.push_back(5);
+	index_buffer_data.push_back(3);
+	index_buffer_data.push_back(7);
+	index_buffer_data.push_back(2);
+	index_buffer_data.push_back(6);
+	index_buffer_data.push_back(2);
+	index_buffer_data.push_back(7);
+	index_buffer_data.push_back(2);
+	index_buffer_data.push_back(1);
+	index_buffer_data.push_back(3);
+	index_buffer_data.push_back(0);
+	index_buffer_data.push_back(3);
+	index_buffer_data.push_back(1);
+	index_buffer_data.push_back(3);
+	index_buffer_data.push_back(0);
+	index_buffer_data.push_back(7);
+	index_buffer_data.push_back(4);
+	index_buffer_data.push_back(7);
+	index_buffer_data.push_back(0);
+	index_buffer_data.push_back(1);
+	index_buffer_data.push_back(5);
+	index_buffer_data.push_back(0);
+	index_buffer_data.push_back(4);
+	index_buffer_data.push_back(0);
+	index_buffer_data.push_back(5);
+	
+	Mesh *mesh = new Mesh(meshName);
+	
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->vertexBuffer);
+	glBufferData(GL_ARRAY_BUFFER, vertex_buffer_data.size() * sizeof(Vertex), &vertex_buffer_data[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->indexBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_buffer_data.size() * sizeof(GLuint), &index_buffer_data[0], GL_STATIC_DRAW);
+
+	mesh->indexSize = 36;
+	mesh->mode = Mesh::DRAW_LINES;
+
+	return mesh;
+}
+
 Mesh* MeshBuilder::GenerateRing(const std::string &meshName, Color color, unsigned numSlice, float outerR, float innerR)
 {
 	std::vector<Vertex> vertex_buffer_data;
@@ -543,9 +638,21 @@ Mesh* MeshBuilder::GenerateTerrain(const std::string & meshName, const std::stri
 			v.color.Set(scaledHeight, scaledHeight, scaledHeight);	 // for rendering height map without texture
 
 			v.texCoord.Set((float)x/terrainSize * 8, 1.f - (float)z / terrainSize * 8);
-			vertex_buffer_data.push_back(v);
 
-			v.normal.Set
+			Vector3 off(1.0, 1.0, 0.0);
+
+			float hL = ReadHeightMap(heightMap, x - off.x, z - off.z);
+			float hR = ReadHeightMap(heightMap, x + off.x, z + off.z);
+			float hD = ReadHeightMap(heightMap, x - off.z, z - off.y);
+			float hU = ReadHeightMap(heightMap, x + off.z, z + off.y);
+
+			v.normal.x = hL - hR;
+			v.normal.y = hD - hU;
+			v.normal.z = 2.0;
+
+			v.normal.Normalize();
+
+			vertex_buffer_data.push_back(v);
 		}
 	}
 

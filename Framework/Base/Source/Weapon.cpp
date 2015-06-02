@@ -160,13 +160,13 @@ void Weapon::Update(double dt)
 {
 	m_fFireTimer += dt;
 
-	if (m_iCurrentAmmo <= 0)
+	if (m_iMagazineAmmo <= 0)
 	{
 		m_bIsEmpty = true;
 		m_bCanFire = false;
 	}
 
-	else if (m_iMagazineAmmo > 0)
+	else
 	{ 
 		m_bIsEmpty = false;
 		m_bCanFire = true;
@@ -190,52 +190,16 @@ bool Weapon::Fire(void)
 {
 	if(m_bCanFire)
 	{
-		switch(m_WeaponType)
+		if (m_fFireTimer > m_fFireRate)
 		{
-			case WEAP_PISTOL:
-			{
-				if (m_fFireTimer > m_fFireRate)
-				{
-					--m_iMagazineAmmo;
-					m_fFireTimer = 0.f;
-					m_bCanFire = true;
-					break;
-				}
+			--m_iMagazineAmmo;
+			m_fFireTimer = 0.f;
+			m_bCanFire = true;
+		}
 
-				else
-				{
-					m_bCanFire = false;
-				}
-				
-			}
-			case WEAP_RIFLE:
-			{
-				if (m_fFireTimer > m_fFireRate)
-				{
-					--m_iMagazineAmmo;
-					m_fFireTimer = 0.f;
-					m_bCanFire = true;
-					break;
-				}
-				else
-				{
-					m_bCanFire = false;
-				}
-			}
-			case WEAP_SNIPER:
-			{
-				if (m_fFireTimer > m_fFireRate)
-				{
-					--m_iMagazineAmmo;
-					m_fFireTimer = 0.f;
-					m_bCanFire = true;
-					break;
-				}
-				else
-				{
-					m_bCanFire = false;
-				}
-			}
+		else
+		{
+			m_bCanFire = false;
 		}
 
 		return m_bCanFire;
@@ -257,10 +221,20 @@ bool Weapon::Reload(void)
 	// if there are enough ammo to reload
 	else if (m_iMagazineAmmo < m_iMagazineSize)
 	{
-		int ammoReloaded = m_iMagazineSize - m_iMagazineAmmo;
+		int ammoReloaded = 0;
+
+		if (m_iMagazineSize - m_iMagazineAmmo < m_iCurrentAmmo)
+		{
+			ammoReloaded = m_iMagazineSize - m_iMagazineAmmo;
+		}
+
+		else
+		{
+			ammoReloaded = m_iCurrentAmmo;
+		}
 
 		m_iCurrentAmmo -= ammoReloaded;
-		m_iMagazineAmmo = m_iMagazineSize;
+		m_iMagazineAmmo += ammoReloaded;
 
 		m_bIsReload = true;
 

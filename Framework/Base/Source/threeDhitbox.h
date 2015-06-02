@@ -47,6 +47,7 @@ private:
 	bool m_bCollide;
 public:
 	threeDhitbox(void);
+	threeDhitbox(Vector3 midPoint, float length, float height, float depth, const string name);
 	~threeDhitbox(void);
 
 	void create3Dhitbox(Vector3 midPoint, float length, float height, float depth, const string name);
@@ -84,8 +85,8 @@ public:
 	string getName(void) const;
 	bool getCollide(void) const;
 
-	friend void check3DCollision(threeDhitbox &user, vector<threeDhitbox> &target, bool &collide, string &boxName);
-	friend void check3DCollision(threeDhitbox &user, threeDhitbox &target, bool &collide, string &boxName);
+	friend bool check3DCollision(threeDhitbox &user, vector<threeDhitbox> &target, string &boxName);
+	friend bool check3DCollision(threeDhitbox &user, threeDhitbox &target, string &boxName);
 
 	threeDhitbox &operator= (threeDhitbox &input);
 };

@@ -119,11 +119,14 @@ class SceneBase : public Scene
 		GEO_SANDBAG,
 		GEO_PLAYER,
 		GEO_CHARACTER,
-		GEO_DESERTEAGLE,
-		GEO_P90,
-		GEO_SCAR,
+		GEO_PISTOL,
+		GEO_RIFLE,
+		GEO_SNIPER,
+		GEO_SHIP,
+		GEO_BUILDINGS,
 		GEO_TEXT,
 		GEO_OBJECT,
+		GEO_DEBUG,
 		GEO_MAX,
 	};
 
@@ -179,6 +182,7 @@ public:
 	void UpdateCharacters(double dt);
 	void UpdateWeapons(double dt);
 	void UpdateVariables(double dt);
+	void UpdateCollisions(double dt);
 	void UpdateUI(double dt);
 	void UpdateSound(double dt);
 
@@ -216,6 +220,7 @@ private:
 	static const int NUM_LIGHTS = 2;
 
 	Character player;
+	Properties TRS;
 
 	MS modelStack;
 	MS viewStack;
@@ -224,6 +229,8 @@ private:
 	Light lights[NUM_LIGHTS];
 
 	bool bLightEnabled;
+	bool bFogEnabled;
+	bool bDebugMode;
 
 	float fps;
 

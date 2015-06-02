@@ -1,15 +1,12 @@
-﻿Build started 29/5/2015 10:21:08 PM.
-     1>Project "C:\Users\Jun Xiang\Documents\GameDev\Framework\Base\Base.vcxproj" on node 2 (build target(s)).
+﻿Build started 1/6/2015 5:40:22 PM.
+     1>Project "C:\Users\Jun Xiang\Documents\Framework\Framework\Base\Base.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\Base.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Users\Jun Xiang\Documents\GameDev\Framework\\glew\include" /I"C:\Users\Jun Xiang\Documents\GameDev\Framework\\glfw\include" /I"C:\Users\Jun Xiang\Documents\GameDev\Framework\\Common\Source" /I"C:\Users\Jun Xiang\Documents\GameDev\Framework\\irrKlang-1.5.0\include" /ZI /nologo /W3 /WX- /Od /Oy- /D _VARIADIC_MAX=10 /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Source\Render_Functions.cpp
-         Render_Functions.cpp
-     1>c:\program files (x86)\microsoft sdks\windows\v7.0a\include\windef.h(126): warning C4005: 'APIENTRY' : macro redefinition
-                 c:\users\jun xiang\documents\gamedev\framework\glfw\include\glfw\glfw3.h(92) : see previous definition of 'APIENTRY'
-     1>c:\users\jun xiang\documents\gamedev\framework\base\source\render_functions.cpp(203): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Users\Jun Xiang\Documents\Framework\Framework\\glew\include" /I"C:\Users\Jun Xiang\Documents\Framework\Framework\\glfw\include" /I"C:\Users\Jun Xiang\Documents\Framework\Framework\\Common\Source" /I"C:\Users\Jun Xiang\Documents\Framework\Framework\\irrKlang-1.5.0\include" /ZI /nologo /W3 /WX- /Od /Oy- /D _VARIADIC_MAX=10 /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Source\Init_Functions.cpp
+         Init_Functions.cpp
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jun Xiang\Documents\GameDev\Framework\Debug\Base.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\Jun Xiang\Documents\GameDev\Framework\\glew\lib" /LIBPATH:"C:\Users\Jun Xiang\Documents\GameDev\Framework\\glfw\lib-msvc100" /LIBPATH:"C:\Users\Jun Xiang\Documents\GameDev\Framework\\irrKlang-1.5.0\lib\Win32-visualStudio" /LIBPATH:"C:\Users\Jun Xiang\Documents\GameDev\Framework\Debug" Common.lib winmm.lib opengl32.lib glu32.lib glew32.lib glfw3.lib irrKlang.lib irrKlang.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Base.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Jun Xiang\Documents\GameDev\Framework\Debug\Base.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jun Xiang\Documents\GameDev\Framework\Debug\Base.lib" /MACHINE:X86 Debug\Application.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jun Xiang\Documents\Framework\Framework\Debug\Base.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\Jun Xiang\Documents\Framework\Framework\\glew\lib" /LIBPATH:"C:\Users\Jun Xiang\Documents\Framework\Framework\\glfw\lib-msvc100" /LIBPATH:"C:\Users\Jun Xiang\Documents\Framework\Framework\\irrKlang-1.5.0\lib\Win32-visualStudio" /LIBPATH:"C:\Users\Jun Xiang\Documents\Framework\Framework\Debug" Common.lib winmm.lib opengl32.lib glu32.lib glew32.lib glfw3.lib irrKlang.lib irrKlang.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Base.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Jun Xiang\Documents\Framework\Framework\Debug\Base.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jun Xiang\Documents\Framework\Framework\Debug\Base.lib" /MACHINE:X86 Debug\Application.obj
          Debug\Bullet.obj
          Debug\Camera.obj
          Debug\Character.obj
@@ -37,14 +34,14 @@
          Debug\Weapon.obj
      1>Application.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
      1>LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-         Base.vcxproj -> C:\Users\Jun Xiang\Documents\GameDev\Framework\Debug\Base.exe
+         Base.vcxproj -> C:\Users\Jun Xiang\Documents\Framework\Framework\Debug\Base.exe
        Manifest:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\Jun Xiang\Documents\GameDev\Framework\Debug\Base.exe;#1" /manifest Debug\Base.exe.intermediate.manifest
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\Jun Xiang\Documents\Framework\Framework\Debug\Base.exe;#1" /manifest Debug\Base.exe.intermediate.manifest
        FinalizeBuildStatus:
          Deleting file "Debug\Base.unsuccessfulbuild".
          Touching "Debug\Base.lastbuildstate".
-     1>Done Building Project "C:\Users\Jun Xiang\Documents\GameDev\Framework\Base\Base.vcxproj" (build target(s)).
+     1>Done Building Project "C:\Users\Jun Xiang\Documents\Framework\Framework\Base\Base.vcxproj" (build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.95
+Time Elapsed 00:00:01.29

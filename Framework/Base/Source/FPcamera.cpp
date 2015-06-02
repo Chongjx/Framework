@@ -69,6 +69,9 @@ void FPcamera::Init(const Vector3& pos, const Vector3& target, const Vector3& up
 	JUMPMAXSPEED = 200.f;
 	JUMPACCEL = 100.f;
 	GRAVITY = -200.f;
+
+	rotationX = 0.f;
+	rotationY = 0.f;
 }
 
 /******************************************************************************/
@@ -499,6 +502,7 @@ void FPcamera::lookLeft(const double dt)
 	// left-right rotate
 	view = (target - position).Normalized();
 	float yaw = (float)(-TURN_SPEED * Application::camera_yaw * (float)dt);
+	rotationY += yaw;
 	Mtx44 rotation;
 	rotation.SetToRotation(yaw, 0, 1, 0);
 	view = rotation * view;
@@ -513,6 +517,7 @@ void FPcamera::lookRight(const double dt)
 {
 	view = (target - position).Normalized();
 	float yaw = (float)(-TURN_SPEED * Application::camera_yaw * (float)dt);
+	rotationY += yaw;
 	Mtx44 rotation;
 	rotation.SetToRotation(yaw, 0, 1, 0);
 	view = rotation * view;
@@ -526,6 +531,7 @@ void FPcamera::lookRight(const double dt)
 void FPcamera::lookUp(const double dt)
 {
 	float pitch = (float)(-TURN_SPEED * Application::camera_pitch * (float)dt);
+	rotationX += pitch;
 	view = (target - position).Normalized();
 	Vector3 right = view.Cross(up);
 	right.y = 0;
@@ -540,6 +546,7 @@ void FPcamera::lookUp(const double dt)
 void FPcamera::lookDown(const double dt)
 {
 	float pitch = (float)(-TURN_SPEED * Application::camera_pitch * (float)dt);
+	rotationX += pitch;
 	view = (target - position).Normalized();
 	Vector3 right = view.Cross(up);
 	right.y = 0;
@@ -554,6 +561,7 @@ void FPcamera::lookDown(const double dt)
 void FPcamera::lookUp(const double dt, float upValue)
 {
 	float pitch = (float)(-TURN_SPEED * upValue * (float)dt);
+	rotationX += pitch;
 	view = (target - position).Normalized();
 	Vector3 right = view.Cross(up);
 	right.y = 0;
@@ -568,6 +576,7 @@ void FPcamera::lookUp(const double dt, float upValue)
 void FPcamera::lookDown(const double dt, float downValue)
 {
 	float pitch = (float)(-TURN_SPEED * downValue * (float)dt);
+	rotationX += pitch;
 	view = (target - position).Normalized();
 	Vector3 right = view.Cross(up);
 	right.y = 0;
