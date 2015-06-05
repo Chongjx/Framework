@@ -440,10 +440,11 @@ bool check3DCollision(threeDhitbox &user, vector<threeDhitbox> &target, string &
 
 		else
 		{
-			return false;
 			iTestCases = 0;
 		}
 	}
+
+	return false;
 }
 
 /******************************************************************************/

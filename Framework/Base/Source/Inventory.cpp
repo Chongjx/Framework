@@ -28,7 +28,7 @@ Inventory::Inventory(void)
 
 	rifle.setWeaponType(WEAP_RIFLE);
 	rifle.setName("M18");
-	rifle.setFireRate(0.1f);
+	rifle.setFireRate(0.05f);
 	rifle.setDmg(20.f);
 	rifle.setReloadSpeed(2.f);
 	rifle.setRecoil(5.f);

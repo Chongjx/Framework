@@ -56,8 +56,8 @@ float ReadHeightMap(std::vector<unsigned char> &heightMap, float x, float z)
 	unsigned gridX = (x + 0.5f) / gridSquareSize;
 	unsigned gridZ = (z + 0.5f) / gridSquareSize;
 
-	float xCoord = std::fmod((x + 0.5f), gridSquareSize) / gridSquareSize;
-	float zCoord = std::fmod((z + 0.5f), gridSquareSize) / gridSquareSize;
+	float xCoord = fmod((x + 0.5f), gridSquareSize) / gridSquareSize;
+	float zCoord = fmod((z + 0.5f), gridSquareSize) / gridSquareSize;
 
 	float answer = 0.f;
 

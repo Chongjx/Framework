@@ -28,9 +28,9 @@ public:
 	static Mesh* GenerateTerrain(const std::string & meshName, const std::string &file_path, std::vector<unsigned char> &heightMap);
 	// sprite animation code here
 	static SpriteAnimation* GenerateSpriteAnimation(const std::string & meshName, unsigned numRow, unsigned numCol);
-	static Mesh* GenerateMinimap(const std::string &meshName, Color color, float length = 1.f);
-	static Mesh* GenerateMinimapBorder(const std::string &meshName, Color color, float length = 1.f);
-	static Mesh* GenerateMinimapAvatar(const std::string &meshName, Color color, float length = 1.f);
+	//static Mesh* GenerateMinimap(const std::string &meshName, Color color, float length = 1.f);
+	//static Mesh* GenerateMinimapBorder(const std::string &meshName, Color color, float length = 1.f);
+	//static Mesh* GenerateMinimapAvatar(const std::string &meshName, Color color, float length = 1.f);
 };
 
 #endif

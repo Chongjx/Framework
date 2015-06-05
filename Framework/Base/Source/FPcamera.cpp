@@ -10,7 +10,7 @@ Camera funtions that calculate and return the latest position of the camera.
 #include "Application.h"
 #include "Mtx44.h"
 
-static const float WALK_SPEED = 200.f;
+static const float WALK_SPEED = 100.f;
 static const float TURN_SPEED = 200.f;
 static const float RUN_SPEED = 400.f;
 /******************************************************************************/
@@ -64,6 +64,7 @@ void FPcamera::Init(const Vector3& pos, const Vector3& target, const Vector3& up
 	}
 
 	m_bCrouching = false;
+	m_bCollideGround = true;
 	m_bJumping = false;
 	m_bRecoil = false;
 	JumpVel = 0.0f;
@@ -214,6 +215,7 @@ void FPcamera::UpdateJump(const double dt, float heightOffset)
 {
 	if(m_bJumping)
 	{
+		m_bCollideGround = false;
 		// Factor in gravity
 		JumpVel += GRAVITY * dt;
 
@@ -229,6 +231,7 @@ void FPcamera::UpdateJump(const double dt, float heightOffset)
 			target.y = yDiff + position.y;
 			JumpVel = 0.0f;
 			m_bJumping = false;
+			m_bCollideGround = true;
 		}
 	}
 }
@@ -273,6 +276,7 @@ void FPcamera::Reset(void)
 	}
 
 	m_bCrouching = false;
+	m_bCollideGround = true;
 	m_bJumping = false;
 	m_bRecoil = false;
 	JumpVel = 0.0f;
@@ -348,6 +352,19 @@ sensitivty of the mouse float
 void FPcamera::setSensitivity(float sensitivity)
 {
 	this->sensitivity = sensitivity;
+}
+
+/******************************************************************************/
+/*!
+\brief	FPcamera Setter functions
+
+\param	jumping
+character jump
+*/
+/******************************************************************************/
+void FPcamera::setJumping(bool jumping)
+{
+	this->m_bJumping = jumping;
 }
 
 /******************************************************************************/
@@ -452,6 +469,19 @@ mouse recoil
 bool FPcamera::getRecoiling(void) const
 {
 	return m_bRecoil;
+}
+
+/******************************************************************************/
+/*!
+\brief	FPcamera Getter functions
+
+\return	bool
+mouse recoil
+*/
+/******************************************************************************/
+bool FPcamera::getCollideGround(void) const
+{
+	return m_bCollideGround;
 }
 
 // basic methods
@@ -751,7 +781,7 @@ void FPcamera::Jump(const double dt)
 	}
 }
 
-void FPcamera::Crouch(const double dt, double heightOffset)
+void FPcamera::Crouch(const double dt, float heightOffset)
 {
 	if (dt > 0)
 	{

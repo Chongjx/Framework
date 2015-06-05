@@ -94,7 +94,7 @@ void SceneBase::RenderTerrain(void)
 {
 	modelStack.PushMatrix();
 	modelStack.Scale(TERRAIN_SCALE.x, TERRAIN_SCALE.y, TERRAIN_SCALE.z);
-	Render3DMesh(meshList[GEO_TERRAIN], false);
+	Render3DMesh(meshList[GEO_TERRAIN], true);
 	modelStack.PopMatrix();
 }
 
@@ -150,21 +150,21 @@ void SceneBase::RenderCharacters(void)
 	modelStack.MultMatrix(player.getProperties().rotation);
 	modelStack.Scale(player.getProperties().scale);
 	//Render3DMesh(player.getMesh(), player.getReflectLight());
-		modelStack.PushMatrix();
-		if (player.bagpack.currentWeapon->getReload())
-		{
-			modelStack.Rotate(player.camera.rotationX + 15, 1, 0, 0);
-		}
-		else
-		{
-			modelStack.Rotate(player.camera.rotationX, 1, 0, 0);
-		}
-		modelStack.Translate(player.bagpack.currentWeapon->getProperties().translation);
-		modelStack.MultMatrix(player.bagpack.currentWeapon->getProperties().rotation);
-		modelStack.Scale((player.bagpack.currentWeapon)->getProperties().scale);
-		Render3DMesh((player.bagpack.currentWeapon)->getMesh(), (player.bagpack.currentWeapon)->getReflectLight());
+	modelStack.PushMatrix();
+	if (player.bagpack.currentWeapon->getReload())
+	{
+		modelStack.Rotate(player.camera.rotationX + 15, 1, 0, 0);
+	}
+	else
+	{
+		modelStack.Rotate(player.camera.rotationX, 1, 0, 0);
+	}
+	modelStack.Translate(player.bagpack.currentWeapon->getProperties().translation);
+	modelStack.MultMatrix(player.bagpack.currentWeapon->getProperties().rotation);
+	modelStack.Scale((player.bagpack.currentWeapon)->getProperties().scale);
+	Render3DMesh((player.bagpack.currentWeapon)->getMesh(), (player.bagpack.currentWeapon)->getReflectLight());
 
-		modelStack.PopMatrix();
+	modelStack.PopMatrix();
 	modelStack.PopMatrix();
 
 	if(bDebugMode)
@@ -246,59 +246,159 @@ void SceneBase::RenderUI(void)
 	//On screen text
 	SetHUD(true);
 
+	Color textColor(47.f / 255.f, 144.f / 255.f, 38.f/ 255.f);
+
 	std::ostringstream ss;
 	ss.precision(4);
 	ss << "FPS:" << fps;
-	RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 0, 0), FONT_SIZE, 0, 57);
+	RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), textColor, FONT_SIZE, 0, 57);
 
-	Render2DMesh(meshList[GEO_QUAD], false, 25.f, 67.5f, 55);
+	if (timer <= startTimer)
+	{
+		std::ostringstream startDisplay;
+		startDisplay << "Survive";
+		RenderTextOnScreen(meshList[GEO_TEXT], startDisplay.str(), textColor, FONT_SIZE, 30, 30);
+	}
+
+	else
+	{
+		std::ostringstream waveCount;
+		waveCount << "Wave:" << wave;
+		RenderTextOnScreen(meshList[GEO_TEXT], waveCount.str(), textColor, FONT_SIZE, 35, 57);
+	}
+
+	Render2DMesh(meshList[GEO_HEALTHBAR], false, 34.f, 63.5f, 45.f);
+
+	std::ostringstream health;
+	health << player.m_iHealth;
+	RenderTextOnScreen(meshList[GEO_TEXT], health.str(), Color(1, 0, 0), FONT_SIZE, 70.f, 54.f);
 
 	// ammo clip
 	std::ostringstream ss1;
 	ss1.precision(4);
 	ss1 << player.bagpack.currentWeapon->getName();
-	RenderTextOnScreen(meshList[GEO_TEXT], ss1.str(), Color(0, 0, 0), FONT_SIZE * 0.5f, 68, 57);
+	RenderTextOnScreen(meshList[GEO_TEXT], ss1.str(), Color(0, 0, 1), FONT_SIZE * 0.485f, 69.f, 51.f);
 
 	std::ostringstream ss2;
 	ss2 << "Mag:" << player.bagpack.currentWeapon->getMagazineAmmo();
-	RenderTextOnScreen(meshList[GEO_TEXT], ss2.str(), Color(0, 0, 0), FONT_SIZE * 0.5f, 68, 54);
+	RenderTextOnScreen(meshList[GEO_TEXT], ss2.str(), Color(0, 0, 1), FONT_SIZE * 0.485f, 69.f, 48.f);
 
 	std::ostringstream ss3;
 	ss3 << "Ammo:" << player.bagpack.currentWeapon->getAmmo();
-	RenderTextOnScreen(meshList[GEO_TEXT], ss3.str(), Color(0, 0, 0), FONT_SIZE * 0.5f, 68, 51);
+	RenderTextOnScreen(meshList[GEO_TEXT], ss3.str(), Color(0, 0, 1), FONT_SIZE * 0.485f, 69.f, 45.f);
 
-	if(leaving)
+	if (!gameOver)
 	{
-		std::ostringstream ss4;
-		ss4 << "WARINING: LEAVING ZONE";
-		Render2DMesh(meshList[GEO_QUAD], false, 70.f, 0, 0);
-		RenderTextOnScreen(meshList[GEO_TEXT], ss4.str(), Color(1, 1, 1), FONT_SIZE * 0.5f, 24, 30);
+		if (timer >= startTimer)
+		{
+			switch(player.bagpack.currentWeapon->getWeaponType())
+			{
+			case WEAP_PISTOL:
+				{
+					Render2DMesh(meshList[GEO_PISTOLCH], false, 10.f, 0, 0);
+					break;
+				}
+			case WEAP_RIFLE:
+				{
+					Render2DMesh(meshList[GEO_RIFLECH], false, 10.f, 0, 0);
+					break;
+				}
+			case WEAP_SNIPER:
+				{
+					Render2DMesh(meshList[GEO_SNIPERCH], false, 10.f, 0, 0);
+					break;
+				}
+			}
+		}
+
+		if(leaving)
+		{
+			Render2DMesh(meshList[GEO_QUAD], false, 70.f, 0, 0);
+			std::ostringstream ss4;
+			ss4 << "WARINING: LEAVING ZONE";
+			RenderTextOnScreen(meshList[GEO_TEXT], ss4.str(), Color(1, 1, 1), FONT_SIZE * 0.5f, 24, 30);
+		}
 	}
 
-	switch(player.bagpack.currentWeapon->getWeaponType())
+	else
 	{
-		case WEAP_PISTOL:
-		{
-			Render2DMesh(meshList[GEO_PISTOLCH], false, 10.f, 0, 0);
-			break;
-		}
-		case WEAP_RIFLE:
-		{
-			Render2DMesh(meshList[GEO_RIFLECH], false, 10.f, 0, 0);
-			break;
-		}
-		case WEAP_SNIPER:
-		{
-			Render2DMesh(meshList[GEO_SNIPERCH], false, 10.f, 0, 0);
-			break;
-		}
+		Render2DMesh(meshList[GEO_QUAD], false, 200.f, 0, 0);
+
+		std::ostringstream ss5;
+		ss5 << "Game Over" << std::endl;
+		RenderTextOnScreen(meshList[GEO_TEXT], ss5.str(), Color(1, 1, 1), FONT_SIZE, 25.f, 45.f);
+
+		std::ostringstream ss6;
+		ss6 << "Wave survived: " << wave;
+		RenderTextOnScreen(meshList[GEO_TEXT], ss6.str(), Color(1, 1, 1), FONT_SIZE, 15.f, 40.f);
+
+
+		std::ostringstream ss7;
+		ss7 <<"Left click to replay" << std::endl;
+		RenderTextOnScreen(meshList[GEO_TEXT], ss7.str(), Color(1, 1, 1), FONT_SIZE, 5.f, 30.f);
 	}
 
-	Render2DMesh(m_Minimap->GetBackground(), false, 20.f, -70, -50);
-	Render2DMesh(m_Minimap->GetBorder(), false, 20.f, -70, -50);
-	Render2DMesh(m_Minimap->GetAvatar(), false, 10.f, -70, -50);
+	RenderMiniMap();
 
 	SetHUD(false);
+}
+
+/******************************************************************************/
+/*!
+\brief
+Render minimap
+*/
+/******************************************************************************/
+void SceneBase::RenderMiniMap(void)
+{
+	// minimap
+	modelStack.PushMatrix();
+	modelStack.Translate(-60, -40, 0);
+	//modelStack.Scale(1.f, 1.f, 1);
+	// border
+	modelStack.PushMatrix();
+	modelStack.Scale(7, 7, 1);
+	Render2DMesh(m_Minimap->getBorder(), false);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Rotate(m_Minimap->player.getAngle(), 0, 0, 1);
+
+	// background (radar)
+	modelStack.PushMatrix();
+	modelStack.Scale(20, 20, 1);
+	Render2DMesh(m_Minimap->getBackground(), false);
+	modelStack.PopMatrix();
+
+	// enemy
+	for(int i = 0; i < m_Minimap->enemyList.size(); ++i)
+	{
+		if (m_Minimap->enemyList[i].getRender())
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(m_Minimap->enemyList[i].getPosition_x(), m_Minimap->enemyList[i].getPosition_y(), 0);
+			Render2DMesh(m_Minimap->enemyList[i].getAvatar(), false);
+			modelStack.PopMatrix();
+		}
+	}
+
+	// environment
+	for(int i = 0; i < m_Minimap->statictList.size(); ++i)
+	{
+		if (m_Minimap->statictList[i].getRender())
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(m_Minimap->statictList[i].getPosition_x(), m_Minimap->statictList[i].getPosition_y(), 0);
+			modelStack.Scale(3.f, 3.f, 3.f);
+			Render2DMesh(m_Minimap->statictList[i].getAvatar(), false);
+			modelStack.PopMatrix();
+		}
+	}
+	modelStack.PopMatrix();
+
+	// player avatar
+	Render2DMesh(m_Minimap->player.getAvatar(), false);
+	modelStack.PopMatrix();
 }
 
 /******************************************************************************/
@@ -393,7 +493,7 @@ void SceneBase::Render3DMesh(Mesh *mesh, bool enableLight)
 Render 2D mesh on screen function
 */
 /******************************************************************************/
-void SceneBase::Render2DMesh(Mesh* mesh, bool enableLight, float size, float x, float y)
+void SceneBase::Render2DMesh(Mesh* mesh, bool enableLight, float size, float x, float y, float rotate)
 {
 	Mtx44 ortho;
 	ortho.SetToOrtho(-80, 80, -60, 60 , -10, 10);
@@ -404,6 +504,7 @@ void SceneBase::Render2DMesh(Mesh* mesh, bool enableLight, float size, float x, 
 	modelStack.PushMatrix();
 	modelStack.LoadIdentity();
 	modelStack.Translate(x, y, 0);
+	modelStack.Rotate(rotate, 0, 0, 1);
 	modelStack.Scale(size, size, size);
 
 	Mtx44 MVP, modelView, modelView_inverse_transpose;
@@ -439,6 +540,55 @@ void SceneBase::Render2DMesh(Mesh* mesh, bool enableLight, float size, float x, 
 	modelStack.PopMatrix();
 	viewStack.PopMatrix();
 	projectionStack.PopMatrix();
+}
+
+/******************************************************************************/
+/*!
+\brief
+Render 2D mesh function which allows hir
+*/
+/******************************************************************************/
+void SceneBase::Render2DMesh(Mesh *mesh, bool enableLight)
+{
+	Mtx44 ortho;
+	ortho.SetToOrtho(-80, 80, -60, 60 , -10, 10);
+	projectionStack.PushMatrix();
+	projectionStack.LoadMatrix(ortho);
+	viewStack.PushMatrix();
+	viewStack.LoadIdentity();
+
+	Mtx44 MVP, modelView, modelView_inverse_transpose;
+
+	MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
+	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+
+	modelView = viewStack.Top() * modelStack.Top();
+	glUniformMatrix4fv(m_parameters[U_MODELVIEW], 1, GL_FALSE, &modelView.a[0]);
+
+	for (unsigned i = 0; i < mesh->MAX_TEXTURES; ++i)
+	{
+		if(mesh->textureID[i] > 0)
+		{
+			glUniform1i(m_parameters[U_COLOR0_TEXTURE_ENABLED + (i * 2)], 1);
+
+			glActiveTexture(GL_TEXTURE0 + i);
+			glBindTexture(GL_TEXTURE_2D, mesh->textureID[i]);
+			glUniform1i(m_parameters[U_COLOR0_TEXTURE + (i * 2)], i);
+		}
+		else
+		{
+			glUniform1i(m_parameters[U_COLOR0_TEXTURE_ENABLED + (i * 2)], 0);
+		}
+	}
+	mesh->Render();
+
+	for (unsigned i = 0; i < mesh->MAX_TEXTURES; ++i)
+	{
+		if(mesh->textureID[i] > 0)
+		{
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
+	}
 }
 
 /******************************************************************************/

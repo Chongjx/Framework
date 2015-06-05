@@ -45,7 +45,9 @@ using namespace irrklang;
 
 static const float SKYBOXSIZE = 1000.f;
 static const Vector3 TERRAIN_SCALE(4000.f, 350.f, 4000.f);
+static const float MINIMAP_SCALE = 57.5f;
 static const int FONT_SIZE = 3;
+static const float REPULSE_FORCE = 20.f;
 
 class SceneBase : public Scene
 {
@@ -115,12 +117,14 @@ class SceneBase : public Scene
 		GEO_PISTOLCH,
 		GEO_RIFLECH,
 		GEO_SNIPERCH,
+		GEO_HEALTHBAR,
 		GEO_SKYPLANE,
 		GEO_TERRAIN,
 		GEO_PLATFORM,
 		GEO_CRATE,
 		GEO_SANDBAG,
 		GEO_PLAYER,
+		GEO_ALIEN,
 		GEO_CHARACTER,
 		GEO_PISTOL,
 		GEO_RIFLE,
@@ -135,24 +139,21 @@ class SceneBase : public Scene
 
 	enum SOUND
 	{
-		FOOTSTEP = 0,
-		JUMPING,
-		SHOOTING,
-		MUSIC,
-		SHEEP,
-		HORSE,
-		FSCREAM,	//female scream 
-		MSCREAM,	//male scream
-		DOGBARK,
-		PICKUP,
-		DOORSND,
-		DOORCLS,
-		LANDING,
-		MENUOPEN,
-		MENUCLS,
-		MENUSCRL,
-		STATUE,
-		COINSND,
+		WALKING = 0,
+		PANTING,
+		BEATING,
+		FIREPISTOL,
+		FIRERIFLE,
+		RELOADPISTOL,
+		RELOADRIFLE,
+		RADIO,
+		ALIEN,
+		HEALTHBONUS,
+		PISTOLBONUS,
+		RIFLEBONUS,
+		ATTACKED,
+		//GAMEOVER,
+		//MUSIC,
 		TOTAL_SOUND,
 	};
 public:
@@ -163,8 +164,8 @@ public:
     virtual void Update(double dt);
 	virtual void UpdateCameraStatus(const unsigned char key);
 	virtual void UpdateWeaponStatus(const unsigned char key);
+	virtual void UpdateSoundStatus(const unsigned char key);
     virtual void RenderScene(void);
-	virtual void RenderMiniMap(void);
     virtual void Exit(void);
 
 	void InitOpenGL(void);
@@ -187,7 +188,6 @@ public:
 	void UpdateVariables(double dt);
 	void UpdateCollisions(double dt);
 	void UpdateUI(double dt);
-	void UpdateSound(double dt);
 
 	void SetCamera(void);
 	void RenderLights(void);
@@ -198,12 +198,14 @@ public:
 	void RenderWeapons(void);
 	void RenderBullets(void);
 	void RenderUI(void);
+	void RenderMiniMap(void);
 
 	// Toggle HUD mode
 	void SetHUD(const bool m_bHUDmode);
 
 	void Render3DMesh(Mesh *mesh, bool enableLight);
-	void Render2DMesh(Mesh* mesh, bool enableLight, float size = 1.0f, float x = 0.0f, float y = 0.0f);
+	void Render2DMesh(Mesh* mesh, bool enableLight, float size, float x = 0.0f, float y = 0.0f, float rotate = 0.0f);
+	void Render2DMesh(Mesh* mesh, bool enableLight);
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 
@@ -219,11 +221,20 @@ private:
 	vector<unsigned char>m_heightMap;
 	// handle to the minimap
 	MiniMap* m_Minimap;
+	Avatar newAvatar;
 
 	static const int NUM_LIGHTS = 2;
 
 	Character player;
+	FPcamera tempCamera;
+	unsigned wave;
+	unsigned enemyCount;
+	unsigned maxEnemy;
 	Properties TRS;
+	float startTimer;
+	float timer;
+	int itemBonus;
+	string displayBonus;
 
 	MS modelStack;
 	MS viewStack;

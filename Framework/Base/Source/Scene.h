@@ -40,6 +40,7 @@ public:
 	virtual void Update(double dt) = 0;
 	virtual void UpdateCameraStatus(const unsigned char key) = 0;
 	virtual void UpdateWeaponStatus(const unsigned char key) = 0;
+	virtual void UpdateSoundStatus(const unsigned char key) = 0;
 	virtual void RenderScene() = 0;
 	virtual void RenderMiniMap() = 0;
 	virtual void Exit() = 0;
@@ -54,6 +55,9 @@ public:
 	};
 
 	SCENE_STATE currentScene, prevScene;
+
+	bool gameOver;
+	bool restart;
 };
 
 #endif

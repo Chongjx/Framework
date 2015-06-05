@@ -158,7 +158,7 @@ bool Weapon::getEmpty(void) const
 
 void Weapon::Update(double dt)
 {
-	m_fFireTimer += dt;
+	m_fFireTimer += (float)dt;
 
 	if (m_iMagazineAmmo <= 0)
 	{
@@ -175,7 +175,7 @@ void Weapon::Update(double dt)
 	if (m_bIsReload)
 	{
 		m_bCanFire = false;
-		m_fReloadTimer += dt;
+		m_fReloadTimer += (float)dt;
 
 		if (m_fReloadTimer > m_fReloadSpeed)
 		{

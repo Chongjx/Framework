@@ -23,15 +23,24 @@ void SceneBase::Init()
 
 void SceneBase::Update(double dt)
 {
-	UpdateOpenGL();
-	UpdateLights(dt);
-	UpdateMovement(dt);
-	UpdateCharacters(dt);
-	UpdateWeapons(dt);
-	UpdateVariables(dt);
-	UpdateCollisions(dt);
-	UpdateUI(dt);
-	UpdateSound(dt);
+	if (restart)
+	{
+		ReInit();
+	}
+	else
+	{
+		UpdateOpenGL();
+		UpdateLights(dt);
+		if (!gameOver)
+		{
+			UpdateMovement(dt);
+			UpdateCharacters(dt);
+			UpdateWeapons(dt);
+			UpdateVariables(dt);
+			UpdateCollisions(dt);
+		}
+		UpdateUI(dt);
+	}
 }
 
 void SceneBase::RenderScene()
@@ -42,39 +51,6 @@ void SceneBase::RenderScene()
 	RenderCharacters();
 	RenderBullets();
 	RenderUI();
-}
-
-/******************************************************************************/
-/*!
-\brief
-render a map
-*/
-/******************************************************************************/
-void SceneBase::RenderMiniMap()
-{
-	//glDisable(GL_DEPTH_TEST);
-
-	/*if(currentScene != SCENE_MENU)
-	{
-		static int width, height;
-
-		glfwGetWindowSize(glfwGetCurrentContext(), &width, &height);
-
-		Mtx44 projection;
-		projection.SetToOrtho(-width/15, width/15, -height/15, height/15, -10, 800);
-		//perspective.SetToOrtho(-80, 80, -60, 60, -1000, 1000);
-		projectionStack.LoadMatrix(projection);
-
-		viewStack.LoadIdentity();
-		viewStack.LookAt(topdownCam.position.x, topdownCam.position.y, topdownCam.position.z, topdownCam.target.x, topdownCam.target.y, topdownCam.target.z, topdownCam.up.x, topdownCam.up.y, topdownCam.up.z);
-
-		RenderLights();
-		RenderBullet(); 
-        RenderEnvironment();
-		RenderCharacters();
-		RenderPlayer();
-		RenderMarketStuff();
-	}*/
 }
 
 void SceneBase::Exit()
@@ -92,12 +68,26 @@ void SceneBase::Exit()
 		m_Minimap = NULL;
 	}
 
-	/*while(threeDObjectList.size() > 0)
+	while(environmentList.size() > 0)
 	{
-		threeDObject *go = threeDObjectList.back();
+		threeDObject *go = environmentList.back();
 		delete go;
-		threeDObjectList.pop_back();
-	}*/
+		environmentList.pop_back();
+	}
+
+	while(characterList.size() > 0)
+	{
+		Character *go = characterList.back();
+		delete go;
+		characterList.pop_back();
+	}
+
+	while(bulletList.size() > 0)
+	{
+		Bullet *go = bulletList.back();
+		delete go;
+		bulletList.pop_back();
+	}
 
 	glDeleteProgram(m_programID);
 	glDeleteVertexArrays(1, &m_vertexArrayID);

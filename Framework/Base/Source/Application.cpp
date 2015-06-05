@@ -86,7 +86,7 @@ bool Application::GetMouseUpdate(void)
 		scene->UpdateCameraStatus('j');
 	}
 
-	if (mouse_diff_x > 0)
+	else if (mouse_diff_x > 0)
 	{
 		scene->UpdateCameraStatus('l');
 	}
@@ -96,7 +96,7 @@ bool Application::GetMouseUpdate(void)
 		scene->UpdateCameraStatus('k');
 	}
 
-	if (mouse_diff_y > 0)
+	else if (mouse_diff_y > 0)
 	{
 		scene->UpdateCameraStatus('i');
 	}
@@ -104,9 +104,10 @@ bool Application::GetMouseUpdate(void)
 	if (glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 	{
 		scene->UpdateWeaponStatus(scene->WA_FIRE);
+		scene->UpdateSoundStatus('f');
 	}
 
-	if (glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
+	else if (glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 	{
 		scene->UpdateWeaponStatus(scene->WA_CHANGEWEAPON);
 	}
@@ -114,6 +115,11 @@ bool Application::GetMouseUpdate(void)
 	else
 	{
 		scene->UpdateWeaponStatus(scene->WA_NIL);
+	}
+
+	if (scene->gameOver && glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_LEFT) ==GLFW_PRESS)
+	{
+		scene->restart = true;
 	}
 
 	return false;
@@ -124,21 +130,25 @@ bool Application::GetKeyboardUpdate()
 	if (IsKeyPressed('A'))
 	{
 		scene->UpdateCameraStatus('a');
+		scene->UpdateSoundStatus('a');
 	}
 
 	if (IsKeyPressed('D'))
 	{
 		scene->UpdateCameraStatus('d');
+		scene->UpdateSoundStatus('d');
 	}
 
 	if (IsKeyPressed('W'))
 	{
 		scene->UpdateCameraStatus('w');
+		scene->UpdateSoundStatus('w');
 	}
 
 	if (IsKeyPressed('S'))
 	{
 		scene->UpdateCameraStatus('s');
+		scene->UpdateSoundStatus('s');
 	}
 
 	if (IsKeyPressed('Q'))
@@ -154,6 +164,7 @@ bool Application::GetKeyboardUpdate()
 	if(IsKeyPressed(VK_SPACE))
 	{
 		scene->UpdateCameraStatus(32);
+		scene->UpdateSoundStatus(32);
 	}
 
 	if(IsKeyPressed(VK_LCONTROL))
@@ -169,6 +180,7 @@ bool Application::GetKeyboardUpdate()
 	if (IsKeyPressed(VK_LSHIFT))
 	{
 		scene->UpdateCameraStatus('z');
+		scene->UpdateSoundStatus('z');
 	}
 
 	return true;
@@ -247,7 +259,7 @@ void Application::Run()
 		m_dAccumulatedTime_ThreadOne += m_dElapsedTime;
 		m_dAccumulatedTime_ThreadTwo += m_dElapsedTime;
 
-		if (m_dAccumulatedTime_ThreadOne > (float)(1/120))
+		if (m_dAccumulatedTime_ThreadOne > 0.016)
 		{
 			GetKeyboardUpdate();
 			GetMouseUpdate();
@@ -257,7 +269,7 @@ void Application::Run()
 
 		if (m_dAccumulatedTime_ThreadTwo > 0.03)
 		{
-			// updateAI();
+			// update ai
 			m_dAccumulatedTime_ThreadTwo = 0.0;
 		}
 		scene->RenderScene();

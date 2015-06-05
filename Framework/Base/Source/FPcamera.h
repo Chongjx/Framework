@@ -32,11 +32,11 @@ private:
 	Vector3 defaultUp;
 	Vector3 view;
 	float defaultSensitivity;
-	bool myKeys[255];
 	CAM_TYPE sCameraType;
 
 	bool m_bJumping;
 	bool m_bCrouching;
+	bool m_bCollideGround;
 	float GRAVITY;
 	float JumpVel;
 	float JUMPMAXSPEED, JUMPACCEL;
@@ -48,6 +48,7 @@ public:
 	float rotationX;
 	float rotationY;
 	float recoil;
+	bool myKeys[255];
 
 	virtual void Init(const Vector3& pos, const Vector3& target, const Vector3& up);
 	virtual void Update(double dt, float floorLevel);
@@ -60,6 +61,7 @@ public:
 	virtual void setTarget(Vector3 target);
 	virtual void setUp(Vector3 up);
 	virtual void setSensitivity(float sensitivity);
+	virtual void setJumping(bool jumping);
 	virtual void setRecoiling(bool recoiling);
 
 	virtual CAM_TYPE GetCameraType(void);
@@ -69,6 +71,7 @@ public:
 	virtual Vector3 getView(void) const;
 	virtual float getSensitivity(void) const;
 	virtual bool getRecoiling(void) const;
+	virtual bool getCollideGround(void) const;
 
 	// basic methods
 	virtual void moveForward(const double dt, float heightOffset, bool run = false);
@@ -93,8 +96,8 @@ public:
 	virtual void Walk(const double dt, float heightOffset);
 	virtual void Run(const double dt, float heightOffset);
 	virtual void Strafe(const double dt, float heightOffset);
+	virtual void Crouch(const double dt, float heightOffset);
 	virtual void Jump(const double dt);
-	virtual void Crouch(const double dt, double heightOffset);
 };
 
 #endif

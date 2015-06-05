@@ -109,9 +109,9 @@ void SceneBase::InitLights(void)
 	// directional light (sunlight)
 	lights[0].type = Light::LIGHT_POINT;
 	lights[0].exponent = 3.f;
-	lights[0].position.Set(0.f, 200.f, 0.f);
+	lights[0].position.Set(0.f, 1500.f, 0.f);
 	lights[0].color.Set(1, 1, 1);
-	lights[0].power = 100.f;
+	lights[0].power = 3000.f;
 	lights[0].kC = 1.f;
 	lights[0].kL = 0.01f;
 	lights[0].kQ = 0.001f;
@@ -120,9 +120,9 @@ void SceneBase::InitLights(void)
 	// directional light (sunlight)
 	lights[1].type = Light::LIGHT_POINT;
 	lights[1].exponent = 3.f;
-	lights[1].position.Set(0.f, 200.f, 0.f);
+	lights[1].position.Set(0.f, 1.f, 0.f);
 	lights[1].color.Set(1, 1, 1);
-	lights[1].power = 100.f;
+	lights[1].power = 1.f;
 	lights[1].kC = 1.f;
 	lights[1].kL = 0.01f;
 	lights[1].kQ = 0.001f;
@@ -146,7 +146,7 @@ void SceneBase::InitLights(void)
 	glUniform1f(m_parameters[U_FOG_START], 200);
 	glUniform1f(m_parameters[U_FOG_END], 2000);
 	glUniform1f(m_parameters[U_FOG_DENSITY], 0.005f);
-	glUniform1f(m_parameters[U_FOG_TYPE], 2);
+	glUniform1i(m_parameters[U_FOG_TYPE], 0);
 	// Disable fog
 	glUniform1f(m_parameters[U_FOG_ENABLED], bFogEnabled);
 
@@ -200,11 +200,15 @@ void SceneBase::InitMesh(void)
 	meshList[GEO_SNIPERCH] = MeshBuilder::GenerateQuad("cursor", Color(1.f, 1.f, 1.f), 1.f);
 	meshList[GEO_SNIPERCH]->textureID[0] = LoadTGA("Image//sniperch.tga");
 
+	meshList[GEO_HEALTHBAR] = MeshBuilder::GenerateQuad("healthbar", Color(1.f, 1.f, 1.f), 1.f);
+	meshList[GEO_HEALTHBAR]->textureID[0] = LoadTGA("Image//healthbar.tga");
+
 	meshList[GEO_SKYPLANE] = MeshBuilder::GenerateSkyPlane("skyplane", Color(1, 1, 1), 128, 2000.0f, 4000.f, 1.0f, 1.0f);
 	meshList[GEO_SKYPLANE]->textureID[0] = LoadTGA("Image//top.tga");
 
 	meshList[GEO_TERRAIN] = MeshBuilder::GenerateTerrain("terrain", "Image//heightmap.raw", m_heightMap);
 	meshList[GEO_TERRAIN]->textureID[0] = LoadTGA("Image//sand.tga");
+	meshList[GEO_TERRAIN]->textureID[1] = LoadTGA("Image//rough.tga");
 
 	meshList[GEO_PLATFORM] = MeshBuilder::GenerateOBJ("platform", "OBJ//platform.obj");
 	meshList[GEO_PLATFORM]->textureID[0] = LoadTGA("Image//concrete.tga");
@@ -220,6 +224,9 @@ void SceneBase::InitMesh(void)
 
 	meshList[GEO_PLAYER] = MeshBuilder::GenerateCube("player", Color(1, 1, 0), 20.f);
 
+	meshList[GEO_ALIEN] = MeshBuilder::GenerateOBJ("alien", "OBJ//alien.obj");
+	meshList[GEO_ALIEN]->textureID[0] = LoadTGA("Image//alien.tga");
+
 	meshList[GEO_PISTOL] = MeshBuilder::GenerateOBJ("pistol", "OBJ//pistol.obj");
 	meshList[GEO_PISTOL]->textureID[0] = LoadTGA("Image//pistol.tga");
 
@@ -231,6 +238,7 @@ void SceneBase::InitMesh(void)
 
 	meshList[GEO_SHIP] = MeshBuilder::GenerateOBJ("wreckedship", "OBJ//ship.obj");
 	meshList[GEO_SHIP]->textureID[0] = LoadTGA("Image//ship.tga");
+	//meshList[GEO_SHIP]->textureID[1] = LoadTGA("Image//scratch.tga");
 
 	meshList[GEO_DEBUG] = MeshBuilder::GenerateDebugBox("debug", Color(0.f, 0.f, 0.f), 1.f);
 }
@@ -247,6 +255,8 @@ void SceneBase::InitCamera(void)
 		Vector3(0, 25 + TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, 0/TERRAIN_SCALE.x, 0/TERRAIN_SCALE.z), 0), 
 		Vector3(0, 25 + TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, 0/TERRAIN_SCALE.x, 0/TERRAIN_SCALE.z), 10), 
 		Vector3(0, 1, 0));
+
+	tempCamera = player.camera;
 }
 
 /******************************************************************************/
@@ -261,25 +271,22 @@ void SceneBase::InitSound(void)
 	engine = createIrrKlangDevice();
 
 	// play some sound stream, looped
-	snd[FOOTSTEP] = engine->play2D("Wav//FootStep.ogg", true, true);
-	snd[JUMPING] = engine->play3D("Wav//Jumping.ogg", vec3df(0, 0, 0), true, true);
-	snd[SHOOTING] = engine->play3D("Wav//Gunfire.ogg", vec3df(0, 0, 0), true, true);
-	snd[MUSIC] = engine->play3D("Wav//Music.ogg", vec3df(0, 0, 0), true, false, true);
-	snd[SHEEP] = engine->play3D("Wav//SheepBleat.ogg", vec3df(-280, 10, -370), true, true);
-	snd[HORSE] = engine->play3D("Wav//Horse.ogg", vec3df(0, 0, 0), true, true);
-	snd[FSCREAM] = engine->play3D("Wav//Scream_Female.ogg", vec3df(0, 0, 0), true, true);
-	snd[MSCREAM] = engine->play3D("Wav//Scream_Male.ogg", vec3df(0, 0, 0), true, true);
-	snd[DOGBARK] = engine->play3D("Wav//Dog_Barking.ogg", vec3df(0, 0, 0), true, true);
-	snd[MUSIC]->setVolume(5);snd[FOOTSTEP]->setVolume(10000);snd[SHEEP]->setVolume(700);
-	snd[PICKUP] = engine->play3D("Wav//PickUp.ogg", vec3df(0, 0, 0), true, true);
-	snd[DOORSND] = engine->play3D("Wav//DoorOpen.ogg", vec3df(0, 0, 0), true, true);
-	snd[DOORCLS] = engine->play3D("Wav//DoorClose.ogg", vec3df(0, 0, 0), true, true);
-	snd[LANDING] = engine->play3D("Wav//Landing.ogg", vec3df(0, 0, 0), true, true);
-	snd[MENUOPEN] = engine->play3D("Wav//Inventory.ogg", vec3df(0, 0, 0), true, true);
-	snd[MENUCLS] = engine->play3D("Wav//Inventory.ogg", vec3df(0, 0, 0), true, true);
-	snd[MENUSCRL] = engine->play3D("Wav//Scrolling.ogg", vec3df(0, 0, 0), true, true);
-	snd[STATUE] = engine->play3D("Wav//Statue.ogg", vec3df(0, 0, 0), true, true);
-	snd[COINSND] = engine->play3D("Wav//Coin.ogg", vec3df(0, 0, 0), true, true);
+	snd[WALKING] = engine->play2D("Wav//walking.wav", true, true);
+	snd[WALKING]->setVolume(5000);
+	snd[PANTING] = engine->play2D("Wav//panting.wav", true, true);
+	snd[BEATING] = engine->play2D("Wav//beating.mp3", true, true);
+	snd[FIREPISTOL] = engine->play2D("Wav//pistol.wav", true, true);
+	snd[FIREPISTOL]->setVolume(500);
+	snd[FIRERIFLE] = engine->play2D("Wav//rifle.wav", true, true);		
+	snd[RELOADPISTOL] = engine->play2D("Wav//pistolreload.wav", true, true);
+	snd[FIREPISTOL]->setVolume(1000);
+	snd[RELOADRIFLE] = engine->play2D("Wav//riflereload.wav",true, true);
+	snd[ALIEN] = engine->play3D("Wav//alien.wav", vec3df(0, 0, 0), true, true);
+	snd[ALIEN]->setMinDistance(50);
+	snd[HEALTHBONUS] = engine->play3D("Wav//bonus.ogg", vec3df(0, 0, 0), true, true);
+	snd[PISTOLBONUS] = engine->play3D("Wav//bonus.ogg", vec3df(0, 0, 0), true, true);
+	snd[RIFLEBONUS] = engine->play3D("Wav//bonus.ogg", vec3df(0, 0, 0), true, true);
+	snd[ATTACKED] = engine->play2D("Wav//attacked.wav", true, true);
 }
 
 /******************************************************************************/
@@ -294,6 +301,10 @@ void SceneBase::InitCharacters(void)
 	threeDhitbox body(Vector3(player.camera.getPosition().x, player.camera.getPosition().y, player.camera.getPosition().z), 20.f, 20.f, 20.f, "player");
 	player.setHitBox(body);
 	player.setRender(true);
+	player.m_iID = 0;
+	player.m_iHealth = 100;
+
+	ResetTRS(TRS);
 }
 
 /******************************************************************************/
@@ -310,7 +321,7 @@ void SceneBase::InitWeapons(void)
 	TRS.rotation.SetToRotation(90, 0, 1, 0);
 	player.bagpack.pistol.setTRS(TRS);
 	player.bagpack.pistol.setMesh(meshList[GEO_PISTOL]);
-	player.bagpack.pistol.setReflectLight(false);
+	player.bagpack.pistol.setReflectLight(true);
 
 	ResetTRS(TRS);
 
@@ -318,7 +329,7 @@ void SceneBase::InitWeapons(void)
 	TRS.rotation.SetToRotation(90, 0, 1, 0);
 	player.bagpack.rifle.setTRS(TRS);
 	player.bagpack.rifle.setMesh(meshList[GEO_RIFLE]);
-	player.bagpack.rifle.setReflectLight(false);
+	player.bagpack.rifle.setReflectLight(true);
 
 	ResetTRS(TRS);
 
@@ -326,7 +337,7 @@ void SceneBase::InitWeapons(void)
 	TRS.rotation.SetToRotation(90, 0, 1, 0);
 	player.bagpack.sniper.setTRS(TRS);
 	player.bagpack.sniper.setMesh(meshList[GEO_SNIPER]);
-	player.bagpack.sniper.setReflectLight(false);
+	player.bagpack.sniper.setReflectLight(true);
 }
 
 /******************************************************************************/
@@ -344,9 +355,19 @@ void SceneBase::InitVariables(void)
 	projectionStack.LoadMatrix(perspective);
 
 	bLightEnabled = true;
-	bFogEnabled = false;
-	bDebugMode = true;
+	bFogEnabled = true;
+	bDebugMode = false;
 	leaving = false;
+	gameOver = false;
+	restart = false;
+	wave = 0;
+	enemyCount = 0;
+	maxEnemy = wave * 3;
+	timer = 0.f;
+	startTimer = 3.f;
+
+	itemBonus = 0;
+	displayBonus = "";
 
 	m_Minimap = NULL;
 
@@ -358,16 +379,16 @@ void SceneBase::InitVariables(void)
 		environmentList.push_back(new threeDObject());
 	}
 
-	//Construct 10 character
+	//Construct 50 character
 	for (int i = 0; i < 10; ++i)
 	{
 		characterList.push_back(new Character());
 	}
 
 	//Construct 100 bullets
-	TRS.scale.SetToScale(0.5f, 0.5f, 0.5f);
 	for (int i = 0; i < 100; ++i)
 	{
+		TRS.scale.SetToScale(0.5f, 0.5f, 0.5f);
 		bulletList.push_back(new Bullet());
 		bulletList[i]->setTRS(TRS);
 		bulletList[i]->setMesh(meshList[GEO_SPHERE]);
@@ -377,11 +398,11 @@ void SceneBase::InitVariables(void)
 	ResetTRS(TRS);
 
 	threeDObject* wreckedShip = fetchEnvironment();
-	TRS.rotation.SetToRotation(80, 1, 1, 0);
+	TRS.rotation.SetToRotation(80, 1, 1, 1);
 	wreckedShip->setObjName("wreckedShip");
 	wreckedShip->setMesh(meshList[GEO_SHIP]);
 	wreckedShip->setTRS(TRS);
-	wreckedShip->setReflectLight(false);
+	wreckedShip->setReflectLight(true);
 	wreckedShip->setPosition(Vector3(0, 100, 200));
 	wreckedShip->setHitBox(threeDhitbox(Vector3(0, 0, 0), 195.f, 55.f, 290.f, "wreckShip"));
 	wreckedShip->updateHitbox();
@@ -398,10 +419,23 @@ Init User Interface
 void SceneBase::InitUI(void)
 {
 	m_Minimap = new MiniMap();
-	m_Minimap->SetBackground(MeshBuilder::GenerateMinimap("Minimap", Color(1, 1, 1), 1.f));
-	m_Minimap->GetBackground()->textureID[0] = LoadTGA("Image//sand.tga");
-	m_Minimap->SetBorder(MeshBuilder::GenerateMinimapBorder("MinimapBorder", Color(0, 0, 0), 1.f));
-	m_Minimap->SetAvatar(MeshBuilder::GenerateMinimapAvatar("MinimapAvatar", Color(1, 0, 0), 1.f));
+	m_Minimap->setBackground(MeshBuilder::GenerateQuad("Minimap", Color(1, 1, 1), 1.f));
+	m_Minimap->getBackground()->textureID[0] = LoadTGA("Image//radar.tga");
+
+	m_Minimap->setBorder(MeshBuilder::GenerateQuad("MinimapBorder", Color(0, 0, 0), 5.f));
+	m_Minimap->getBorder()->textureID[0] = LoadTGA("Image//border.tga");
+
+	//creating player avatar
+	m_Minimap->player.setAvatar(MeshBuilder::GenerateQuad("MinimapAvatar", Color(1, 1, 1), 1.f));
+	m_Minimap->player.setPosition(player.camera.getPosition().x / TERRAIN_SCALE.x * MINIMAP_SCALE, player.camera.getPosition().z/ TERRAIN_SCALE.z * MINIMAP_SCALE);
+	m_Minimap->player.getAvatar()->textureID[0] = LoadTGA("Image//playerAvatar.tga");
+	m_Minimap->player.setRender(true);
+
+	newAvatar.setAvatar(MeshBuilder::GenerateQuad("MinimapAvatar", Color(1, 1, 1), 1.f));
+	newAvatar.setPosition(environmentList[0]->getPosition().x / TERRAIN_SCALE.x * MINIMAP_SCALE, environmentList[0]->getPosition().z / TERRAIN_SCALE.z * MINIMAP_SCALE);
+	newAvatar.getAvatar()->textureID[0] = LoadTGA("Image//shipAvatar.tga");
+	newAvatar.setAngle(Math::RadianToDegree(atan2(environmentList[0]->getPosition().x, environmentList[0]->getPosition().z)));
+	m_Minimap->statictList.push_back(newAvatar);
 }
 
 /******************************************************************************/
@@ -412,11 +446,33 @@ Re Init all variables
 /******************************************************************************/
 void SceneBase::ReInit(void)
 {
-	InitOpenGL();
-	InitLights();
-	InitMesh();
+	while(environmentList.size() > 0)
+	{
+		threeDObject *go = environmentList.back();
+		delete go;
+		environmentList.pop_back();
+	}
+
+	while(characterList.size() > 0)
+	{
+		Character *go = characterList.back();
+		delete go;
+		characterList.pop_back();
+	}
+
+	while(bulletList.size() > 0)
+	{
+		Bullet *go = bulletList.back();
+		delete go;
+		bulletList.pop_back();
+	}
+
+	player.bagpack.pistol.setMagazineAmmo(player.bagpack.pistol.getMagazineSize());
+	player.bagpack.pistol.setAmmo(player.bagpack.pistol.getMaxAmmo());
+	player.bagpack.rifle.setMagazineAmmo(player.bagpack.rifle.getMagazineSize());
+	player.bagpack.rifle.setAmmo(player.bagpack.rifle.getMaxAmmo());
+
 	InitCamera();
-	InitSound();
 	InitCharacters();
 	InitVariables();
 	InitUI();
