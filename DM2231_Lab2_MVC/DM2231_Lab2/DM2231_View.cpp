@@ -437,7 +437,7 @@ bool DM2231_View::toggleFullScreen(void)
 
 	KillGLWindow();						// Kill Our Current Window
 	// Recreate Our OpenGL Window
-	if (!CreateGLWindow("DM2231 Game Development Techniques",800,600,16))
+	if (!CreateGLWindow("DM2231 Game Development Techniques",1960,600,16))
 	{
 		return false;						// Quit If Window Was Not Created
 	}

@@ -159,9 +159,9 @@ void SceneBase::RenderCharacters(void)
 	{
 		modelStack.Rotate(player.camera.rotationX, 1, 0, 0);
 	}
-	modelStack.Translate(player.bagpack.currentWeapon->getProperties().translation);
+	modelStack.MultMatrix(player.bagpack.currentWeapon->getProperties().translation);
 	modelStack.MultMatrix(player.bagpack.currentWeapon->getProperties().rotation);
-	modelStack.Scale((player.bagpack.currentWeapon)->getProperties().scale);
+	modelStack.MultMatrix((player.bagpack.currentWeapon)->getProperties().scale);
 	Render3DMesh((player.bagpack.currentWeapon)->getMesh(), (player.bagpack.currentWeapon)->getReflectLight());
 
 	modelStack.PopMatrix();

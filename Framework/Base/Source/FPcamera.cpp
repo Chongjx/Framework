@@ -488,8 +488,6 @@ bool FPcamera::getCollideGround(void) const
 void FPcamera::moveForward(const double dt, float heightOffset, bool run)
 {
 	float heightDiff = target.y - position.y;
-	Vector3 targetY = target;
-	targetY.y = position.y;
 
 	view = (target - position).Normalized();
 	
@@ -515,8 +513,6 @@ void FPcamera::moveForward(const double dt, float heightOffset, bool run)
 void FPcamera::moveBackward(const double dt, float heightOffset, bool run)
 {
 	float heightDiff = target.y - position.y;
-	Vector3 targetY = target;
-	targetY.y = position.y;
 
 	view = (target - position).Normalized();
 	if (!run)
@@ -540,8 +536,6 @@ void FPcamera::moveBackward(const double dt, float heightOffset, bool run)
 void FPcamera::moveLeft(const double dt, float heightOffset)
 {
 	float heightDiff = target.y - position.y;
-	Vector3 targetY = target;
-	targetY.y = position.y;
 
 	view = (target - position).Normalized();
 	Vector3 right = view.Cross(up);
@@ -560,8 +554,6 @@ void FPcamera::moveLeft(const double dt, float heightOffset)
 void FPcamera::moveRight(const double dt, float heightOffset)
 {
 	float heightDiff = target.y - position.y;
-	Vector3 targetY = target;
-	targetY.y = position.y;
 
 	view = (target - position).Normalized();
 	Vector3 right = view.Cross(up);
