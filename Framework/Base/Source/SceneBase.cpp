@@ -89,6 +89,20 @@ void SceneBase::Exit()
 		bulletList.pop_back();
 	}
 
+	while(particleList.size() > 0)
+	{
+		Particle *go = particleList.back();
+		delete go;
+		particleList.pop_back();
+	}
+
+	while(billboardList.size() > 0)
+	{
+		GameObject *go = billboardList.back();
+		delete go;
+		billboardList.pop_back();
+	}
+
 	glDeleteProgram(m_programID);
 	glDeleteVertexArrays(1, &m_vertexArrayID);
 	engine->drop(); // delete engine

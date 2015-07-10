@@ -1,26 +1,33 @@
-﻿Build started 4/6/2015 4:20:39 PM.
+﻿Build started 7/7/2015 8:52:01 PM.
      1>Project "C:\Users\Jun Xiang\Documents\Framework\Framework\Base\Base.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\Base.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Users\Jun Xiang\Documents\Framework\Framework\\glew\include" /I"C:\Users\Jun Xiang\Documents\Framework\Framework\\glfw\include" /I"C:\Users\Jun Xiang\Documents\Framework\Framework\\Common\Source" /I"C:\Users\Jun Xiang\Documents\Framework\Framework\\irrKlang-1.5.0\include" /ZI /nologo /W3 /WX- /Od /Oy- /D _VARIADIC_MAX=10 /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Source\Render_Functions.cpp
-         Render_Functions.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Users\Jun Xiang\Documents\Framework\Framework\\glew\include" /I"C:\Users\Jun Xiang\Documents\Framework\Framework\\glfw\include" /I"C:\Users\Jun Xiang\Documents\Framework\Framework\\Common\Source" /I"C:\Users\Jun Xiang\Documents\Framework\Framework\\irrKlang-1.5.0\include" /ZI /nologo /W3 /WX- /Od /Oy- /D _VARIADIC_MAX=10 /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Source\Application.cpp Source\Update_Functions.cpp
+         Update_Functions.cpp
+     1>c:\users\jun xiang\documents\framework\framework\base\source\gameobject.h(20): warning C4305: 'argument' : truncation from 'double' to 'float'
      1>c:\program files (x86)\microsoft sdks\windows\v7.0a\include\windef.h(126): warning C4005: 'APIENTRY' : macro redefinition
                  c:\users\jun xiang\documents\framework\framework\glfw\include\glfw\glfw3.h(92) : see previous definition of 'APIENTRY'
-     1>c:\users\jun xiang\documents\framework\framework\base\source\render_functions.cpp(254): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\jun xiang\documents\framework\framework\base\source\render_functions.cpp(260): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\jun xiang\documents\framework\framework\base\source\render_functions.cpp(267): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\jun xiang\documents\framework\framework\base\source\render_functions.cpp(274): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\jun xiang\documents\framework\framework\base\source\render_functions.cpp(329): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\jun xiang\documents\framework\framework\base\source\render_functions.cpp(333): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\jun xiang\documents\framework\framework\base\source\render_functions.cpp(338): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
-     1>c:\users\jun xiang\documents\framework\framework\base\source\render_functions.cpp(374): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\jun xiang\documents\framework\framework\base\source\render_functions.cpp(386): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\jun xiang\documents\framework\framework\base\source\update_functions.cpp(287): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\jun xiang\documents\framework\framework\base\source\update_functions.cpp(294): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\jun xiang\documents\framework\framework\base\source\update_functions.cpp(294): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\jun xiang\documents\framework\framework\base\source\update_functions.cpp(294): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\jun xiang\documents\framework\framework\base\source\update_functions.cpp(310): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\jun xiang\documents\framework\framework\base\source\update_functions.cpp(312): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\jun xiang\documents\framework\framework\base\source\update_functions.cpp(433): warning C4244: '-=' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jun xiang\documents\framework\framework\base\source\update_functions.cpp(458): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\jun xiang\documents\framework\framework\base\source\update_functions.cpp(459): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\jun xiang\documents\framework\framework\base\source\update_functions.cpp(505): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\jun xiang\documents\framework\framework\base\source\update_functions.cpp(522): warning C4018: '<' : signed/unsigned mismatch
+         Application.cpp
+     1>c:\users\jun xiang\documents\framework\framework\base\source\gameobject.h(20): warning C4305: 'argument' : truncation from 'double' to 'float'
+         Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jun Xiang\Documents\Framework\Framework\Debug\Base.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:"C:\Users\Jun Xiang\Documents\Framework\Framework\\glew\lib" /LIBPATH:"C:\Users\Jun Xiang\Documents\Framework\Framework\\glfw\lib-msvc100" /LIBPATH:"C:\Users\Jun Xiang\Documents\Framework\Framework\\irrKlang-1.5.0\lib\Win32-visualStudio" /LIBPATH:"C:\Users\Jun Xiang\Documents\Framework\Framework\Debug" Common.lib winmm.lib opengl32.lib glu32.lib glew32.lib glfw3.lib irrKlang.lib irrKlang.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Base.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Jun Xiang\Documents\Framework\Framework\Debug\Base.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jun Xiang\Documents\Framework\Framework\Debug\Base.lib" /MACHINE:X86 Debug\Application.obj
          Debug\Bullet.obj
          Debug\Camera.obj
          Debug\Character.obj
+         Debug\DepthFBO.obj
          Debug\FPcamera.obj
          Debug\GameObject.obj
          Debug\Init_Functions.obj
@@ -32,8 +39,10 @@
          Debug\Mesh.obj
          Debug\MeshBuilder.obj
          Debug\MiniMap.obj
+         Debug\Particle.obj
          Debug\Render_Functions.obj
          Debug\SceneBase.obj
+         Debug\SceneShadow.obj
          Debug\shader.obj
          Debug\SpriteAnimation.obj
          Debug\threeDhitbox.obj
@@ -55,4 +64,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.74
+Time Elapsed 00:00:02.88

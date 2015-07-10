@@ -126,6 +126,7 @@ void SceneBase::UpdateCharacters(double dt)
 	}
 
 	// update more enemies if wave clear
+
 	if (timer >= startTimer)
 	{
 		if(enemyCount == 0)
@@ -270,9 +271,69 @@ void SceneBase::UpdateVariables(double dt)
 {
 	fps = (float)(1.f / dt);
 
-	if( timer <= startTimer)
+	timer += (float)dt;
+
+	if (timer > 0)
 	{
-		timer += (float)dt;
+		Particle* smoke = fetchParticle();
+		smoke->setGravity(false);
+		smoke->setPosition(Vector3(0, 100, 205));
+		smoke->setVelocity(Vector3(Math::RandFloatMinMax(-10, 10), Math::RandFloatMinMax(50, 100), Math::RandFloatMinMax(-10, 10)));
+	}
+
+	for(std::vector<Particle *>::iterator it = particleList.begin(); it != particleList.end(); ++it)
+	{
+		Particle *go = (Particle *)*it;
+		if(go->getRender())
+		{
+			// if this particle is affected by gravity
+			if (go->getGravity())
+			{
+				go->setVelocity(go->getVelocity() + GRAVITY * dt);
+				go->setPosition(go->getPosition() + go->getVelocity() * (float)dt);
+			}
+
+			else
+			{
+				TRS = go->getProperties();
+				TRS.scale.SetToScale(Vector3(TRS.scale.a[0] + 5 * dt, TRS.scale.a[5] + 5 * dt, TRS.scale.a[10] + 5 * dt));
+				go->setTRS(TRS);
+				go->setPosition(go->getPosition() + go->getVelocity() * (float)dt);
+			}
+
+			if (go->getPosition().y > 500)
+			{
+				go->setRender(false);
+			}
+		}
+	}
+
+	for(std::vector<GameObject *>::iterator it = billboardList.begin(); it != billboardList.end(); ++it)
+	{
+		GameObject *go = (GameObject *)*it;
+		// sort the billboard
+		for (int iter = 1; iter < billboardList.size(); ++iter)
+		{
+			for (int index = 0; index < billboardList.size() - iter; ++index)
+			{
+				float dist1 = (billboardList[index]->getPosition() - player.camera.getPosition()).Length();
+				float dist2 = (billboardList[index + 1]->getPosition() - player.camera.getPosition()).Length();
+				if (dist1 < dist2)
+				{
+					// swap billboard if dist is larger
+					GameObject* temp = billboardList[index];
+					billboardList[index] = billboardList[index + 1];
+					billboardList[index + 1] = temp;
+				}
+			}
+		}
+
+		// update rotation
+		TRS = go->getProperties();
+		Vector3 dir = (go->getPosition() - player.camera.getPosition()).Normalized();
+		float theta = Math::RadianToDegree(atan2(dir.x, dir.z)) + 180.f;
+		TRS.rotation.SetToRotation(theta, 0, 1, 0);
+		go->setTRS(TRS);
 	}
 }
 
@@ -521,7 +582,6 @@ void SceneBase::UpdateWeaponStatus(const unsigned char key)
 				Bullet* firedBullet = fetchBullet();
 				firedBullet->setPosition(player.camera.getTarget());
 				firedBullet->setDir(player.camera.getView());
-				firedBullet->setMesh(meshList[GEO_SPHERE]);
 
 				UpdateSoundStatus('1');
 			}

@@ -172,6 +172,7 @@ void SceneBase::InitMesh(void)
 	meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 18, 36, 1.f);
 
 	meshList[GEO_SPHERE] = MeshBuilder::GenerateSphere("sphere", Color(0, 0, 0), 18, 36, 1.f);
+	meshList[GEO_SPHERE]->textureID[0] = LoadTGA("Image//smoke.tga");
 
 	meshList[GEO_QUAD] = MeshBuilder::GenerateQuad("quad", Color(1, 1, 1), 1.f);
 	meshList[GEO_QUAD]->textureID[0] = LoadTGA("Image//cover.tga");
@@ -190,6 +191,8 @@ void SceneBase::InitMesh(void)
 
 	meshList[GEO_CURSOR] = MeshBuilder::GenerateQuad("cursor", Color(1.f, 1.f, 1.f), 1.f);
 	meshList[GEO_CURSOR]->textureID[0] = LoadTGA("Image//cursor.tga");
+
+	meshList[GEO_BULLET] = MeshBuilder::GenerateSphere("sphere", Color(0, 0, 0), 18, 36, 1.f);
 
 	meshList[GEO_PISTOLCH] = MeshBuilder::GenerateQuad("cursor", Color(1.f, 1.f, 1.f), 1.f);
 	meshList[GEO_PISTOLCH]->textureID[0] = LoadTGA("Image//pistolch.tga");
@@ -239,6 +242,9 @@ void SceneBase::InitMesh(void)
 	meshList[GEO_SHIP] = MeshBuilder::GenerateOBJ("wreckedship", "OBJ//ship.obj");
 	meshList[GEO_SHIP]->textureID[0] = LoadTGA("Image//ship.tga");
 	//meshList[GEO_SHIP]->textureID[1] = LoadTGA("Image//scratch.tga");
+
+	meshList[GEO_TREE] = MeshBuilder::GenerateQuad("tree", Color(1.0f, 1.0f, 1.0f), 1.0f);
+	meshList[GEO_TREE]->textureID[0] = LoadTGA("Image//tree.tga");
 
 	meshList[GEO_DEBUG] = MeshBuilder::GenerateDebugBox("debug", Color(0.f, 0.f, 0.f), 1.f);
 }
@@ -388,15 +394,22 @@ void SceneBase::InitVariables(void)
 	//Construct 100 bullets
 	for (int i = 0; i < 100; ++i)
 	{
-		TRS.scale.SetToScale(0.5f, 0.5f, 0.5f);
+		//TRS.scale.SetToScale(0.5f, 0.5f, 0.5f);
 		bulletList.push_back(new Bullet());
 		bulletList[i]->setTRS(TRS);
-		bulletList[i]->setMesh(meshList[GEO_SPHERE]);
+		bulletList[i]->setMesh(meshList[GEO_BULLET]);
+	}
+
+	//Construct 100 particles
+	for (int i = 0; i < 1000; ++i)
+	{
+		particleList.push_back(new Particle());
 	}
 
 	// Init all environment objs here
 	ResetTRS(TRS);
 
+	// create a ship here
 	threeDObject* wreckedShip = fetchEnvironment();
 	TRS.rotation.SetToRotation(80, 1, 1, 1);
 	wreckedShip->setObjName("wreckedShip");
@@ -408,6 +421,22 @@ void SceneBase::InitVariables(void)
 	wreckedShip->updateHitbox();
 
 	ResetTRS(TRS);
+
+	for (int i = 0; i < 50; ++i)
+	{
+		GameObject* treeBillboard = new GameObject;
+		treeBillboard->setMesh(meshList[GEO_TREE]);
+		float xCoord = Math::RandFloatMinMax(-TERRAIN_SCALE.x * 0.5f, TERRAIN_SCALE.x * 0.5f);
+		float zCoord = Math::RandFloatMinMax(-TERRAIN_SCALE.z * 0.5f, TERRAIN_SCALE.z * 0.5f);
+		treeBillboard->setPosition(Vector3(xCoord, 50.f + TERRAIN_SCALE.y * ReadHeightMap(m_heightMap, xCoord/TERRAIN_SCALE.x, zCoord/TERRAIN_SCALE.z), zCoord));
+		TRS = treeBillboard->getProperties();
+		TRS.scale.SetToScale(100.f, 100.f, 100.f);
+		treeBillboard->setTRS(TRS);
+		treeBillboard->setRender(true);
+		billboardList.push_back(treeBillboard);
+
+		ResetTRS(TRS);
+	}
 }
 
 /******************************************************************************/
@@ -569,5 +598,42 @@ Bullet* SceneBase::fetchBullet(void)
 	Bullet *go = bulletList.back();
 	go->setRender(true);
 	go->setStatus(true);
+	return go;
+}
+
+Particle* SceneBase::fetchParticle(void)
+{
+	ResetTRS(TRS);
+	//Fetch an object from the list and return it
+	for(std::vector<Particle *>::iterator it = particleList.begin(); it != particleList.end(); ++it)
+	{
+		Particle *go = (Particle*) *it;
+		if(go->getRender() == false)
+		{
+			go->setMesh(meshList[GEO_SPHERE]);
+			go->setRender(true);
+			go->setVelocity(Vector3(0, 0, 0));
+
+			ResetTRS(TRS);
+
+			go->setTRS(TRS);
+
+			return go;
+		}
+	}
+
+	//Handle the situation whenever the list runs out of objects
+	for (int i = 0; i < 10; ++i)
+	{
+		ResetTRS(TRS);
+
+		Particle *go = new Particle;
+		go->setMesh(meshList[GEO_SPHERE]);
+		go->setType(GO_ENVIRONMENT);
+		particleList.push_back(go);
+	}
+
+	Particle *go = particleList.back();
+	go->setRender(true);
 	return go;
 }

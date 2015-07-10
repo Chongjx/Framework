@@ -1,0 +1,9 @@
+# Controller setup #
+# Init default controller properties outside of source codes #
+{
+	[NAME] ControllerSetUp
+	[AllowMouse] true
+	[AllowKeyboard] true
+	[AllowGamepad] false
+	[InputRefreshRate] 60
+}

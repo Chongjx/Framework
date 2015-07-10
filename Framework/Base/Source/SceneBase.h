@@ -12,6 +12,7 @@ Class to build ...
 #include "Scene.h"
 #include "Character.h"
 #include "twoDObject.h"
+#include "Particle.h"
 
 #include "MeshBuilder.h"
 #include "SpriteAnimation.h"
@@ -114,6 +115,7 @@ class SceneBase : public Scene
 		GEO_RING,
 		GEO_CONE,
 		GEO_CURSOR,
+		GEO_BULLET,
 		GEO_PISTOLCH,
 		GEO_RIFLECH,
 		GEO_SNIPERCH,
@@ -133,6 +135,7 @@ class SceneBase : public Scene
 		GEO_BUILDINGS,
 		GEO_TEXT,
 		GEO_OBJECT,
+		GEO_TREE,
 		GEO_DEBUG,
 		GEO_MAX,
 	};
@@ -212,6 +215,7 @@ public:
 	threeDObject* fetchEnvironment(void);
 	Character* fetchCharacter(void);
 	Bullet* fetchBullet(void);
+	Particle* fetchParticle(void);
 	
 private:
 	unsigned m_vertexArrayID;
@@ -257,6 +261,8 @@ private:
 	vector<threeDObject *> environmentList;
 	vector<Character *> characterList;
 	vector<Bullet *> bulletList;
+	vector<Particle *> particleList;
+	vector<GameObject *> billboardList;
 };
 
 #endif

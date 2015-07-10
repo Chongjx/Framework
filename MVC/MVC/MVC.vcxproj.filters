@@ -13,78 +13,54 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Model">
-      <UniqueIdentifier>{0f396074-6dd7-4350-88bf-d499633f2d94}</UniqueIdentifier>
+    <Filter Include="Header Files\MVC">
+      <UniqueIdentifier>{97ae6661-d44a-4e8a-9a74-847b4779efd9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Model\Models">
-      <UniqueIdentifier>{c7a63d8b-2cae-4ff6-9ae6-fa90d9f81603}</UniqueIdentifier>
+    <Filter Include="Header Files\MVC\Model">
+      <UniqueIdentifier>{3a5197db-82d6-43bc-bea9-90e85fe119b8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Controller">
-      <UniqueIdentifier>{cea51901-e688-4c27-8726-6a926daa0610}</UniqueIdentifier>
+    <Filter Include="Source Files\MVC">
+      <UniqueIdentifier>{f4e697eb-9e43-4434-8c64-273d9189db0e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\View">
-      <UniqueIdentifier>{911a0438-d9c7-41d3-8e60-7b8ec455f34d}</UniqueIdentifier>
+    <Filter Include="Source Files\MVC\Model">
+      <UniqueIdentifier>{ab39372e-0c1d-45bf-b401-d4241a37b30d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Controller">
-      <UniqueIdentifier>{9335e336-6685-4eb1-a953-3576aa28d42d}</UniqueIdentifier>
+    <Filter Include="Header Files\MVC\Controller">
+      <UniqueIdentifier>{11828797-a48a-4b73-87ea-18524f823053}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Model">
-      <UniqueIdentifier>{52f5f7c1-9359-44c9-84f4-87d4c77f3a98}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\View">
-      <UniqueIdentifier>{96c53338-7a41-411c-9797-d23c19c55a7f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Controller\Controllers">
-      <UniqueIdentifier>{b69a8cbd-6aa5-4bbc-8979-0a3d6ce0e2d7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Controller\Controllers">
-      <UniqueIdentifier>{3cad51f8-6140-400c-a3d4-8dfe21d37dfa}</UniqueIdentifier>
+    <Filter Include="Source Files\MVC\Controller">
+      <UniqueIdentifier>{7ef43c22-2ead-4cff-a0e4-3cb1e2635301}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Application.cpp">
+    <ClCompile Include="Source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Controller.cpp">
-      <Filter>Source Files\Controller</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Model.cpp">
-      <Filter>Source Files\Model</Filter>
+      <Filter>Source Files\MVC\Model</Filter>
     </ClCompile>
     <ClCompile Include="Source\View.cpp">
-      <Filter>Source Files\View</Filter>
+      <Filter>Source Files\MVC</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Keyboard.cpp">
-      <Filter>Source Files\Controller\Controllers</Filter>
+    <ClCompile Include="Source\Controller.cpp">
+      <Filter>Source Files\MVC\Controller</Filter>
     </ClCompile>
     <ClCompile Include="Source\Mouse.cpp">
-      <Filter>Source Files\Controller\Controllers</Filter>
+      <Filter>Source Files\MVC\Controller</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\View.h">
-      <Filter>Header Files\View</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Model.h">
-      <Filter>Header Files\Model\Models</Filter>
+      <Filter>Header Files\MVC\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Modelphy.h">
-      <Filter>Header Files\Model\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Modelcomg.h">
-      <Filter>Header Files\Model\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Modelgdev.h">
-      <Filter>Header Files\Model\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Mouse.h">
-      <Filter>Header Files\Controller\Controllers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Keyboard.h">
-      <Filter>Header Files\Controller\Controllers</Filter>
+    <ClInclude Include="Source\View.h">
+      <Filter>Header Files\MVC</Filter>
     </ClInclude>
     <ClInclude Include="Source\Controller.h">
-      <Filter>Header Files\Controller</Filter>
+      <Filter>Header Files\MVC\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mouse.h">
+      <Filter>Header Files\MVC\Controller</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

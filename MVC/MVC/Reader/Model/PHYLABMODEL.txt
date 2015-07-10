@@ -1,0 +1,8 @@
+# Phy Lab Model setup #
+# Used for phy labs #
+# First test using MVC #
+
+{
+	[NAME] PhyLabSetUp
+	
+}

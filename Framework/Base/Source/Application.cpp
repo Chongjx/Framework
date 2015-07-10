@@ -60,6 +60,16 @@ bool Application::GetMouseUpdate(void)
 	mouse_diff_x = mouse_current_x - mouse_last_x;
 	mouse_diff_y = mouse_current_y - mouse_last_y;
 
+	static bool firstRun = true;
+
+	if (firstRun)
+	{
+		mouse_diff_x = 0;
+		mouse_diff_y = 0;
+
+		firstRun = false;
+	}
+
 	//Calculate yaw and pitch
 	camera_yaw = (float)mouse_diff_x * 0.0174555555;	// * 3.142f/180.f
 	camera_pitch = (float)mouse_diff_y * 0.0174555555;	// * 3.142f/180.f
@@ -243,6 +253,16 @@ void Application::Init()
 	}
 
 	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+}
+
+int Application::GetWindowWidth()
+{
+	return m_window_width;
+}
+
+int Application::GetWindowHeight()
+{
+	return m_window_height;
 }
 
 void Application::Run()

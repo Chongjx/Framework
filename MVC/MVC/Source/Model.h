@@ -1,16 +1,23 @@
-#ifndef MODEL_H
-#define MODEL_H
+#ifndef MVC_MODEL_H
+#define MVC_MODEL_H
 
-#include <stdio.h>
+#include "BaseReader.h"
 
 class Model
 {
+private:
+
 public:
 	Model(void);
-	~Model(void);
+	Model(string modelDirectory);
+	virtual ~Model(void);
 
-	// Update the model
-	virtual void Update(void);
+	//virtual void Init(void);
+	//virtual void Update(double dt);
+	//virtual void Exit(void);
+
+protected:
+
 };
 
 #endif

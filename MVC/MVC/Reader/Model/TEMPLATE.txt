@@ -1,0 +1,59 @@
+# Model setup template #
+# Init default model properties outside of source codes #
+# This is a template that contains most of the properties of a model that can be declared outside source codes
+# 2D models might be different from 3D models
+{
+	[NAME] DefaultModelSetUp
+
+	# Starts with scene type
+	[SceneType] 2DScene/ 3DScene/ HybridScene
+
+	# Shaders (Format might change and adapt in future)
+	[VertexShader] Shader//xxx.vertexshader
+	[FragmentShader] Shader//xxx.fragmentshader
+
+	# Additional shaders if applicable
+	[VertexShader] Shader//xxx.vertexshader
+	[FragmentShader] Shader//xxx.fragmentshader
+	
+	# Possible to create multiple cameras (might change in future, camera bind to character if 3D)
+	[CameraName] xxx
+	{	
+		[CameraType] xxx
+		[CameraPos] xxx
+		[CameraTarget] xxx
+		[CameraView] xxx
+		[CameraUp] xxx
+	}
+
+	# Lights properties
+	[Light] xxx
+	{
+		[LightProperties] xxx
+	}
+	
+	# Fog properties
+	[Fog] xxx
+	{
+		[FogProperties] xxx
+	}
+
+	# Textures, Objs, GameObject to load
+	[Textures]
+	{
+		{
+			[Name] xxx
+			[Directory] xxx
+			[(xxx)] xxx
+		}
+	}
+
+	# Only applicable for 3D
+	[ReadHeightMap]
+	
+	# Only applicable for 2D
+	[ReadTileMap]
+}
+
+
+

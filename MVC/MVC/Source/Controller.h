@@ -1,41 +1,22 @@
-#ifndef CONTROLLER_H
-#define CONTROLLER_H
-
-#include <stdio.h>
+#ifndef MVC_CONTROLLER_H
+#define MVC_CONTROLLER_H
 
 #include "Model.h"
 #include "View.h"
-
-// Include controllers class
-#include "Mouse.h"
-#include "Keyboard.h"
+#include "timer.h"
 
 class Controller
 {
-public:
-	Controller(Model* model, View* view);
-	~Controller(void);
-
-	// Get the status of the game boolean flag
-	bool RunMainLoop(void);
-
-	// Process input from I/O devices
-	bool ProcessInput(void);
-
-	// Handle to the model
+private:
 	Model* mainModel;
-
-	// Handle to the view
 	View* mainView;
 
-	// Handle to various input devices
-	Mouse* mouseInput;
-	Keyboard* keyboardInput;
+public:
+	Controller(void);
+	Controller(Model *mainModel, View *mainView, string controllerSetUp);
+	virtual ~Controller(void);
 
-protected:
-	bool Init();
 
-	bool m_bContinueLoop;
 };
 
 #endif

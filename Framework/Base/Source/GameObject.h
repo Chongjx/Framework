@@ -17,6 +17,8 @@ Create a game object class which stores all its variables
 
 using std::string;
 
+static const Vector3 GRAVITY(0, -9.8, 0);
+
 /******************************************************************************/
 /*!
 		ENUM GAMEOBJECT_TYPE:

@@ -175,6 +175,33 @@ void MS::Translate(float translateX, float translateY, float translateZ) {
 /******************************************************************************/
 /*!
 \brief
+Multiply the top matrix with a scale matrix based on the following parameters
+
+\param	ScaleFactor
+	Scale value of the 3 sides
+*/
+/******************************************************************************/
+void MS::Scale(Mtx44 scaleFactor) {
+	ms.top() = ms.top() * scaleFactor;
+}
+
+/******************************************************************************/
+/*!
+\brief
+Multiply the top matrix with a translation matrix based on the following 
+parameters
+
+\param	translateFactor
+	translation value of the 3 sides
+*/
+/******************************************************************************/
+void MS::Translate(Mtx44 translateFactor) {
+	ms.top() = ms.top() * translateFactor;
+}
+
+/******************************************************************************/
+/*!
+\brief
 Setup frustum matrix and push to matrix stack
 
 \param left

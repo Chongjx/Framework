@@ -107,7 +107,7 @@ Render Environment objects here
 void SceneBase::RenderEnvironment(void)
 {
 	// axis
-	Render3DMesh(meshList[GEO_AXES], false);
+	// Render3DMesh(meshList[GEO_AXES], false);
 
 	RenderSkyPlane();
 	RenderTerrain();
@@ -118,9 +118,9 @@ void SceneBase::RenderEnvironment(void)
 		if(go->getRender())
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(go->getProperties().translation);
+			modelStack.MultMatrix(go->getProperties().translation);
 			modelStack.MultMatrix(go->getProperties().rotation);
-			modelStack.Scale(go->getProperties().scale);
+			modelStack.MultMatrix(go->getProperties().scale);
 			Render3DMesh(go->getMesh(), go->getReflectLight());
 			modelStack.PopMatrix();
 
@@ -135,6 +135,48 @@ void SceneBase::RenderEnvironment(void)
 			}
 		}
 	}
+
+	for(std::vector<Particle *>::iterator it = particleList.begin(); it != particleList.end(); ++it)
+	{
+		Particle *go = (Particle *)*it;
+		if(go->getRender())
+		{
+			modelStack.PushMatrix();
+			modelStack.MultMatrix(go->getProperties().translation);
+			modelStack.MultMatrix(go->getProperties().rotation);
+			modelStack.MultMatrix(go->getProperties().scale);
+			Render3DMesh(go->getMesh(), go->getReflectLight());
+			modelStack.PopMatrix();
+		}
+	}
+
+	for(std::vector<Particle *>::iterator it = particleList.begin(); it != particleList.end(); ++it)
+	{
+		Particle *go = (Particle *)*it;
+		if(go->getRender())
+		{
+			modelStack.PushMatrix();
+			modelStack.MultMatrix(go->getProperties().translation);
+			modelStack.MultMatrix(go->getProperties().rotation);
+			modelStack.MultMatrix(go->getProperties().scale);
+			Render3DMesh(go->getMesh(), go->getReflectLight());
+			modelStack.PopMatrix();
+		}
+	}
+
+	for(std::vector<GameObject *>::iterator it = billboardList.begin(); it != billboardList.end(); ++it)
+	{
+		GameObject *go = (GameObject *)*it;
+		if(go->getRender())
+		{
+			modelStack.PushMatrix();
+			modelStack.MultMatrix(go->getProperties().translation);
+			modelStack.MultMatrix(go->getProperties().rotation);
+			modelStack.MultMatrix(go->getProperties().scale);
+			Render3DMesh(go->getMesh(), go->getReflectLight());
+			modelStack.PopMatrix();
+		}
+	}
 }
 
 /******************************************************************************/
@@ -146,9 +188,9 @@ Render Characters and NPCs here
 void SceneBase::RenderCharacters(void)
 {
 	modelStack.PushMatrix();
-	modelStack.Translate(player.getProperties().translation);
+	modelStack.MultMatrix(player.getProperties().translation);
 	modelStack.MultMatrix(player.getProperties().rotation);
-	modelStack.Scale(player.getProperties().scale);
+	modelStack.MultMatrix(player.getProperties().scale);
 	//Render3DMesh(player.getMesh(), player.getReflectLight());
 	modelStack.PushMatrix();
 	if (player.bagpack.currentWeapon->getReload())
@@ -218,8 +260,8 @@ void SceneBase::RenderBullets(void)
 			modelStack.PushMatrix();
 			modelStack.Translate(go->getProperties().translation);
 			modelStack.MultMatrix(go->getProperties().rotation);
-			modelStack.Scale(go->getProperties().scale);
-			Render3DMesh(meshList[GEO_SPHERE], go->getReflectLight());
+			//modelStack.MultMatrix(go->getProperties().scale);
+			Render3DMesh(go->getMesh(), go->getReflectLight());
 			modelStack.PopMatrix();
 
 			if (bDebugMode)

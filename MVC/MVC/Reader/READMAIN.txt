@@ -1,0 +1,32 @@
+# READMAIN.txt #
+# Determine the Model, View & Controller to use for the scene #
+# Must be in the following order: Model, View, Controller
+{
+	[NAME] Scene
+	{
+		[NAME] Model
+		[Directory] Reader//Model//PHYLABMODEL.txt
+	}
+	{
+		[NAME] View
+		[Directory] Reader//View//VIEW.txt
+	}
+	{	
+		[NAME] Controller
+		[Directory] Reader//Controller//CONTROLLER.txt
+	}
+}
+
+# Available Models
+# Pick and replace
+# Reader//Model//ACOMGMODEL.txt
+# Reader//Model//GDEVLABMODEL.txt
+# Reader//Model//GDEVASSIGNMENTMODEL.txt
+# Reader//Model//PHYLABMODEL.txt
+# Reader//Model//PHYASSIGNMENTMODEL.txt
+
+# Default View
+# Reader//View//VIEW.txt
+
+# Default Controller
+# Reader//Controller//CONTROLLER.txt

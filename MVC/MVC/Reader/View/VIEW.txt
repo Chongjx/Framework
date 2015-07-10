@@ -1,0 +1,12 @@
+# View setup #
+# Init default view properties outside of source codes #
+{
+	[NAME] ViewSetUp
+
+	[WindowTitle] MVC_Framework V1.0
+	# Screen resolution
+	[WindowWidth] 1024
+	[WindowHeight] 800
+
+	[FrameRefreshRate] 120
+}

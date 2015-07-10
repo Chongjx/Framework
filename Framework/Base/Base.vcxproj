@@ -15,6 +15,7 @@
     <ClCompile Include="Source\Bullet.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Character.cpp" />
+    <ClCompile Include="Source\DepthFBO.cpp" />
     <ClCompile Include="Source\FPcamera.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\Init_Functions.cpp" />
@@ -26,8 +27,10 @@
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\MeshBuilder.cpp" />
     <ClCompile Include="Source\MiniMap.cpp" />
+    <ClCompile Include="Source\Particle.cpp" />
     <ClCompile Include="Source\Render_Functions.cpp" />
     <ClCompile Include="Source\SceneBase.cpp" />
+    <ClCompile Include="Source\SceneShadow.cpp" />
     <ClCompile Include="Source\shader.cpp" />
     <ClCompile Include="Source\SpriteAnimation.cpp" />
     <ClCompile Include="Source\threeDhitbox.cpp" />
@@ -43,6 +46,7 @@
     <ClInclude Include="Source\Bullet.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Character.h" />
+    <ClInclude Include="Source\DepthFBO.h" />
     <ClInclude Include="Source\FPcamera.h" />
     <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\Geometry.h" />
@@ -55,8 +59,10 @@
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\MeshBuilder.h" />
     <ClInclude Include="Source\MiniMap.h" />
+    <ClInclude Include="Source\Particle.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\SceneBase.h" />
+    <ClInclude Include="Source\SceneShadow.h" />
     <ClInclude Include="Source\shader.hpp" />
     <ClInclude Include="Source\SpriteAnimation.h" />
     <ClInclude Include="Source\threeDhitbox.h" />
